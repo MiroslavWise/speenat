@@ -1,0 +1,16 @@
+@import './default.scss', './error-pages.scss', './sign.scss';
+
+html, body{
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(#ffe000, #799f0c);;
+}
+
+@font-face {
+        font-family: 'Grand-Casino', sans-serif;
+        src: url('./fonts/GrandCasino-Regular\ 400.otf') format('otf')
+}
+
+h2{
+        font-family: 'Grand-Casino', sans-serif;
+}
