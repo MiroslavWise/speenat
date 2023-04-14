@@ -19,13 +19,7 @@ const GatesComponent: FC = () => {
                 }
         }
 
-        return (
-                <Spin
-                        style={{height: '100vh', width: '100%'}}
-                        spinning
-                        indicator={<Loader />}
-                />
-        )
+        return <></>
 }
 
 export default GatesComponent

@@ -190,8 +190,6 @@ const ContainerSingAndRegister: FC = () => {
                                         </Row>
                                 </Form>
                         </div>
-                        <div className="__elem-sign-1__" />
-                        <div className="__elem-sign-2__" />
                 </div>
         )
 }

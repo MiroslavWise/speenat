@@ -1,0 +1,36 @@
+.nav-footer-mobile{
+        height: 73px;
+        width: 100%;
+        background-color: var(--premium-color);
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content:space-around;
+        align-items: center;
+
+        .item-menu{
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                align-items: center;
+                cursor: pointer;
+
+                p{
+                        padding: 0;
+                        margin: 0;
+                        font-weight: 500;
+                        font-size: 15px;
+                        line-height: 15px;
+                        text-align: center;
+                        color: #999;
+                        letter-spacing:0px;
+                }
+
+                .active{
+                        p{
+                                color: #fff;
+                        }
+                }
+        }
+}

@@ -1,16 +1,26 @@
-@import './default.scss', './error-pages.scss', './sign.scss';
+@import './default.scss', 
+'./error-pages.scss', 
+'./sign.scss', 
+'./footer.scss', 
+'./profile.scss', 
+'./header.scss';
+
+:root{
+        --premium-color: rgb(51,54,124);
+        --secondary-color: rgb(227,136,84);
+        --secondary-purple: rgb(199,194,235);
+        --secondary-purple-light: rgb(238,239,255);
+        --gray-color: rgb(225,225,235);
+        --secondary-orange: rgb(251,230,228);
+        --premium-orange: rgb(214,107,94);
+}
 
 html, body{
         margin: 0;
         padding: 0;
-        background: linear-gradient(#ffe000, #799f0c);;
-}
-
-@font-face {
-        font-family: 'Grand-Casino', sans-serif;
-        src: url('./fonts/GrandCasino-Regular\ 400.otf') format('otf')
+        background-color: rgb(255,255,255);
 }
 
 h2{
-        font-family: 'Grand-Casino', sans-serif;
+        font-family: 'Inter', sans-serif;
 }

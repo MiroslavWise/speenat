@@ -7,11 +7,7 @@ import SignInComponent from "authorization/SignInComponent";
 
 const AuthorizationContext = createContext<IAuthContext | undefined>(undefined)
 
-interface IProps{
-        children: ReactNode
-}
-
-const Authorization: FC<IProps> = ({ children }) => {
+const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
         const [authState, setAuthState] = useState<TAuthStateType>("gates")
 
         const Routers: Record<TAuthStateType, ReactNode> = {
@@ -25,7 +21,7 @@ const Authorization: FC<IProps> = ({ children }) => {
         }
 
         useEffect(() => {
-                setAuthState("sign-in")
+                setAuthState("main")
         }, [])
 
         const ShowComponent = Routers[authState]
@@ -46,9 +42,7 @@ const Authorization: FC<IProps> = ({ children }) => {
 const useAuth = () => {
         const context = useContext(AuthorizationContext)
 
-        if (context === undefined) {
-                throw new Error('useAuth must be used within a Authorization Provider');
-        }
+        if (context === undefined)  throw new Error('useAuth must be used within a Authorization Provider')
 
         return context
 }
@@ -56,5 +50,5 @@ const useAuth = () => {
 export {
         AuthorizationContext,
         Authorization,
-        useAuth
+        useAuth,
 }

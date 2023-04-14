@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": "./",
     "paths": {
-      "@loader-spin": ["components/loader/Loader.tsx"]
+      "@loader-spin": ["components/loader/Loader.tsx"],
+      "@icons-*": ["icons/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
