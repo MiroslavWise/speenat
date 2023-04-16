@@ -21,7 +21,9 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         return (
                 <main className={inter.className} style={{ width: '100%', minHeight: '100vh', position: "relative" }}>
                         <Header />
-                        {children}
+                        <div style={{width: '100%', height: '100%'}}>
+                                {children}
+                        </div>
                         <NavFooter />
                 </main>
         )

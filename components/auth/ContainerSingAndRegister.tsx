@@ -1,17 +1,18 @@
 import { FC, useEffect, useState } from "react";
 
 import { Button, Form, Input, Row, Space } from "antd";
+import { login } from "api/api-auth";
 
 const { Item } = Form
 
 interface IValues{
-        login: string
+        email: string
         password: string
 }
 
 interface IRegister{
         name: string
-        login: string
+        email: string
         password: string
         password_two: string
         promo: string
@@ -23,8 +24,15 @@ const ContainerSingAndRegister: FC = () => {
         const [form] = Form.useForm()
 
         const onSubmit = (values: IValues) => {
-                setIsSign(true)
-                form.resetFields()
+                login(values)
+                        .then(response => {
+                                console.log('response: ', response.data)
+                        })
+                        .catch(e => {
+                                console.log('ERROR: ', e)
+                        })
+                // setIsSign(true)
+                // form.resetFields()
         }
 
         const onRegister = (values: IRegister) => {
@@ -63,7 +71,7 @@ const ContainerSingAndRegister: FC = () => {
                                                                         />
                                                                 </Item>
                                                                 <Item
-                                                                        name="login"
+                                                                        name="email"
                                                                         className="user-box"
                                                                         rules={[
                                                                                 {
@@ -140,7 +148,7 @@ const ContainerSingAndRegister: FC = () => {
                                                         :
                                                         <>
                                                                 <Item
-                                                                        name="login"
+                                                                        name="email"
                                                                         className="user-box"
                                                                         rules={[
                                                                                 {

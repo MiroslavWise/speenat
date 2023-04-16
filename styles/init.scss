@@ -3,7 +3,9 @@
 './sign.scss', 
 './footer.scss', 
 './profile.scss', 
-'./header.scss';
+'./header.scss',
+'./teachers-style.scss',
+'./invited.scss';
 
 :root{
         --premium-color: rgb(51,54,124);
@@ -21,6 +23,59 @@ html, body{
         background-color: rgb(255,255,255);
 }
 
-h2{
+h2, p{
         font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+}
+
+.ant-divider-horizontal{
+        margin: 5px 0 !important;
+}
+
+.wrapper{
+        padding-top: 120px;
+        padding-left: 15px;
+        padding-right: 15px;
+        overflow: auto;
+        padding-bottom: 90px;
+
+        &.terms{
+                display: flex;
+                flex-direction: column;
+                padding-left: 25px;
+                padding-right: 25px;
+                gap: 7px;
+                .title{
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: calc(1.1rem + .6vw);
+                        color: var(--premium-color); 
+                        text-align: center;
+                }
+                .sub-title{
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: calc(1rem + .6vw);
+                        color: gray;
+                        b{
+                                font-size: calc(0.9rem + .6vw);
+                                color: black;
+                        }
+                }
+                p {
+                        &:not(.title, .sub-title){
+                                font-weight: 500;
+                                font-size: calc(0.7rem + .6vw);
+                                color: black;
+                                text-align: justify;
+                        }
+                        a{
+                                text-decoration: none;
+                        }
+                }
+                .left{
+                        padding-left: 10px;
+                }
+        }
 }

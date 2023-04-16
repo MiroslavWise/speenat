@@ -21,7 +21,7 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
         }
 
         useEffect(() => {
-                setAuthState("main")
+                setAuthState("sign-in")
         }, [])
 
         const ShowComponent = Routers[authState]

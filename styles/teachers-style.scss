@@ -1,0 +1,153 @@
+.teachers{
+        position: relative;
+
+        .descriptions{
+                padding-top: 15px;
+                padding-left: 15px;
+                padding-right: 15px;
+                text-align: center;
+                p{
+                        color: gray;
+                        span{
+                                cursor: pointer;
+                        }
+                }
+        }
+}
+
+
+.button-search{
+        background-color: var(--premium-color);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        gap: 10px;
+        height: 45px;
+        border-radius: 19px;
+        width: 100%;
+        border: none;
+
+        p{
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                color: #fff; 
+        }
+}
+
+.wrapper-search{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 10px;
+        .block-search{
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                p{
+                        font-style: normal;
+                        margin: 0;
+                        padding: 0;
+                        font-weight: 500;
+                        font-size: 16px;
+                        line-height: 19px;
+                        color: var(--premium-color); 
+                }
+
+                .buttons{
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 7px;
+
+                        .button-duration{
+                                flex: 1 0 auto;
+                                gap: 10px;
+                                height: 45px;
+                                border-radius: 19px;
+                                background-color: #fff;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: center;
+                                p{
+                                        width: fit-content;
+                                        font-style: normal;
+                                        font-weight: 600;
+                                        font-size: 16px;
+                                        line-height: 19px;
+                                        color: var(--premium-color); 
+                                }
+
+                                &.active{
+                                        background-color: var(--premium-color);
+                                        p{
+                                                color: #fff;
+                                        }
+                                }
+                        }
+                }
+
+                .inputs{
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 7px;
+
+                        .input{
+                                flex: 1 0 auto;
+                                height: 45px;
+                                border-radius: 19px;
+                                background-color: #fff;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                font-weight: 500;
+                                font-size: 16px;
+                                line-height: 19px;
+                                color: var(--premium-color); 
+                        }
+                }
+        }
+
+        .cancel-button{
+                flex: 1 0 auto;
+                gap: 10px;
+                height: 45px;
+                border-radius: 19px;
+                background-color: #fff;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                p{
+                        width: fit-content;
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 19px;
+                        color: var(--premium-color); 
+                }
+        }
+
+        .search-button{
+                flex: 1 0 auto;
+                gap: 10px;
+                height: 45px;
+                border-radius: 19px;
+                background-color: var(--premium-color);
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                p{
+                        width: fit-content;
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 19px;
+                        color: #fff;
+                }
+        }
+}
