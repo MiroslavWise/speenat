@@ -1,7 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react"
 
-import { Button, Form, Input, Row, Space } from "antd";
-import { login } from "api/api-auth";
+import { Button, Form, Input, Row, Space, message } from "antd"
+import userData from "helpers/user-data"
+import { useAuth } from "context/Authorization"
+import { registerUser, IRegister } from "api/api-auth"
 
 const { Item } = Form
 
@@ -10,40 +12,84 @@ interface IValues{
         password: string
 }
 
-interface IRegister{
-        name: string
-        email: string
-        password: string
-        password_two: string
-        promo: string
+interface IReturnAccess{
+        access: boolean,
+        error: {
+                message: string
+                stack: string
+        } | null
 }
 
 const ContainerSingAndRegister: FC = () => {
+        const { setAuthState } = useAuth()
         const [isSign, setIsSign] = useState(false)
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
 
         const onSubmit = (values: IValues) => {
-                login(values)
-                        .then(response => {
-                                console.log('response: ', response.data)
+                userData.login({ email: values.email, password: values.password })
+                        .then((response: IReturnAccess) => {
+                                if (response?.access === true && response.error === null) {
+                                        setIsSign(true)
+                                        setTimeout(() => {
+                                                setAuthState('main')
+                                        }, 380)
+                                }
+                                if (response?.access === false) {
+                                        if (response.error !== null && response.error.message === "No token supplied") {
+                                                message.error("Не верный логин или пароль!")
+                                        } else {
+                                                message.error(response.error?.message)
+                                        }
+                                }
                         })
-                        .catch(e => {
-                                console.log('ERROR: ', e)
+        }
+
+        //is_speaker
+
+        const onRegister = (values: IRegister) => {
+                const { email, password, password2, is_speaker, referral_code, full_name } = values
+                registerUser({
+                        email: email,
+                        password: password,
+                        password2: password2,
+                        is_speaker: is_speaker || false,
+                        referral_code: referral_code || "",
+                        full_name: full_name,
+                        profile: {
+                                accept_politics: true,
+                                accept_public_offer: true
+                        }
+                })
+                        .then(response => {
+                                if (response?.email === email) {
+                                        userData.login({ email: response?.email, password: password })
+                                        .then((response: IReturnAccess) => {
+                                                if (response?.access === true && response.error === null) {
+                                                        setIsSign(true)
+                                                        setTimeout(() => {
+                                                                setAuthState('main')
+                                                        }, 380)
+                                                }
+                                                if (response?.access === false) {
+                                                        if (response.error !== null && response.error.message === "No token supplied") {
+                                                                message.error("Не верный логин или пароль!")
+                                                        } else {
+                                                                message.error(response.error?.message)
+                                                        }
+                                                }
+                                        })
+                                } else {
+                                        message.error("Юзер с такими же данными уже существует")
+                                }
                         })
                 // setIsSign(true)
                 // form.resetFields()
         }
 
-        const onRegister = (values: IRegister) => {
-
-                setIsSign(true)
-                form.resetFields()
-        }
-
         return (
-                <div className={`__container-sign__ ${isSign && 'out-in-sign'}`}>
-                        <div className={`content`}>
+                <div className={`__container-sign__ ${isSign && 'animate'}`}>
+                        <div className={`content `}>
                                 <h2 style={{ textAlign: "center" }}>{ isState ? 'Регистрация' : 'Войти' }</h2>
                                 <Form
                                         className="fields"
@@ -54,7 +100,7 @@ const ContainerSingAndRegister: FC = () => {
                                                         ?
                                                         <>
                                                                 <Item
-                                                                        name="name"
+                                                                        name="full_name"
                                                                         className="user-box"
                                                                         rules={[
                                                                                 {
@@ -108,10 +154,9 @@ const ContainerSingAndRegister: FC = () => {
                                                                         />
                                                                 </Item>
                                                                 <Item
-                                                                        name="password_two"
+                                                                        name="password2"
                                                                         className="user-box"
                                                                         dependencies={['password']}
-                                                                        // hasFeedback
                                                                         rules={[
                                                                                 {
                                                                                         required: true,
@@ -135,7 +180,7 @@ const ContainerSingAndRegister: FC = () => {
                                                                         />
                                                                 </Item>
                                                                 <Item
-                                                                        name="promo"
+                                                                        name="referral_code"
                                                                         className="user-box"
                                                                 >
                                                                         <Input

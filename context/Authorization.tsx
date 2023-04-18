@@ -5,10 +5,14 @@ import type { TAuthStateType, IAuthContext } from "types/auth";
 import GatesComponent from "authorization/GatesComponent";
 import SignInComponent from "authorization/SignInComponent";
 
+import userData from "helpers/user-data";
+import { useUser } from "store/use-user";
+
 const AuthorizationContext = createContext<IAuthContext | undefined>(undefined)
 
 const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
         const [authState, setAuthState] = useState<TAuthStateType>("gates")
+        const getReset = useUser(state => state.getReset)
 
         const Routers: Record<TAuthStateType, ReactNode> = {
                 "gates": <GatesComponent />,
@@ -18,11 +22,9 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
 
         function signOut() {
                 setAuthState("sign-in")
+                userData.delete()
+                getReset()
         }
-
-        useEffect(() => {
-                setAuthState("sign-in")
-        }, [])
 
         const ShowComponent = Routers[authState]
 

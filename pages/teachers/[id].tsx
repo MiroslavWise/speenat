@@ -1,32 +1,33 @@
 import Image from "next/image";
-import { FC } from "react";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
 
-import { useUser } from "store/use-user";
-
-import ItemsData from "components/profile/ItemsData";
 import Loader from "@loader-spin";
 
+import { speakerId, profileId } from "api/api-user";
+import loadImage from "functions/load-image";
 
-const Profile: FC = () => {
-        const loading = useUser(state => state.loading)
-        const user = useUser(state => state.user)
 
-        if(loading) return <Loader />
+const ProfileTeacher: NextPage = () => {
+        const { query: { id } } = useRouter()
         
+        const { data, isLoading } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
+
+        if(isLoading) return <Loader />
+
         return (
                 <div className="wrapper-profile">
-                        <div className="header-profile"/>
+                        <div className="header-profile" />
                         <div className="profile-content">
-                                <p className="profile-name">{user?.profile?.user?.full_name}</p>
-                                <div className="profile-info-other">
-                                        <ItemsData />
-                                </div>
+                                <p className="profile-name">{ data && data[1]?.full_name}</p>
                         </div>
-
+                        
                         <div className="profile-avatar-div">
                                 <Image
-                                        src="/images/flower.jpg"
-                                        alt=""
+                                        loader={loadImage}
+                                        src={data &&  data[0]?.profile?.photo_url || ""}
+                                        alt="ad"
                                         height={115}
                                         width={115}
                                         style={{
@@ -41,4 +42,4 @@ const Profile: FC = () => {
         )
 }
 
-export default Profile
+export default ProfileTeacher

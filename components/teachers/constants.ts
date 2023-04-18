@@ -6,7 +6,7 @@ interface IStatus {
 }
 
 interface IVerified{
-        value: TVerified
+        value: boolean | ""
         label: string
 }
 
@@ -35,11 +35,11 @@ const VERIFIED: IVerified[] = [
                 label: "Все",
         },
         {
-                value: "yes",
+                value: true,
                 label: "Да",
         },
         {
-                value: "no",
+                value: false,
                 label: "Нет",
         }
 ]

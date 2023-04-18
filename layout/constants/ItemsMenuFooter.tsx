@@ -19,7 +19,7 @@ interface IItemMenuFooter{
 const ITEMS_MENU_FOOTER: IItemMenuFooter[] = [
         {
                 title: 'Home',
-                value: "home",
+                value: "",
                 icon: {
                         fill: <HomeFill />,
                         regular: <HomeRegular />

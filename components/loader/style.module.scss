@@ -1,57 +1,82 @@
+//variables
+$bg-color: #fff; //container background-color;
+$basic-dark-color: #212121; //color of the spinner
+$border-width: 4px; //width of spinners border
+$basic-spinner-dimensions: 125px; //width and height of spinner
+$main-spinner-dimensions: $basic-spinner-dimensions - $border-width * 2; //width and height of bigger circle
+$small-spinner-dimensions: $main-spinner-dimensions * 0.7; //width and height of smaller circle
 
-$Loader-color: #fff;
-$Loader-size: 14.6rem;
-$Loader-offset: 1.7rem;
-$Loader-timing: ease-in-out;
+@keyframes showOpacity {
 
-.container{
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        background-color: #131313;
+  0% {opacity: 0}
+  50%{opacity: 0.7}
+  100% {opacity: 1}
 }
 
-.Loader {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: $Loader-size;
-        margin-top: $Loader-size/2;
-        margin-bottom: $Loader-size/2;
-        &:before, &:after {
-                content: "";
-                position: absolute;
-                border-radius: 50%;
-                animation-duration: 1.8s;
-                animation-iteration-count: infinite;
-                animation-timing-function: $Loader-timing;
-                filter: drop-shadow(0 0 $Loader-offset/2.25 rgba($Loader-color, 0.75));
-        }
-  &:before {
+.container {
+  width: 100%;
+display: flex;
+  height: calc(100vh - 150px);
+  align-items: center;
+  justify-content: center;
+  animation: showOpacity 0.8s;
+  }
+
+  .spinner-block {
     width: 100%;
-    padding-bottom: 100%;
-    box-shadow: inset 0 0 0 $Loader-offset $Loader-color;
-    animation-name: pulsA;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+.spinner-3 {
+  position: relative;
+  width: $basic-spinner-dimensions;
+  height: $basic-spinner-dimensions;
+
+  &:before,
   &:after {
-    width: calc(100% - #{$Loader-offset}*2);
-    padding-bottom: calc(100% - #{$Loader-offset}*2);
-    box-shadow: 0 0 0 0 $Loader-color;
-    animation-name: pulsB;
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 50%;
+  } 
+  @keyframes scale-2 {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    
+    50% {
+      transform: scale(0.7);
+      opacity: 1;
+    }
+    
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
   }
-}
-
-@keyframes pulsA {
-  0% { box-shadow: inset 0 0 0 $Loader-offset $Loader-color; opacity: 1; }
-  50%, 100% { box-shadow: inset 0 0 0 0 $Loader-color; opacity: 0; }
-}
-
-@keyframes pulsB {
-  0%, 50% { box-shadow: 0 0 0 0 $Loader-color; opacity: 0; }
-  100% { box-shadow: 0 0 0 $Loader-offset $Loader-color; opacity: 1; }
+  
+  &:before {
+    width: $main-spinner-dimensions;
+    height: $main-spinner-dimensions;
+    border-color: $basic-dark-color;
+    top: 0px;
+    left: 0px;
+    animation: scale-2 1s linear 0s infinite;
+  }
+  
+  &:after {
+    width: $main-spinner-dimensions;
+    height: $main-spinner-dimensions;
+    border-color: $basic-dark-color;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: scale-2 1s linear 0.5s infinite;
+  }
 }

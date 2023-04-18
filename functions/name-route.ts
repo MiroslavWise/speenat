@@ -11,6 +11,7 @@ export const nameRoute = (route: string): string => {
         if (split[0] === "teachers") return "Преподаватели"
         if (split[0] === "archive") return "Архив сессий"
         if (split[0] === "invited") return "Пригласить друга"
+        if(split[0] === "profile") return "Профиль"
         
         return split[0] || ""
 }

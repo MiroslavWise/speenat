@@ -1,7 +1,7 @@
 $primary: rgb(51,54,124);
 $secondary: #38ef7d;
 $white: #fff;
-$gray: #9b9b9b;
+$gray: #9b9b9b; 
 
 .__wrapper-sign__{
         position: relative;
@@ -9,33 +9,26 @@ $gray: #9b9b9b;
         height: 100vh;
         background-color: transparent;
         z-index: 10;
+        display: grid;
+        justify-content: center;
+        align-items: center;
 }
 
 .__container-sign__{
         position: relative;
         z-index: 101;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         height: fit-content;
         width: 450px;
         transition: all 0.4s ease-in-out;
         animation: identifier-position 1.2s;
 
-        &.out-in-sign{
-                animation: identifier-position-reverse 1.2s;
-                top: 0%;
-                left: 50%;
-                opacity: 0;
+        &.animate{
+                animation: scale-truth 450ms;
         }
 
         .content{
-                background: rgba(255, 255, 255, 0.19);
-                border-radius: 16px;
-                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
                 backdrop-filter: blur(6.5px);
                 -webkit-backdrop-filter: blur(6.5px);
-                border: 1px solid rgba(255, 255, 255, 0.65);
                 height: 100%;
                 width: 100%;
                 transition: all 0.5s ease-in-out;
@@ -46,26 +39,6 @@ $gray: #9b9b9b;
                         gap: 15px;
                         padding: 50px;
                         transition: all 0.5s ease-in-out;
-
-                        .login-submit{
-                                background-color: var(--premium-color);
-                                display: flex;
-                                flex-direction: row;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 12px 24px;
-                                height: 40px;
-                                border-radius: 17px;
-                                border: none;
-
-                                p{
-                                        font-style: normal;
-                                        font-weight: 600;
-                                        font-size: 16px;
-                                        line-height: 19px;
-                                        color: #fff; 
-                                }
-                        }
 
                         .state-revers{
                                 display: flex;
@@ -86,6 +59,26 @@ $gray: #9b9b9b;
                                 }
                         }
                 }
+        }
+}
+
+.login-submit{
+        background-color: var(--premium-color);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        height: 40px;
+        border-radius: 17px;
+        border: none;
+
+        p{
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                color: #fff; 
         }
 }
 
@@ -113,3 +106,13 @@ $gray: #9b9b9b;
         }
 }
 
+@keyframes scale-truth {
+        from {
+                opacity: 1;
+                scale: 1;
+        }
+        to{
+                opacity: 0.1;
+                scale: 1.4;
+        }
+}

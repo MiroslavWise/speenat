@@ -5,7 +5,9 @@ import { Button, Divider, Drawer, Rate, InputNumber, Row, Space } from "antd"
 import type { TDuration } from "types/store/search"
 
 import { useSearch } from "store/use-search"
+import { useProfiles } from "store/use-profiles"
 import { DURATION, STATUS_ONLINE, VERIFIED } from "./constants"
+import { TStatus } from "types/store/user"
 
 interface IProps{
         open: boolean
@@ -15,26 +17,30 @@ interface IProps{
 
 const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
         const handleClose = () => setOpen(false)
+        const filters = useProfiles(state => state.filters)
+        const getFilters = useProfiles(state => state.getFilter)
 
         const duration = useSearch(state => state.duration)
-        const price = useSearch(state => state.price)
-        const rate = useSearch(state => state.rate)
-        const statusOnline = useSearch(state => state.status)
-        const verified = useSearch(state => state.verified)
         const use = useSearch(state => state.use)
 
         const [duration_, setDuration_] = useState<TDuration>(duration)
         const [price_, setPrice_] = useState<{ min: number, max: number }>({
-                min: price[0],
-                max: price[1],
+                min: filters.price_gte,
+                max: filters.price_lte,
         })
-        const [rate_, setRate_] = useState(rate)
-        const [statusOnline_, setStatusOnline_] = useState(statusOnline)
-        const [verified_, setVerified_] = useState(verified)
+        const [rate_, setRate_] = useState(filters.spec_rating)
+        const [statusOnline_, setStatusOnline_] = useState<TStatus | "">(filters.speaker__status)
+        const [verified_, setVerified_] = useState<boolean | "">(filters.verified)
 
         const onSearch = () => {
-                
-
+                getFilters({
+                        price_gte: price_.min,
+                        price_lte: price_.max,
+                        speaker__status: statusOnline_,
+                        verified: verified_,
+                        spec_rating: rate_,
+                        page: 1,
+                })
                 handleClose()
         }
 
@@ -98,7 +104,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 <div className="block-search">
                                         <p>Рейтинг Преподавателя</p>
                                         <Rate
-                                                defaultValue={rate_}
+                                                defaultValue={rate_ || undefined}
                                                 onChange={(value) => setRate_(value)}
                                                 
                                         />

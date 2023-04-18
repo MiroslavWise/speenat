@@ -1,34 +1,29 @@
 import { Button } from "antd"
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import DrawerSearch from "components/teachers/DrawerSearch"
+import ListSpeaker from "components/teachers/ListSpeaker"
 
-
-export async function getServerSideProps(context: any) {
-
-        return {
-                props: {
-
-                }
-        }
-}
+import { useProfiles } from "store/use-profiles"
 
 const Teachers: NextPage = () => {
         const [open, setOpen] = useState(false)
-
+        const get = useProfiles(state => state.getProfiles)
         const handleOpen = () => setOpen(true)
+
+        useEffect(() => {
+                get()
+        }, [])
 
         return (
                 <div className="wrapper teachers">
                         <Button className="button-search" onClick={handleOpen}>
                                 <p>Параметры поиска</p>
                         </Button>
-                        <div className="descriptions">
-                                <p>
-                                        Извините, но преподавателей по данному запросу нет, но вы можете открыть весь список, и записаться на определённое время <span style={{color: 'var(--secondary-color)'}} onClick={handleOpen}>открыть</span>
-                                </p>
-                        </div>
+                        <ListSpeaker
+                                handleOpen={handleOpen}
+                        />
                         <DrawerSearch
                                 open={open}
                                 setOpen={setOpen}

@@ -6,6 +6,7 @@
 './header.scss',
 './teachers-style.scss',
 './invited.scss';
+@import './animate.scss';
 
 :root{
         --premium-color: rgb(51,54,124);
@@ -15,6 +16,7 @@
         --gray-color: rgb(225,225,235);
         --secondary-orange: rgb(251,230,228);
         --premium-orange: rgb(214,107,94);
+        --color-gray: rgb(129,134,179)
 }
 
 html, body{
@@ -27,6 +29,10 @@ h2, p{
         font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 0;
+}
+
+.w-100{
+        width: 100%;
 }
 
 .ant-divider-horizontal{
