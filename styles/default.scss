@@ -2,3 +2,10 @@
         display: flex;
         flex-direction: row;
 }
+
+.ant-pagination .ant-pagination-item-active{
+        border-color: var( --premium-color);
+        a{
+                color: var( --premium-color);
+        }
+}

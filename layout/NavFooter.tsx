@@ -4,10 +4,14 @@ import { isMobile } from "react-device-detect";
 
 import type { TMenu } from "types/menu";
 
+import { useUser } from "store/use-user";
+
 import { ITEMS_MENU_FOOTER } from "./constants/ItemsMenuFooter";
+import { activePath } from "functions/name-route";
 
 const NavFooter: FC = () => {
-        const { push } = useRouter()
+        const { push, asPath } = useRouter()
+        const isSpeaker = useUser(state => state.is_speaker)
         const [active, setActive] = useState<TMenu>("home")
 
         const handleTo = (path: string) => {
@@ -19,13 +23,14 @@ const NavFooter: FC = () => {
                         ? (
                                 <div className="nav-footer-mobile">
                                         {
-                                                ITEMS_MENU_FOOTER.map(({ title, value, icon: { fill, regular } }) => (
+                                                ITEMS_MENU_FOOTER(isSpeaker).map(({ title, value, icon: { fill, regular } }) => (
                                                         <div
                                                                 key={`${value}_menu_items`}
                                                                 className={`item-menu `}
                                                                 onClick={() => handleTo(`/${value}`)}
+                                                                
                                                         >
-                                                                {fill}
+                                                                {activePath(asPath, value) ? regular: fill}
                                                                 <p>{title}</p>
                                                         </div>
                                                 ))

@@ -4,9 +4,13 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 
 import Loader from "@loader-spin";
+import Specialization from "components/teachers/profile/Specialization";
 
 import { speakerId, profileId } from "api/api-user";
 import loadImage from "functions/load-image";
+import Feedbacks from "components/teachers/profile/Feedbacks";
+import { useWebSocket } from "context/WebSocketContext";
+import { useEffect } from "react";
 
 
 const ProfileTeacher: NextPage = () => {
@@ -14,19 +18,37 @@ const ProfileTeacher: NextPage = () => {
         
         const { data, isLoading } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
 
+        const { wsChanel } = useWebSocket()
+        
+        useEffect(() => {
+                const eventListener = (event: any) => {
+                        console.log("event: ", event)
+                }
+                
+                wsChanel?.addEventListener('message', eventListener)
+
+                return () => wsChanel?.removeEventListener('message', eventListener)
+        }, [wsChanel])
+
         if(isLoading) return <Loader />
 
         return (
                 <div className="wrapper-profile">
                         <div className="header-profile" />
                         <div className="profile-content">
-                                <p className="profile-name">{ data && data[1]?.full_name}</p>
+                                <p className="profile-name">{data && data[1]?.full_name}</p>
+                                <div className="profile-info-other">
+                                        <Specialization
+                                                data={data?.[0]?.get_all_specialization}
+                                                online={data?.[0]?.profile?.status === "online"}
+                                        />
+                                        <Feedbacks />
+                                </div>
                         </div>
-                        
                         <div className="profile-avatar-div">
                                 <Image
                                         loader={loadImage}
-                                        src={data &&  data[0]?.profile?.photo_url || ""}
+                                        src={(data &&  data[0]?.profile?.photo_url) ? data[0]?.profile?.photo_url : "/images/default.png"}
                                         alt="ad"
                                         height={115}
                                         width={115}
@@ -38,6 +60,7 @@ const ProfileTeacher: NextPage = () => {
                                         }}
                                 />
                         </div>
+                        
                 </div>
         )
 }

@@ -5,6 +5,7 @@ import { Dispatch, DispatchWithoutAction } from "react"
 
 export type TGender = "male" | "female" | null
 export type TStatus = "online" | "offline" | "busy"
+export type TStatusCall = "CALL_END" | "COMPLETED_AHEAD"
 export interface IUser{
         profile: {
                 address: string
@@ -78,7 +79,7 @@ export interface IUserStore{
         is_staff: boolean
         is_active: boolean
 
-        getUserData: DispatchWithoutAction
+        getUserData: Dispatch<boolean> | DispatchWithoutAction
         getReset: DispatchWithoutAction
 }
 
@@ -93,87 +94,55 @@ export interface IUserCurrent{
         }
 }
 
+export interface ISpec{
+        "id": number
+        "profile": {
+                "id": number
+                "full_name": string
+                "avatar_url": string
+                "status": TStatus
+                "verified": boolean
+        },
+        "specialization": {
+                "id": number
+                "name": string
+                "description": string
+                "consult_issues": string
+        },
+        "specialization_id": number
+        "university": string
+        "scientific_degree": boolean
+        "scientific_degree_text": string
+        "attachments": {
+                "id": number
+                "name": string
+                "file": string
+        }[]
+        "work_experience": number
+        "category": string
+        "get_category_display": string
+        "consultation_time": {
+                "id": number
+                "sessions_time": string
+                "original_price": string
+                "price": string
+        }[]
+        "rating": number
+}
+
 export interface ISpeakerData{
         "profile": {
                 "user": number
                 "profile_id": number
                 "photo_url": string
                 "status": TStatus
-                "specialization": {
-                        "id": number
-                        "profile": {
-                                "id": number
-                                "full_name": string
-                                "avatar_url": string
-                                "status": TStatus
-                                "verified": boolean
-                        },
-                        "specialization": {
-                                "id": number
-                                "name": string
-                                "description": string
-                                "consult_issues": string
-                        },
-                        "specialization_id": number
-                        "university": string
-                        "scientific_degree": boolean
-                        "scientific_degree_text": string
-                        "attachments": {
-                                "id": number
-                                "name": string
-                                "file": string
-                        }[]
-                        "work_experience": number
-                        "category": string
-                        "get_category_display": string
-                        "consultation_time": {
-                                "id": number
-                                "sessions_time": string
-                                "original_price": number | string
-                                "price": number | string
-                        }[]
-                        "rating": number
-                }[]
+                "specialization": ISpecItems[]
         },
         "additional_info": string
         "additional_info_files": string
         "verified": boolean
         "service_issues": string
-        "get_all_specialization": {
-                "id": number
-                "profile": {
-                        "id": number
-                        "full_name": string
-                        "avatar_url": string
-                        "status": TStatus
-                        "verified": boolean
-                },
-                "specialization": {
-                        "id": number
-                        "name": string
-                        "description": string
-                        "consult_issues": string
-                },
-                "specialization_id": number
-                "university": string
-                "scientific_degree": boolean
-                "scientific_degree_text": string
-                "attachments": {
-                        "id": number
-                        "name": string
-                        "file": string
-                }[]
-                "work_experience": number
-                "category": string
-                "get_category_display": string
-                "consultation_time": {
-                        "id": number
-                        "sessions_time": string
-                        "original_price": string
-                        "price": string
-                }[]
-                "rating": number
-        }[]
+        "get_all_specialization": ISpec[]
         "accepts_at_current_time": {
                 "id": number
                 "full_name": string
@@ -184,4 +153,103 @@ export interface ISpeakerData{
                         "email_verified": boolean
                 }
         }
+}
+
+export interface IFeedback{
+        count: number
+        next: string
+        previous: string
+        results: {
+                id: number
+                speaker: number
+                author: {
+                        full_name: string
+                        avatar_url: string
+                }
+                rating: number
+                text: string
+                created_at: string
+        }[]
+}
+
+export interface IArchive{
+        count: number
+        next: string
+        previous: string
+        results: {
+                conference_currency: {
+                        id: number
+                        name: string
+                }
+                conference_time: {
+                        id: number
+                        price: string
+                        sessions_time: string
+                }
+                created_at: string
+                id: number
+                price_service: string
+                price_speaker: string
+                record_url: "not_found" | string
+                speaker: {
+                        accepts_at_current_time: any
+                        id: number
+                        profile: {
+                                email: string
+                                full_name: string
+                                id: number
+                                photo_url: string
+                        }
+                }
+                speaker_id: number
+                status: TStatusCall
+                student_profile: {
+                        email: string
+                        full_name: string
+                        id: number
+                        photo_url: string
+                }
+                uuid: string
+        }[]
+}
+
+export interface ISpecItems{
+        "id": number
+        "profile": {
+                "id": number
+                "full_name": string
+                "avatar_url": string
+                "status": TStatus
+                "verified": boolean
+        },
+        "specialization": {
+                "id": number
+                "name": string
+                "description": string
+                "consult_issues": string
+        },
+        "specialization_id": number
+        "university": string
+        "scientific_degree": boolean
+        "scientific_degree_text": string
+        "attachments": {
+                "id": number
+                "name": string
+                "file": string
+        }[]
+        "work_experience": number
+        "category": string
+        "get_category_display": string
+        "consultation_time": {
+                "id": number
+                "sessions_time": string
+                "original_price": number | string
+                "price": number | string
+        }[]
+        "rating": number
+}
+
+
+export interface IDataSpecEdit{
+        
 }

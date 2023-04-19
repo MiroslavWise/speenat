@@ -39,25 +39,6 @@ $gray: #9b9b9b;
                         gap: 15px;
                         padding: 50px;
                         transition: all 0.5s ease-in-out;
-
-                        .state-revers{
-                                display: flex;
-                                flex-direction: row;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 12px 24px;
-                                height: 40px;
-                                border-radius: 17px;
-                                border: none;
-
-                                p{
-                                        font-style: normal;
-                                        font-weight: 600;
-                                        font-size: 16px;
-                                        line-height: 19px;
-                                        color: var(--secondary-color);
-                                }
-                        }
                 }
         }
 }
@@ -82,6 +63,25 @@ $gray: #9b9b9b;
         }
 }
 
+.state-revers{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        height: 40px;
+        border-radius: 17px;
+        border: none;
+
+        p{
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                color: var(--secondary-color);
+        }
+}
+
 .user-box {
         padding: 0;
         margin: 0;
@@ -94,7 +94,7 @@ $gray: #9b9b9b;
         color: #121212;
         margin-bottom: 30px;
         border: 1px solid #131313;
-        background: var(--secondary-purple);
+        background: white;
         margin: 0;
         border-color: var( --gray-color);
         padding: 12px 24px;

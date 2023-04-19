@@ -10,6 +10,7 @@ import Loader from "@loader-spin";
 const Profile: FC = () => {
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
+        const user_photo = useUser(state => state.user?.profile.photo)
 
         if(loading) return <Loader />
         
@@ -25,7 +26,7 @@ const Profile: FC = () => {
 
                         <div className="profile-avatar-div">
                                 <Image
-                                        src="/images/flower.jpg"
+                                        src={user_photo ? user_photo : "/images/flower.jpg"}
                                         alt=""
                                         height={115}
                                         width={115}

@@ -13,17 +13,17 @@ export const useUser = create<IUserStore>(
                 is_staff: false,
                 is_active: false,
 
-                getUserData() {
-                        set({ loading: true })
+                getUserData(value = false) {
+                        set({ loading: value })
                         profileMy()
                                 .then((response: IUser) => {
                                         set({
                                                 user: response,
-                                                is_speaker: response?.user?.is_speaker,
-                                                is_superuser: response?.user?.is_superuser,
-                                                is_admin: response?.user?.is_admin,
-                                                is_staff: response?.user?.is_staff,
-                                                is_active: response?.user?.is_active,
+                                                is_speaker: response?.profile?.user?.is_speaker,
+                                                is_superuser: response?.profile?.user?.is_superuser,
+                                                is_admin: response?.profile?.user?.is_admin,
+                                                is_staff: response?.profile?.user?.is_staff,
+                                                is_active: response?.profile?.user?.is_active,
                                                 loading: false,
                                         })
                                 })

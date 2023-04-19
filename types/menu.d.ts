@@ -1,3 +1,3 @@
 
 
-export type TMenu = "home" | "profile" | "course" | ("schedule" | "homework") | "payment" | ""
+export type TMenu = "home" | "profile" | "course" | ("schedule" | "homework") | "payment" | "" | 'archive' | 'spec'

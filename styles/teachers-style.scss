@@ -237,3 +237,203 @@
                 }
         }
 }
+
+.list-spec{
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        width: 100%;
+
+        .container-spec{
+                background-color: var(--premium-color);
+                border-radius: 25px;
+                overflow: hidden;
+                width: calc(100% - 24px);
+                min-height: 100px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+
+                .title{
+                        display: flex;
+                        flex-direction: row;
+                        gap: 10px;
+                        align-items: center;
+
+                        .image-headphone{
+                                border-radius: 50%;
+                                height: 40px;
+                                width: 40px;
+                                background-color: white;
+                                display: grid;
+                                justify-content: center;
+                                align-items: center;    
+                                .img{
+                                        border-radius: 50%;
+                                }
+                        }
+
+                        .name{
+                                font-weight: 500;
+                                font-size: 20px;
+                                line-height: 15px;
+                                color: #fff;
+                        }
+                        .sub-name{
+                                font-weight: 500;
+                                font-size: 15px;
+                                line-height: 15px;
+                                color: var(--cyan);
+                        }
+                }
+
+                .content{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 7px;
+                        .name{
+                                font-weight: 500;
+                                font-size: 15px;
+                                line-height: 15px;
+                                color: var(--gray-color);
+                        }
+                        .sub-name{
+                                margin-left: 10px;
+                                font-weight: 500;
+                                font-size: 14px;
+                                line-height: 15px;
+                                color: var(--gray-color);
+                        }
+                }
+
+                .consultation-time-list{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 7px;
+
+                        .bell-container{
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                gap: 10px;
+
+                                .but-bell{
+                                        background-color: #fff;
+                                        border-radius: 15px;
+
+                                        p{
+                                                font-weight: 600;
+                                                font-size: 15px;
+                                                line-height: 15px;
+                                                color: var(--premium-color);
+                                        }
+                                }
+
+                                .times{
+                                        display: flex;
+                                        gap: 5px;
+                                        align-items: center;
+
+                                        p{
+                                                font-weight: 600;
+                                                font-size: 15px;
+                                                line-height: 15px;
+                                                color: var(--cyan);
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+
+
+.container-feedback{
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        margin-bottom: 100px;
+
+        .title{
+                font-weight: 600;
+                font-size: 22px;
+                line-height: 15px;
+                color: var(--premium-color);
+        }
+
+        .list-feedback{
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                width: 100%;
+
+                .item-feedback{
+                        background-color: white;
+                        border: 1px solid var(--gray-color);
+                        border-radius: 25px;
+                        overflow: hidden;
+                        width: calc(100% - 24px);
+                        min-height: 100px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 12px;
+
+                        .header-feed{
+                                display: flex;
+                                flex-direction: row;
+                                gap: 10px;
+                                width: 100%;
+
+                                .avatar{
+                                        border-radius: 50%;
+                                        height: 40px;
+                                        width: 40px;
+                                        object-fit: cover;
+                                }
+
+                                .name-time{
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 7px;
+
+                                        .name{
+                                                font-weight: 500;
+                                                font-size: 18px;
+                                                line-height: 15px;
+                                                color: var(--premium-color);
+                                        }
+                                        .sub-name{
+                                                font-weight: 500;
+                                                font-size: 13px;
+                                                line-height: 15px;
+                                                color: var(--cyan);
+                                        }
+                                }
+
+                                .rate{
+                                        justify-self: end;
+                                }
+                        }
+
+                        .contain{
+                                p{
+                                        font-weight: 400;
+                                        font-size: 15px;
+                                        line-height: 15px;
+                                        color: var(--color-gray);
+                                }
+                        }
+
+                        .footer-feed{
+                                .ant-rate{
+                                        color: var(--secondary-color)
+                                }
+                        }
+                }
+        }
+}

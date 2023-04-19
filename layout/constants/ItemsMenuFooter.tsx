@@ -6,6 +6,10 @@ import HomeFill from "@icons-home-fill"
 import HomeRegular from "@icons-home-regular"
 import UserFill from "@icons-user-fill"
 import UserRegular from "@icons-user-regular"
+import Archive from "@icons-archive"
+import BookContent from "@icons-book-content"
+import ArchiveFill from "@icons-archive-fill"
+import BookContentFill from "@icons-book-content-fill"
 
 interface IItemMenuFooter{
         title: string
@@ -16,13 +20,21 @@ interface IItemMenuFooter{
         }
 }
 
-const ITEMS_MENU_FOOTER: IItemMenuFooter[] = [
+const ITEMS_MENU_FOOTER = (isSpeaker: boolean): IItemMenuFooter[] => ([
         {
                 title: 'Home',
                 value: "",
                 icon: {
                         fill: <HomeFill />,
-                        regular: <HomeRegular />
+                        regular: <HomeRegular  fill="#fff" />
+                }
+        },
+        {
+                title: isSpeaker ? "Spec" : "Archive",
+                value: isSpeaker ? 'spec' : 'archive',
+                icon: {
+                        fill: isSpeaker ? <BookContentFill /> : <ArchiveFill />,
+                        regular: isSpeaker ? <BookContent fill="#fff" /> : <Archive fill="#fff" />,
                 }
         },
         {
@@ -30,10 +42,9 @@ const ITEMS_MENU_FOOTER: IItemMenuFooter[] = [
                 value: "profile",
                 icon: {
                         fill: <UserFill />,
-                        regular: <UserRegular />
+                        regular: <UserRegular fill="#fff" />
                 }
         }
-
-]
+])
 
 export { ITEMS_MENU_FOOTER }

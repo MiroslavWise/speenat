@@ -9,14 +9,15 @@
         .header-profile{
                 position: relative;
                 overflow: hidden;
-                height: 250px; 
+                height: 170px; 
                 width: 100%;
                 background-color: var(--secondary-purple-light);
+                border-bottom: 1px solid var(--secondary-orange);
         }
 
         .profile-content{
                 display: flex;
-                padding-top: 120px;
+                padding-top: 110px;
                 flex-direction: column;
                 align-items: center;
                 padding-left: 20px;
@@ -70,7 +71,7 @@
 
         .profile-avatar-div{
                 position: absolute;
-                top: 250px;
+                top: 170px;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 height: 160px;
@@ -85,4 +86,106 @@
                 justify-content: center;
                 align-content: center;
         }
+
+        .buttons{
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                width: 100%;
+                gap: 10px;
+
+                .login-submit{
+                        flex: 1 0 auto;
+                }
+                .state-revers{
+                        flex: 1 0 auto;
+                }
+        }
+}
+
+
+.forms-edit{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        padding-bottom: 100px;
+
+        .form{
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+
+                .item-form{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                        p{
+                                font-size: 15px;
+                                font-weight: 500;
+                                padding-left: 10px;
+                                color: var(--premium-color);
+                        }
+                        .form-input{
+                                width: 100%;
+                                padding: 10px 10px;
+                                font-size: 15px;
+                                font-weight: 500;
+                                margin-bottom: 30px;
+                                background: white;
+                                margin: 0;
+                                border-color: var( --gray-color);
+                                padding: 12px 12px;
+                                height: 40px;
+                                border-radius: 17px;
+                                color: var(--premium-color);
+                        
+                                &:focus, :hover{
+                                        border: 1px solid #666666;
+                                }
+                                &.date-picker{
+                                        border: transparent !important;
+                                        &:focus, :hover{
+                                                border: 1px solid transparent;
+                                        }
+                                }
+
+                                &.disabled{
+                                        background: var( --gray-color);
+                                }
+                        }
+
+                        .login-submit{
+                                p{
+                                        color: white;
+                                }
+                        }
+
+                        .form-input-select{
+                                .ant-select-selector{
+                                        width: 100%;
+                                        font-size: 15px;
+                                        font-weight: 500;
+                                        border-color: none;
+                                        border-radius: 17px;
+                                        height: 40px;
+                                        display: flex;
+                                        flex-direction: row;
+                                        align-items: center;
+                                        .ant-select .ant-select-arrow {
+                                                display: none;
+                                        }
+                                }
+                        }
+
+                        .photo-item{
+                                display: flex;
+                                flex-direction: row;
+                                gap: 10px;
+                                flex: 1 0 auto;
+                        }
+                }
+        }
+
 }

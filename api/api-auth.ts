@@ -63,7 +63,6 @@ export const verifyToken = async (token: string): Promise<any> => {
                                 "Content-Type": "application/json"
                         }
                 })
-                //{}
                 return response.json()
         } catch (e) {
                 console.error(e)

@@ -13,10 +13,12 @@ import FemaleSign from "@icons-female-sign";
 import Phone from "@icons-phone";
 
 import { useUser } from "store/use-user";
+import { useAuth } from "context/Authorization";
 
 
 const ItemsData: FC = () => {
         const { push } = useRouter()
+        const { signOut } = useAuth()
         const user = useUser(state => state.user)
 
         const handleChange = () => {
@@ -76,12 +78,21 @@ const ItemsData: FC = () => {
                                 </div>
                                 <p>{ user?.profile?.phone }</p>
                         </div>
-                        <Button
-                                className="login-submit w-100"
-                                onClick={handleChange}
-                        >
-                                <p>Редактировать</p>
-                        </Button>
+                        <div className="buttons">
+                                <Button
+                                        className="login-submit"
+                                        onClick={handleChange}
+                                >
+                                        <p>Редактировать</p>
+                                </Button>
+                                <Button
+                                        className="state-revers"
+                                        onClick={signOut}
+                                >
+                                        <p>Выйти</p>
+                                </Button>
+                        </div>
+
                 </>
         )
 }

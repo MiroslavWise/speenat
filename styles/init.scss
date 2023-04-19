@@ -7,6 +7,7 @@
 './teachers-style.scss',
 './invited.scss';
 @import './animate.scss';
+@import './archive.scss';
 
 :root{
         --premium-color: rgb(51,54,124);
@@ -16,7 +17,9 @@
         --gray-color: rgb(225,225,235);
         --secondary-orange: rgb(251,230,228);
         --premium-orange: rgb(214,107,94);
-        --color-gray: rgb(129,134,179)
+        --color-gray: rgb(129,134,179);
+        --cyan: rgb(79,175,195);
+        
 }
 
 html, body{
