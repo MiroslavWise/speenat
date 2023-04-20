@@ -17,21 +17,6 @@ export const useProfiles = create<IUseProfiles>(
                         speaker__status: "online",
                         spec_rating: "",
                 },
-
-                getProfiles() {
-                        set({ loading: true })
-                        speakers(get().filters)
-                                .then(response => {
-                                        set({
-                                                profiles: response?.results || [],
-                                                total: response?.count,
-                                        })
-                                        console.log("response: ", response)
-                                })
-                                .finally(() => {
-                                        set({ loading: false })
-                                })
-                },
                 getReset() {
                         set({
                                 profiles: [],
@@ -49,7 +34,6 @@ export const useProfiles = create<IUseProfiles>(
                                         spec_rating: spec_rating,
                                 }
                         })
-                        get().getProfiles()
                 }
         })
 )

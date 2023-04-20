@@ -1,0 +1,32 @@
+.terms-list{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .item-term{
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                padding: 1rem;
+                background-color: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.4s ease-in-out;
+                width: calc(100% - 32px);
+                animation:  show-page;
+
+                p{
+                        color: var(--premium-color);
+                }
+        }
+}
+
+
+@keyframes show-page{
+        from{
+                opacity: 0;
+        }
+        to{
+                opacity: 1;
+        }
+}

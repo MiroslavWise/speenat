@@ -7,7 +7,7 @@ import { NextPage } from "next";
 const General: NextPage = () => {
 
         return (
-                <div className="wrapper terms">
+                <div className="wrapper terms show-animate">
                         <p className="title">Условия использования медицинского портала (далее – Портала) «Speenat»</p>
                         <p className="sub-title">1. Общие положения</p>
                         <p>1.1. ТОО «Speenat» (далее – «Speenat») предлагает Студент сети Интернет (далее – «Учащийся»)
@@ -175,7 +175,7 @@ const General: NextPage = () => {
 
 export default General
 
-export const getServerSideProps = () => {
+export const getStaticProps = () => {
         return {
                 props: {
                         

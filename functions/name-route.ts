@@ -1,19 +1,28 @@
+const paths: Record<string, string> = {
+        teachers: "Преподаватели",
+        archive: "Архив сессий",
+        invited: "Приглашение",
+        profile: "Профиль",
+        spec: "Специализация",
+        analytics: "Аналитика",
+        accountant: "Кабинет бухгалтера",
+}
+
+const terms: Record<any, string> = {
+        general: "Условия использования",
+        offer: "Публичная оферта",
+        voluntary: "Добровольное согласие",
+        'service- rule': "Правила пользования",
+        'safe-pay': "Онлайн платежи",
+}
+
 export const nameRoute = (route: string): string => {
         const split = route.split('/').filter(_ => _)
-
         if (split[0] === "terms") {
-                if (split[1] === "general") return "Условия использования"
-                if (split[1] === "offer") return "Публичная оферта"
-                if (split[1] === "voluntary") return "Добровольное согласие"
-                if (split[1] === "service-rule") return "Правила пользования"
-                if (split[1] === "safe-pay") return "Онлайн платежи"
+                if(terms.hasOwnProperty(split[1])) return terms[split[1]]
+                return  "Условия соглашений"
         }
-        if (split[0] === "teachers") return "Преподаватели"
-        if (split[0] === "archive") return "Архив сессий"
-        if (split[0] === "invited") return "Пригласить друга"
-        if (split[0] === "profile") return "Профиль"
-        if(split[0] === "spec") return "Специализация"
-        
+        if(paths.hasOwnProperty(split[0])) return paths[split[0]]
         return split[0] || ""
 }
 

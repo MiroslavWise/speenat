@@ -20,10 +20,12 @@ const ItemsData: FC = () => {
         const { push } = useRouter()
         const { signOut } = useAuth()
         const user = useUser(state => state.user)
+        const isStaff = useUser(state => state.is_staff)
 
-        const handleChange = () => {
-                push('/profile/change', undefined, { shallow: true })
-        }
+        const handleChange = () => push('/profile/change', undefined, { shallow: true })
+        const handlePageInvite = () => push('/invited', undefined)
+        const handlePageStaff = () => push('/analytics', undefined)
+        const handlePageAccountant = () => push(`/accountant`, undefined)
 
         return (
                 <>
@@ -79,6 +81,34 @@ const ItemsData: FC = () => {
                                 <p>{ user?.profile?.phone }</p>
                         </div>
                         <div className="buttons">
+                                <Button
+                                        className="login-submit"
+                                        onClick={handlePageInvite}
+                                >
+                                        <p>Пригласить друга</p>
+                                </Button>
+                                {
+                                        isStaff
+                                                ? (
+                                                        <Button
+                                                                className="login-submit"
+                                                                onClick={handlePageStaff}
+                                                        >
+                                                                <p>Аналитика</p>
+                                                        </Button>
+                                        ) : null
+                                }
+                                                                {
+                                        isStaff
+                                                ? (
+                                                        <Button
+                                                                className="login-submit"
+                                                                onClick={handlePageAccountant}
+                                                        >
+                                                                <p>Кабинет бухгалтера</p>
+                                                        </Button>
+                                        ) : null
+                                }
                                 <Button
                                         className="login-submit"
                                         onClick={handleChange}

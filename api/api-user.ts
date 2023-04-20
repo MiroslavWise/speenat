@@ -44,8 +44,8 @@ export const specializationDelete = async (id: number): Promise<ISpecItems[]> =>
         return axiosInstance.delete(`/speaker/spec/${id}/delete/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 }
 
-export const specializationAdd = async ({}: IDataSpecEdit): Promise<ISpecItems[]> => {
+export const usersAll = async (): Promise<{ count: number }> => axiosInstance.get(`/profiles/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+export const conferenceAll = async (): Promise<{ count: number }> => axiosInstance.get(`/conferences/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+export const speakersAll = async (): Promise<{ count: number }> => axiosInstance.get(`/speaker-filter/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 
-        return axiosInstance.post(`/speaker/spec/add/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
-}
-
+export const companyAllOperations = async (): Promise<{ count: number }> => axiosInstance.get(`/company-operations/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })

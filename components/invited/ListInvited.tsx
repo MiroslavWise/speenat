@@ -11,8 +11,9 @@ const ListInvited: FC = () => {
         }, [])
 
         return (
-                <>
-                </>
+                <div className="list-archive">
+                        
+                </div>
         )
 }
 

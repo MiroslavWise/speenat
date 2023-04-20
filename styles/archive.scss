@@ -4,9 +4,10 @@
         .header-archive{
                 background-color: var(--secondary-purple-light);
                 height: 110px;
+                animation: show 650ms;
         }
         .list-archive{
-                padding: 20px;
+                padding: 1rem;
                 width: calc(100% - 40px);
                 display: flex;
                 flex-direction: column;
@@ -22,7 +23,7 @@
                         display: flex;
                         flex-direction: row;
                         gap: 10px;
-                        padding: 12px;
+                        padding: 1rem;
 
                         .avatar{
                                 border: 1px solid var(--gray-color);
@@ -65,5 +66,21 @@
                                 }
                         }
                 }
+        }
+}
+
+.link-to-invite-text{
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 15px;
+        color: var(--premium-color);
+}
+
+@keyframes show{
+        from{
+                opacity: 0.9;
+        }
+        to{
+                opacity: 1;
         }
 }

@@ -59,6 +59,7 @@ const ProfileTeacher: NextPage = () => {
                                                 margin: 0,
                                         }}
                                 />
+                                <div className={`teacher-status-current ${data?.[0]?.profile?.status === "online" ? "status-online" : data?.[0]?.profile?.status === "busy" ? "status-busy":  "status-offline" }`}/>
                         </div>
                         
                 </div>

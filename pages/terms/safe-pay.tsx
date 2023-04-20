@@ -3,7 +3,7 @@ import { NextPage } from "next";
 const SafePay: NextPage = () => {
 
         return (
-                <div className="wrapper terms">
+                <div className="wrapper terms show-animate">
                         <p className="title">
                                 Безопасность онлайн-платежей
                         </p>
@@ -93,7 +93,7 @@ const SafePay: NextPage = () => {
 
 export default SafePay
 
-export const getServerSideProps = () => {
+export const getStaticProps = () => {
         return {
                 props: {
                         

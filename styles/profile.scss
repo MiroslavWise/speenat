@@ -4,6 +4,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        padding-bottom: 90px;
 
 
         .header-profile{
@@ -64,6 +65,15 @@
                                 }
                         }
                 }
+                a{
+                        margin-top: 15px;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        font-size: 13px;
+                        color: var(--cyan);
+                        text-decoration: underline;
+                        text-shadow: #666666 0.1px 0.1px;
+                }
         }
 
 
@@ -108,7 +118,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding: 20px;
+        padding: 1rem;
         padding-bottom: 100px;
 
         .form{

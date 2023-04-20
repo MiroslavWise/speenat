@@ -3,15 +3,18 @@ import { Dispatch, DispatchWithoutAction, FC, SetStateAction } from "react";
 import ItemSpeaker from "./ItemSpeaker";
 
 import { useProfiles } from "store/use-profiles";
+import { speakers } from "api/api-user"
+import { useQuery } from "react-query";
 
 const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
-        const profiles = useProfiles(state => state.profiles)
-        const loading = useProfiles(state => state.loading)
+        const filters = useProfiles(state => state.filters)
+
+        const { data, isLoading, refetch, error } = useQuery(["speakers", filters.page, filters.price_gte, filters.price_lte, filters.speaker__status, filters.spec_rating, filters.verified], () => speakers(filters))
 
         return (
                 <div className="container-list-speaker">
                         {
-                                profiles?.length === 0 && loading === false
+                                data?.count === 0 && isLoading === false
                                 && (
                                         <div className="descriptions">
                                                 <p>
@@ -21,15 +24,15 @@ const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
                                 )
                         }
                         {
-                                profiles?.length > 0 && loading === false
+                                data && data?.results?.length > 0 && isLoading === false
                                 ? (
-                                        <div className="list-speaker">
+                                        <div className="teacher-list">
                                                         {
-                                                                profiles?.map(item => (<ItemSpeaker {...item} key={`${item?.id}_item_speaker`} />))
+                                                                data?.results?.map(item => (<ItemSpeaker {...item} key={`${item?.id}_item_speaker`} />))
                                                 }
                                         </div>
                                 ) : (
-                                                null
+                                        null
                                 )
                         }
                 </div>

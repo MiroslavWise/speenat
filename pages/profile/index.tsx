@@ -5,9 +5,11 @@ import { useUser } from "store/use-user";
 
 import ItemsData from "components/profile/ItemsData";
 import Loader from "@loader-spin";
+import { useRouter } from "next/router";
 
 
 const Profile: FC = () => {
+        const { push } = useRouter()
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
         const user_photo = useUser(state => state.user?.profile.photo)
@@ -22,6 +24,7 @@ const Profile: FC = () => {
                                 <div className="profile-info-other">
                                         <ItemsData />
                                 </div>
+                                <a onClick={() => push(`/terms`, undefined, { shallow: true })}>Условия пользовательских соглашений и другая документация</a>
                         </div>
 
                         <div className="profile-avatar-div">

@@ -7,36 +7,33 @@ import loadImage from "functions/load-image";
 
 import { IProfile } from "types/store/profiles";
 
-const ItemSpeaker: FC<IProfile> = ({id, profile:{full_name, avatar_url}, specialization, consultation_time}) => {
+const ItemSpeaker: FC<IProfile> = ({id, profile:{full_name, avatar_url, status}, specialization, consultation_time}) => {
         const { push } = useRouter()
         
         return (
                 <div
-                        className="item-profile"
+                        className="teacher-card"
                         onClick={() => push(`/teachers/${id}`)}
                 >
-                        <Image
-                                loader={loadImage}
-                                src={avatar_url}
-                                alt="av"
-                                height={59}
-                                width={59}
-                                className="avatar"
-                        />
-                        <div className="item-data">
-                                <div className="_main">
-                                        <p className="name">{full_name}</p>
-                                        <p className="spec_name">{specialization?.name}</p>
-                                        {
-                                                consultation_time?.map(item => (
-                                                        <p className=" sessions_name" key={`${item?.price}${id}_spec_${item?.id}`}>{item?.sessions_time} - <span>{ item?.price }₸</span></p>
-                                                ))
-                                        }
-                                        
-                                </div>
-                                <div className="_second">
-
-                                </div>
+                        <div className="teacher-image">
+                                <Image
+                                        loader={loadImage}
+                                        src={avatar_url}
+                                        alt="av"
+                                        style={{objectFit: 'cover', borderRadius: 21}}
+                                        height={100}
+                                        width={100}
+                                />
+                                <div className={`teacher-status ${status === "online" ? "status-online" : status === "busy" ? "status-busy" : "status-offline"}`} />
+                        </div>
+                        <div className="description">
+                                <p className="teacher-name">{full_name}</p>
+                                <p className="teacher-specialization">{specialization?.name}</p>
+                                <ul className="teacher-prices">
+                                        {consultation_time.map((price) => (
+                                                <li key={`${price.sessions_time}_${price.price}`}>{price.sessions_time}: {price.price}₸</li>
+                                        ))}
+                                </ul>
                         </div>
                 </div>
         )

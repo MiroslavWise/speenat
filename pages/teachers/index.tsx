@@ -9,11 +9,11 @@ import { useProfiles } from "store/use-profiles"
 
 const Teachers: NextPage = () => {
         const [open, setOpen] = useState(false)
-        const get = useProfiles(state => state.getProfiles)
+        // const get = useProfiles(state => state.getProfiles)
         const handleOpen = () => setOpen(true)
 
         useEffect(() => {
-                get()
+                // get()
         }, [])
 
         return (

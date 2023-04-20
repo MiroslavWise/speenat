@@ -50,7 +50,6 @@ export interface IUseProfiles{
         filters: IFilterProfiles
         total: number
 
-        getProfiles: DispatchWithoutAction
         getReset: DispatchWithoutAction
         getFilter: Dispatch<IFilterProfiles>
 }
