@@ -1,4 +1,4 @@
-import { TStatus } from "./store/user"
+import { ISpecItems, TStatus } from "./store/user"
 
 export interface ISpecList{
         id: number
@@ -36,10 +36,22 @@ export interface ISpecList{
         rating: number
 }
 
-export interface IDataReplaceSpec {
+export interface IDataReplaceSpec extends ISpecItems {
+        specialization_id: string | number
         university: string
         scientific_degree: boolean
-        scientific_degree_text: string
-        work_experience: number
+        work_experience: number | string
         category: string
+        consultation_time: {
+                '20min'?: number
+                '5min'?: number
+                '60min'?: number
+        }
+}
+
+export interface ISpecializationsAll{
+        id: number
+        name: string
+        description: string
+        consult_issues: string
 }

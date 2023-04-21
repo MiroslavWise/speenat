@@ -123,7 +123,7 @@ export interface ISpec{
         "get_category_display": string
         "consultation_time": {
                 "id": number
-                "sessions_time": string
+                "sessions_time": TSession
                 "original_price": string
                 "price": string
         }[]
@@ -184,7 +184,7 @@ export interface IArchive{
                 conference_time: {
                         id: number
                         price: string
-                        sessions_time: string
+                        sessions_time: TSession
                 }
                 created_at: string
                 id: number
@@ -235,14 +235,14 @@ export interface ISpecItems{
         "attachments": {
                 "id": number
                 "name": string
-                "file": string
+                "file": string | null
         }[]
         "work_experience": number
         "category": string
         "get_category_display": string
         "consultation_time": {
                 "id": number
-                "sessions_time": string
+                "sessions_time": TSession
                 "original_price": number | string
                 "price": number | string
         }[]
@@ -253,3 +253,5 @@ export interface ISpecItems{
 export interface IDataSpecEdit{
         
 }
+
+type TSession = "60min" | "5min" | "20min"

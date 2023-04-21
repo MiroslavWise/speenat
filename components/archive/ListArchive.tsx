@@ -10,6 +10,7 @@ import { useUser } from "store/use-user";
 import loadImage from "functions/load-image";
 import { archives } from "api/api-user";
 import { statusCallConf } from "functions/status-conf";
+import { replaceHttps } from "functions/replace-https";
 
 const ListArchive: FC = () => {
         const [page, setPage] = useState(1)
@@ -42,7 +43,7 @@ const ListArchive: FC = () => {
                                                 >
                                                         <Image
                                                                 loader={loadImage}
-                                                                src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? item?.student_profile?.photo_url : item?.speaker?.profile?.photo_url ? item?.speaker?.profile?.photo_url : 'default')}
+                                                                src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? replaceHttps(item?.student_profile?.photo_url) : item?.speaker?.profile?.photo_url ? replaceHttps(item?.speaker?.profile?.photo_url) : 'default')}
                                                                 alt="photo"
                                                                 height={100}
                                                                 width={100}

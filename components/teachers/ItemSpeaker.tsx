@@ -18,7 +18,7 @@ const ItemSpeaker: FC<IProfile> = ({id, profile:{full_name, avatar_url, status},
                         <div className="teacher-image">
                                 <Image
                                         loader={loadImage}
-                                        src={avatar_url}
+                                        src={avatar_url?.replace('http:/', 'https:/')}
                                         alt="av"
                                         style={{objectFit: 'cover', borderRadius: 21}}
                                         height={100}

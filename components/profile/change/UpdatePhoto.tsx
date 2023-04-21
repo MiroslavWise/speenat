@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 import Image from "next/image";
-import { Upload, Button } from "antd";
+import { Upload } from "antd";
 
 import type { UploadProps } from 'antd';
 import type { RcFile } from "antd/es/upload";
@@ -9,12 +9,13 @@ import type { UploadFile } from 'antd/es/upload/interface';
 
 import { updatePhotoUser } from "api/put-user";
 import { useUser } from "store/use-user";
+import { replaceHttps } from "functions/replace-https";
 
 const UpdatePhoto: FC = () => {
         const [loading, setLoading] = useState(false)
         const [fileList, setFileList] = useState<any[]>([]);
 
-        const user_photo = useUser(state => state.user?.profile.photo)
+        const user = useUser(state => state.user?.profile)
         const getUpdateUser = useUser(state => state.getUserData)
 
         useEffect(() => {
@@ -76,10 +77,10 @@ const UpdatePhoto: FC = () => {
                                                 </p>
                                         </Upload.Dragger>
                                         {
-                                                user_photo
+                                                user?.photo
                                                 &&
                                                 <Image
-                                                        src={user_photo}
+                                                        src={ user?.photo ? replaceHttps(user?.photo) : "/images/flower.jpg" }
                                                         alt=""
                                                         height={140}
                                                         width={140}

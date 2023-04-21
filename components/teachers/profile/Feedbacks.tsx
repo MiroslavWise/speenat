@@ -1,16 +1,16 @@
 import { FC, useState } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
-
-
-
-import { feedbackSpeakerId } from "api/api-user";
-import Image from "next/image";
-import loadImage from "functions/load-image";
 import moment from "moment";
+import Image from "next/image";
+
 import { Rate } from "antd";
+
 import Loader from "@loader-spin";
 
+import { feedbackSpeakerId } from "api/api-user";
+import loadImage from "functions/load-image";
+import { replaceHttps } from "functions/replace-https";
 
 const Feedbacks: FC<{}> = ({ }) => {
         const { query: { id } } = useRouter()
@@ -36,7 +36,7 @@ const Feedbacks: FC<{}> = ({ }) => {
                                                                 <div style={{display: 'flex', flexDirection: 'row', gap: 10, }}>
                                                                         <Image
                                                                                 loader={loadImage}
-                                                                                src={(!item || item?.author?.avatar_url?.includes("default")) ? '/images/default.png' : item?.author?.avatar_url ? item?.author?.avatar_url : '/images/default.png'}
+                                                                                src={(!item || item?.author?.avatar_url?.includes("default")) ? '/images/default.png' : item?.author?.avatar_url ? replaceHttps(item?.author?.avatar_url) : '/images/default.png'}
                                                                                 alt="av"
                                                                                 height={40}
                                                                                 width={40}

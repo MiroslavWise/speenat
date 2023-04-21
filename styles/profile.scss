@@ -4,7 +4,6 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        padding-bottom: 90px;
 
 
         .header-profile{
@@ -119,83 +118,157 @@
         flex-direction: column;
         gap: 10px;
         padding: 1rem;
-        padding-bottom: 100px;
+}
 
-        .form{
+.form{
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+
+        .item-form{
                 display: flex;
                 flex-direction: column;
-                gap: 0;
-                width: 100%;
+                gap: 5px;
+                p{
+                        font-size: 15px;
+                        font-weight: 500;
+                        padding-left: 10px;
+                        color: var(--premium-color);
+                }
 
-                .item-form{
-                        display: flex;
-                        flex-direction: column;
-                        gap: 5px;
-                        p{
-                                font-size: 15px;
-                                font-weight: 500;
-                                padding-left: 10px;
-                                color: var(--premium-color);
+                i{
+                        font-size: 14px;
+                        font-weight: 500;
+                        padding-left: 20px;
+                        color: var(--color-gray);
+                }
+                .form-input{
+                        width: 100%;
+                        font-size: 15px;
+                        font-weight: 500;
+                        margin-bottom: 30px;
+                        background: white;
+                        margin: 0;
+                        border-color: var( --gray-color);
+                        padding: 12px;
+                        height: 40px;
+                        border-radius: 17px;
+                        color: var(--premium-color);
+                
+                        &:focus, :hover{
+                                border: 1px solid #666666;
                         }
-                        .form-input{
-                                width: 100%;
-                                padding: 10px 10px;
-                                font-size: 15px;
-                                font-weight: 500;
-                                margin-bottom: 30px;
-                                background: white;
-                                margin: 0;
-                                border-color: var( --gray-color);
-                                padding: 12px 12px;
-                                height: 40px;
-                                border-radius: 17px;
-                                color: var(--premium-color);
-                        
+                        &.date-picker{
+                                border: transparent !important;
                                 &:focus, :hover{
-                                        border: 1px solid #666666;
-                                }
-                                &.date-picker{
-                                        border: transparent !important;
-                                        &:focus, :hover{
-                                                border: 1px solid transparent;
-                                        }
-                                }
-
-                                &.disabled{
-                                        background: var( --gray-color);
+                                        border: 1px solid transparent;
                                 }
                         }
 
-                        .login-submit{
-                                p{
-                                        color: white;
-                                }
+                        &.disabled{
+                                background: var( --gray-color);
                         }
+                }
 
-                        .form-input-select{
-                                .ant-select-selector{
-                                        width: 100%;
-                                        font-size: 15px;
-                                        font-weight: 500;
-                                        border-color: none;
-                                        border-radius: 17px;
-                                        height: 40px;
-                                        display: flex;
-                                        flex-direction: row;
-                                        align-items: center;
-                                        .ant-select .ant-select-arrow {
-                                                display: none;
-                                        }
-                                }
+                .login-submit{
+                        p{
+                                color: white;
                         }
+                }
 
-                        .photo-item{
+                .form-input-select{
+                        .ant-select-selector{
+                                width: 100%;
+                                font-size: 15px;
+                                font-weight: 500;
+                                border-color: none;
+                                border-radius: 17px;
+                                height: 40px;
                                 display: flex;
                                 flex-direction: row;
-                                gap: 10px;
-                                flex: 1 0 auto;
+                                align-items: center;
+                                .ant-select .ant-select-arrow {
+                                        display: none;
+                                }
+                        }
+                }
+
+                .photo-item{
+                        display: flex;
+                        flex-direction: row;
+                        gap: 10px;
+                        flex: 1 0 auto;
+                }
+        }
+        .buttons{
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                flex-wrap: wrap;
+
+                .login-submit, .state-revers{
+                        flex: 1 0 auto;
+                }
+                .login-submit{
+                        p{
+                                color: white;
                         }
                 }
         }
+}
 
+.form-control{
+}
+.form-control[type="file"]{
+        overflow: hidden;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+}
+
+
+.attachments{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .item-attach{
+                position: relative;
+                padding: 3px;
+                border-radius: 5px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .img-item{
+                        height: 100%;
+                        width: 100%;
+                        aspect-ratio: 1/1;
+                }
+                p{
+                        font-size: 15px;
+                        font-weight: 500;
+                        padding-left: 10px;
+                        color: var(--premium-color);
+                }
+
+                .button-delete{
+                        position: absolute;
+                        background-color: transparent;
+                        border: none !important;
+                        right: 10px;
+                        top: 10px;
+
+                        p{
+                                font-size: 13px;
+                                font-weight: 500;
+                                padding-left: 10px;
+                                color: var(--premium-orange) !important;
+                        }
+                }
+        }
 }

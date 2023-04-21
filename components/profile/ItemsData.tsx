@@ -122,7 +122,6 @@ const ItemsData: FC = () => {
                                         <p>Выйти</p>
                                 </Button>
                         </div>
-
                 </>
         )
 }

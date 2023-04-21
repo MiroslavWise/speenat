@@ -11,9 +11,7 @@ import { useRouter } from "next/router";
 
 const Spec: NextPage = () => {
         const { push } = useRouter()
-        const {data, isLoading, refetch} = useQuery(["specializations"], () => specializations())
-
-        console.log("data: ", data)
+        const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
 
         const onDeleteSpec = (value: number) => {
                 specializationDelete(value)
@@ -32,6 +30,11 @@ const Spec: NextPage = () => {
                                                         <div
                                                                 key={`${item?.id}_item_spec`}
                                                                 className="item-archive"
+                                                                onClick={(event) => {
+                                                                        event.stopPropagation()
+                                                                        event.preventDefault()
+                                                                        push(`/spec/${item?.id}`)
+                                                                }}
                                                         >
                                                                 <div className="descriptions">
                                                                         <p>ВУЗ: <span>{item?.university}</span></p>
@@ -52,13 +55,21 @@ const Spec: NextPage = () => {
                                                                         <div className="buttons">
                                                                                 <Button
                                                                                         className="login-submit"
-                                                                                        onClick={() => push(`/spec/edit/${item?.id}`)}
+                                                                                        onClick={(event) => {
+                                                                                                event.preventDefault()
+                                                                                                event.stopPropagation()
+                                                                                                push(`/spec/edit/${item?.id}`)
+                                                                                        }}
                                                                                 >
                                                                                         <p>Изменить</p>
                                                                                 </Button>
                                                                                 <Button
                                                                                         className="state-revers"
-                                                                                        onClick={() => onDeleteSpec(item?.id)}
+                                                                                        onClick={(event) => {
+                                                                                                event.preventDefault()
+                                                                                                event.stopPropagation()
+                                                                                                onDeleteSpec(item?.id)
+                                                                                        }}
                                                                                 >
                                                                                         <p>Удалить</p>
                                                                                 </Button>

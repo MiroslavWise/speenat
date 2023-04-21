@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Image from "next/image";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -5,13 +6,12 @@ import { useQuery } from "react-query";
 
 import Loader from "@loader-spin";
 import Specialization from "components/teachers/profile/Specialization";
+import Feedbacks from "components/teachers/profile/Feedbacks";
 
+import { useWebSocket } from "context/WebSocketContext";
 import { speakerId, profileId } from "api/api-user";
 import loadImage from "functions/load-image";
-import Feedbacks from "components/teachers/profile/Feedbacks";
-import { useWebSocket } from "context/WebSocketContext";
-import { useEffect } from "react";
-
+import { replaceHttps } from "functions/replace-https";
 
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
@@ -48,7 +48,7 @@ const ProfileTeacher: NextPage = () => {
                         <div className="profile-avatar-div">
                                 <Image
                                         loader={loadImage}
-                                        src={(data &&  data[0]?.profile?.photo_url) ? data[0]?.profile?.photo_url : "/images/default.png"}
+                                        src={(data &&  data[0]?.profile?.photo_url) ? replaceHttps(data[0]?.profile?.photo_url) : "/images/default.png"}
                                         alt="ad"
                                         height={115}
                                         width={115}
