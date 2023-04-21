@@ -10,6 +10,8 @@ import Archive from "@icons-archive"
 import BookContent from "@icons-book-content"
 import ArchiveFill from "@icons-archive-fill"
 import BookContentFill from "@icons-book-content-fill"
+import CreditCardAlt from "@icons-credit-card-alt"
+import CreditCardAltFill from "@icons-credit-card-alt-fill"
 
 interface IItemMenuFooter{
         title: string
@@ -27,6 +29,14 @@ const ITEMS_MENU_FOOTER = (isSpeaker: boolean): IItemMenuFooter[] => ([
                 icon: {
                         fill: <HomeFill />,
                         regular: <HomeRegular  fill="#fff" />
+                }
+        },
+        {
+                title: "Balance",
+                value: "pay-data",
+                icon: {
+                        fill: <CreditCardAltFill />,
+                        regular: <CreditCardAlt />
                 }
         },
         {

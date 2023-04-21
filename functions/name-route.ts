@@ -6,6 +6,7 @@ const paths: Record<string, string> = {
         spec: "Специализация",
         analytics: "Аналитика",
         accountant: "Кабинет бухгалтера",
+        'pay-data': 'Платёжные данные',
 }
 
 const terms: Record<any, string> = {

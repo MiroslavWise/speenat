@@ -1,10 +1,11 @@
 .content-archive{
-        padding-bottom: 90px;
+        padding-bottom: 80px;
+        animation: show 450ms;
 
         .header-archive{
                 background-color: var(--secondary-purple-light);
                 height: 110px;
-                animation: show 650ms;
+
         }
         .list-archive{
                 padding: 1rem;
@@ -18,7 +19,7 @@
                         border: 1px solid var(--gray-color);
                         border-radius: 25px;
                         overflow: hidden;
-                        width: calc(100% - 24px);
+                        width: calc(100% - 25px);
                         min-height: 100px;
                         display: flex;
                         flex-direction: row;
@@ -67,6 +68,26 @@
                         }
                 }
         }
+
+        .item-money{
+                border-radius: 25px;
+                overflow: hidden;
+                width: calc(100%);
+                background-color: white;
+                border: 1px solid var(--gray-color);
+                min-height: 100px;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                gap: 15px;
+
+                .title{
+                        font-weight: 600;
+                        font-size: 20px;
+                        line-height: 15px;
+                        color: var(--premium-color);
+                }
+        }
 }
 
 .link-to-invite-text{
@@ -78,7 +99,7 @@
 
 @keyframes show{
         from{
-                opacity: 0.9;
+                opacity: 0;
         }
         to{
                 opacity: 1;
