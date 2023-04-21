@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useCallback, useState } from "react"
 
 import { Button, Form, Input, Row, Space, message } from "antd"
 import userData from "helpers/user-data"
@@ -26,7 +26,7 @@ const ContainerSingAndRegister: FC = () => {
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
 
-        const onSubmit = (values: IValues) => {
+        const onSubmit = useCallback((values: IValues) => {
                 userData.login({ email: values.email, password: values.password })
                         .then((response: IReturnAccess) => {
                                 if (response?.access === true && response.error === null) {
@@ -43,7 +43,7 @@ const ContainerSingAndRegister: FC = () => {
                                         }
                                 }
                         })
-        }
+        }, [form])
 
         //is_speaker
 

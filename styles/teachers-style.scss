@@ -193,7 +193,7 @@
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        align-items: start;
+                        align-items: flex-start;
                         height: calc(100% - 14px);
                         padding-left: 7px;
                         margin-bottom: 7px;
@@ -232,7 +232,7 @@
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        align-items: end;
+                        align-items: flex-end;
                 }
         }
 }
@@ -415,7 +415,7 @@
                                 }
 
                                 .rate{
-                                        justify-self: end;
+                                        justify-self: flex-end;
                                 }
                         }
 

@@ -8,7 +8,7 @@ import Loader from "@loader-spin";
 import Specialization from "components/teachers/profile/Specialization";
 import Feedbacks from "components/teachers/profile/Feedbacks";
 
-import { useWebSocket } from "context/WebSocketContext";
+import { useWeb } from "context/WebSocketContext";
 import { speakerId, profileId } from "api/api-user";
 import loadImage from "functions/load-image";
 import { replaceHttps } from "functions/replace-https";
@@ -16,19 +16,19 @@ import { replaceHttps } from "functions/replace-https";
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
         
-        const { data, isLoading } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
+        const { data, isLoading, refetch } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
 
-        const { wsChanel } = useWebSocket()
+        const { lastMessage } = useWeb()
         
         useEffect(() => {
-                const eventListener = (event: any) => {
-                        console.log("event: ", event)
+                if (lastMessage) {
+                        const event: any = JSON.parse(lastMessage?.data)
+                        if (event?.data?.type === "update_speaker_list") {
+                                refetch()
+                        }
                 }
-                
-                wsChanel?.addEventListener('message', eventListener)
 
-                return () => wsChanel?.removeEventListener('message', eventListener)
-        }, [wsChanel])
+        }, [lastMessage])
 
         if(isLoading) return <Loader />
 

@@ -15,8 +15,6 @@ const Profile: FC = () => {
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
 
-        console.log("user?.profile?.photo: ", user?.profile?.photo)
-
         if(loading) return <Loader />
         
         return (

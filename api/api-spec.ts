@@ -1,6 +1,5 @@
 import { axiosInstance } from "./api-general"
 import type { IDataReplaceSpec, ISpecList, ISpecializationsAll } from "types/spec"
-import type { ISpecItems } from "types/store/user"
 
 export const speakerSpecEdit = async (id: any, value: IDataReplaceSpec): Promise<ISpecList> => axiosInstance.post(`/speaker/spec/${id}/edit/`, value).then(response => response.data).catch(e => { console.error("speakerSpecEdit DATA: ", e) })
 export const speakerSpecAdd = async (value: IDataReplaceSpec): Promise<ISpecList> => axiosInstance.post(`/speaker/spec/add/`, value).then(response => response.data).catch(e => { console.error("speakerSpecAdd DATA: ", e) })

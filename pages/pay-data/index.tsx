@@ -43,6 +43,9 @@ const PayData: NextPage = () => {
                                 <Form
                                         onFinish={onInMoney}
                                         className="list-archive form"
+                                        initialValues={{
+                                                "money-incom": 50
+                                        }}
                                 >
                                         <div className="item-money">
                                                 <p className="title">Вывод денег</p>
@@ -64,7 +67,6 @@ const PayData: NextPage = () => {
                                                                                 margin: 0,
                                                                                 borderColor: "var( --gray-color)",
                                                                         }}
-                                                                                defaultValue={50}
                                                                 />
                                                         </Form.Item>
                                                 </div>
@@ -82,6 +84,9 @@ const PayData: NextPage = () => {
                         <Form
                                 onFinish={onOutMoney}
                                 className="list-archive form"
+                                initialValues={{
+                                        "money-out": 250
+                                }}
                         >
                                 <div className="item-money">
                                         <p className="title">Вывод денег</p>
@@ -101,7 +106,6 @@ const PayData: NextPage = () => {
                                                                         margin: 0,
                                                                         borderColor: "var( --gray-color)",
                                                                 }}
-                                                                defaultValue={250}
                                                         />
                                                 </Form.Item>
                                         </div>

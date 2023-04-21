@@ -9,7 +9,7 @@
         }
         .list-archive{
                 padding: 1rem;
-                width: calc(100% - 40px);
+                width: calc(100% - 2rem);
                 display: flex;
                 flex-direction: column;
                 gap: 7px;
@@ -19,7 +19,7 @@
                         border: 1px solid var(--gray-color);
                         border-radius: 25px;
                         overflow: hidden;
-                        width: calc(100% - 25px);
+                        width: calc(100% - 2rem);
                         min-height: 100px;
                         display: flex;
                         flex-direction: row;

@@ -11,30 +11,32 @@ import { useAuth } from "context/Authorization"
 const GatesComponent: FC = () => {
         const { setAuthState, signOut } = useAuth()
 
-        const tryToAuth = async (api: any) => {
+        const tryToAuth = async (api: () => void) => {
                 try {
-                        await api()
+                        await api();
                         return setAuthState("main");
                 } catch (e) {
                         return setAuthState("sign-in");
                 }
-        };
-        const checkAuth = async () => {
+            };
+        
+            const checkAuth = async () => {
                 if (userData.isUserOk) {
-                        const isTokenOk = await userData.isTokenOk();
-                        if (!refreshData.isNeedToRefresh && isTokenOk) {
-                                setAuthState("main");
-                        } else {
-                                await tryToAuth(() => refreshData.refresh())
-                                        .finally(() => {
-                                                refreshData.finishRefresh()
-                                        })
-                        }
+                    const isTokenOk = await userData.isTokenOk();
+                    if (!refreshData.isNeedToRefresh && isTokenOk) {
+                        setAuthState("main");
+                    } else {
+                        refreshData.finishRefresh();
+                        await tryToAuth(() => refreshData.refresh());
+                    }
                 } else {
-                        signOut();
+                    signOut();
                 }
-        }
-        useEffect(() => { checkAuth() }, [])
+            };
+        
+            useEffect(() => {
+                checkAuth();
+            }, []);
 
         return <Spin size="large" spinning style={{ height: "100vh", width: "100vw", display: 'grid', justifyContent: 'center', alignItems: 'center' }} />
 }

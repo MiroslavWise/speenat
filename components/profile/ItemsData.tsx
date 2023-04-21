@@ -83,34 +83,6 @@ const ItemsData: FC = () => {
                         <div className="buttons">
                                 <Button
                                         className="login-submit"
-                                        onClick={handlePageInvite}
-                                >
-                                        <p>Пригласить друга</p>
-                                </Button>
-                                {
-                                        isStaff
-                                                ? (
-                                                        <Button
-                                                                className="login-submit"
-                                                                onClick={handlePageStaff}
-                                                        >
-                                                                <p>Аналитика</p>
-                                                        </Button>
-                                        ) : null
-                                }
-                                                                {
-                                        isStaff
-                                                ? (
-                                                        <Button
-                                                                className="login-submit"
-                                                                onClick={handlePageAccountant}
-                                                        >
-                                                                <p>Кабинет бухгалтера</p>
-                                                        </Button>
-                                        ) : null
-                                }
-                                <Button
-                                        className="login-submit"
                                         onClick={handleChange}
                                 >
                                         <p>Редактировать</p>

@@ -5,9 +5,11 @@ import { Inter } from '@next/font/google'
 import NavFooter from "./NavFooter";
 import Header from "./Header";
 import Loader from "@loader-spin";
+import ModalMenu from "components/modal-menu";
 
 import { useUser } from "store/use-user";
 import { ProviderWebSocket } from "context/WebSocketContext";
+import { ProviderJanusContext } from "context/ContextJanus";
 
 const inter = Inter({
         preload: true,
@@ -22,13 +24,16 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
         return (
                 <ProviderWebSocket>
-                        <main className={`${inter.className} show-animate`} style={{ width: '100%', minHeight: '100vh', position: "relative" }}>
-                                <Header />
-                                <div style={{width: '100%', height: '100%'}}>
-                                        {children}
-                                </div>
-                                <NavFooter />
-                        </main>
+                        <ProviderJanusContext>
+                                <main className={`${inter.className} show-animate`} style={{ width: '100%', minHeight: '100vh', position: "relative" }}>
+                                        <Header />
+                                        <div style={{width: '100%', height: '100%'}}>
+                                                {children}
+                                        </div>
+                                        <NavFooter />
+                                        <ModalMenu />
+                                </main>
+                        </ProviderJanusContext>
                 </ProviderWebSocket>
         )
 }

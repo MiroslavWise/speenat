@@ -8,7 +8,7 @@ import { Button } from "antd"
 import Time from "@icons-time"
 import Wallet from "@icons-wallet"
 
-const Specialization: FC<{ data: ISpec[] | undefined, online: boolean }> = ({ data }) => {
+const Specialization: FC<{ data: ISpec[] | undefined, online: boolean }> = ({ data, online }) => {
         const handleBell = () => {
 
         }
@@ -48,13 +48,17 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean }> = ({ da
                                                         {
                                                                 item?.consultation_time?.map(time => (
                                                                         <div className="bell-container" key={`time_${time?.id}`}>
-                                                                                <Button
-                                                                                        type="text"
-                                                                                        className="but-bell"
-                                                                                        onClick={handleBell}
-                                                                                >
-                                                                                        <p>Позвонить</p>
-                                                                                </Button>
+                                                                                {
+                                                                                        online ? (
+                                                                                                <Button
+                                                                                                        type="text"
+                                                                                                        className="but-bell"
+                                                                                                        onClick={handleBell}
+                                                                                                >
+                                                                                                        <p>Позвонить</p>
+                                                                                                </Button>
+                                                                                        ) : null
+                                                                                }
                                                                                 <div className="times">
                                                                                         <Time size={25} fill="var(--cyan)" />
                                                                                         <p>{ time?.sessions_time }</p>
