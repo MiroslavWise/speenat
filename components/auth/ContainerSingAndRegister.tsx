@@ -1,6 +1,10 @@
 import { FC, useCallback, useState } from "react"
 
 import { Button, Form, Input, Row, Space, message } from "antd"
+
+import RegisterForm from "./RegisterForm"
+import SignForm from "./SignForm"
+
 import userData from "helpers/user-data"
 import { useAuth } from "context/Authorization"
 import { registerUser, IRegister } from "api/api-auth"
@@ -45,10 +49,9 @@ const ContainerSingAndRegister: FC = () => {
                         })
         }, [form])
 
-        //is_speaker
-
         const onRegister = (values: IRegister) => {
                 const { email, password, password2, is_speaker, referral_code, full_name } = values
+                console.log("values: ", values)
                 registerUser({
                         email: email,
                         password: password,
@@ -83,146 +86,26 @@ const ContainerSingAndRegister: FC = () => {
                                         message.error("Юзер с такими же данными уже существует")
                                 }
                         })
-                // setIsSign(true)
-                // form.resetFields()
         }
 
         return (
                 <div className={`__container-sign__ ${isSign && 'animate'}`}>
                         <div className={`content `}>
-                                <h2 style={{ textAlign: "center" }}>{ isState ? 'Регистрация' : 'Войти' }</h2>
+                                <h2 style={{ textAlign: "center" }}>{isState ? 'Регистрация' : 'Войти'}</h2>
                                 <Form
                                         className="fields"
                                         onFinish={isState ? onRegister : onSubmit}
+                                        initialValues={
+                                                isState
+                                                        ? {
+                                                                is_speaker: false,
+                                                        } : {}
+                                        }
                                 >
                                         {
                                                 isState
-                                                        ?
-                                                        <>
-                                                                <Item
-                                                                        name="full_name"
-                                                                        className="user-box"
-                                                                        rules={[
-                                                                                {
-                                                                                        required: true,
-                                                                                        message: 'Введите ваше имя',
-                                                                                        min: 2,
-                                                                                },
-                                                                        ]}
-                                                                >
-                                                                        <Input
-                                                                                type="text"
-                                                                                className="input-login"
-                                                                                placeholder="Как к Вам обращаться (ФИО)"
-                                                                        />
-                                                                </Item>
-                                                                <Item
-                                                                        name="email"
-                                                                        className="user-box"
-                                                                        rules={[
-                                                                                {
-                                                                                        type: 'email',
-                                                                                        message: 'Не валидный E-mail!',
-                                                                                },
-                                                                                {
-                                                                                        required: true,
-                                                                                        message: 'Пожалуйста, введите свой E-mail!',
-                                                                                },
-                                                                        ]}
-                                                                >
-                                                                        <Input
-                                                                                type="text"
-                                                                                className="input-login"
-                                                                                placeholder="E-mail"
-                                                                        />
-                                                                </Item>
-                                                                <Item
-                                                                        name="password"
-                                                                        className="user-box"
-                                                                        rules={[
-                                                                                {
-                                                                                        required: true,
-                                                                                        message: 'Введите пароль!',
-                                                                                        min: 4,
-                                                                                },
-                                                                        ]}
-                                                                >
-                                                                        <Input
-                                                                                type="password"
-                                                                                className="input-login"
-                                                                                placeholder="Пароль"
-                                                                        />
-                                                                </Item>
-                                                                <Item
-                                                                        name="password2"
-                                                                        className="user-box"
-                                                                        dependencies={['password']}
-                                                                        rules={[
-                                                                                {
-                                                                                        required: true,
-                                                                                        message: 'Введите пароль!',
-                                                                                        min: 4,
-                                                                                },
-                                                                                ({ getFieldValue }) => ({
-                                                                                        validator(_, value) {
-                                                                                                if (!value || getFieldValue('password') === value) {
-                                                                                                        return Promise.resolve();
-                                                                                                }
-                                                                                                return Promise.reject(new Error('Пароли не совпадают!'));
-                                                                                        },
-                                                                                }),
-                                                                        ]}
-                                                                >
-                                                                        <Input
-                                                                                type="password"
-                                                                                className="input-login"
-                                                                                placeholder="Пароль"
-                                                                        />
-                                                                </Item>
-                                                                <Item
-                                                                        name="referral_code"
-                                                                        className="user-box"
-                                                                >
-                                                                        <Input
-                                                                                type="text"
-                                                                                className="input-login"
-                                                                                placeholder="Ваш промокод"
-                                                                        />
-                                                                </Item>
-                                                        </>
-                                                        :
-                                                        <>
-                                                                <Item
-                                                                        name="email"
-                                                                        className="user-box"
-                                                                        rules={[
-                                                                                {
-                                                                                        type: 'email',
-                                                                                        message: 'Не валидный E-mail!',
-                                                                                },
-                                                                                {
-                                                                                        required: true,
-                                                                                        message: 'Пожалуйста, введите свой E-mail!',
-                                                                                },
-                                                                        ]}
-                                                                >
-                                                                        <Input
-                                                                                type="text"
-                                                                                className="input-login"
-                                                                                placeholder="E-mail"
-                                                                        />
-                                                                </Item>
-                                                                <Item
-                                                                        name="password"
-                                                                        className="user-box"
-                                                                >
-                                                                        <Input
-                                                                                type="password"
-                                                                                className="input-login"
-                                                                                placeholder="Пароль"
-                                                                        />
-                                                                </Item>
-                                                        </>
+                                                        ? <RegisterForm />
+                                                        : <SignForm />
                                         }
                                         <Row align="middle" justify="end">
                                                 <Space direction="horizontal" style={{alignItems: "center"}}>

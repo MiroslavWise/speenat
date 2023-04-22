@@ -18,7 +18,7 @@
         .container-modal{
                 display: flex;
                 position: fixed;
-                height: 60%;
+                height: 80%;
                 left: 0;
                 right: 0;
                 bottom: -100%;
@@ -38,7 +38,8 @@
                         border-radius: 15px;
 
                         .list {
-                                margin-top: 3rem;
+                                margin-top: 5rem;
+                                margin-bottom: 4rem;
                                 border-radius: 8px;
                                 overflow: hidden;
                                 display: flex;
@@ -66,6 +67,38 @@
                                 }
                         }
 
+                        .flags-container{
+                                position: absolute;
+                                top: 1.5rem;
+                                left: 1rem;
+                                display: flex;
+                                flex-direction: row;
+                                gap: 5px;
+                                transform: translateY(-50%);
+                                
+                                .item-flag{
+                                        height: 2rem;
+                                        width: 2rem;
+                                        border-radius: 50%;
+                                        border: 2px solid transparent;
+                                        transition: all 0.2s ease-out 0.03s;
+                                        filter: grayscale(80%);
+
+                                        &.active{
+                                                border-color: var(--premium-color);
+                                                filter: grayscale(0%)
+                                        }
+
+                                        .img-flag{
+                                                height: 2rem;
+                                                width: 2rem;
+                                                border-radius: 50%;
+                                                object-fit: cover;
+                                        }
+                                }
+                        }
+        
+
                         .menu-actions{
                                 position: absolute;
                                 top: 18px;
@@ -77,10 +110,11 @@
                         
                         .close-button {
                                 position: absolute;
-                                top: 10px;
-                                right: 10px;
+                                top: 1.5rem;
+                                right: 1rem;
                                 width: 26px;
                                 height: 26px;
+                                transform: translateY(-50%);
                                 cursor: pointer;
                                 &:before, &:after {
                                         content: "";

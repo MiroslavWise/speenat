@@ -10,6 +10,7 @@ import type { UploadFile } from 'antd/es/upload/interface';
 import { updatePhotoUser } from "api/put-user";
 import { useUser } from "store/use-user";
 import { replaceHttps } from "functions/replace-https";
+import loadImage from "functions/load-image";
 
 const UpdatePhoto: FC = () => {
         const [loading, setLoading] = useState(false)
@@ -44,6 +45,7 @@ const UpdatePhoto: FC = () => {
                 beforeUpload: async (file: RcFile) => {
                         onUpdate(file)
                 },
+                disabled: loading,
         }
 
         const onUpdate = (file: RcFile) => {
@@ -80,6 +82,7 @@ const UpdatePhoto: FC = () => {
                                                 user?.photo
                                                 &&
                                                 <Image
+                                                        loader={loadImage}
                                                         src={ user?.photo ? replaceHttps(user?.photo) : "/images/flower.jpg" }
                                                         alt=""
                                                         height={140}

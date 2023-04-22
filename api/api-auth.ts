@@ -11,7 +11,7 @@ export interface IRegister{
         email: string
         password: string
         password2: string
-        is_speaker: boolean
+        is_speaker: true
         referral_code?: string
         profile: {
                 accept_politics: boolean

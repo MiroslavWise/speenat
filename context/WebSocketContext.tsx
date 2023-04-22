@@ -3,11 +3,13 @@ import useWebSocket, { ReadyState, SendMessage } from "react-use-websocket";
 
 import { URL_SOCKET } from "api/api-general"
 import userData from "helpers/user-data"
+import { WebSocketLike } from "react-use-websocket/dist/lib/types";
 
 const ContextWebSocket = createContext<{
         sendMessage: SendMessage
         lastMessage: WebSocketEventMap['message'] | null
         readyState: ReadyState
+        getWebSocket: () => (WebSocketLike | null)
 } | undefined>(undefined)
 
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
@@ -68,7 +70,7 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
         // }, [userData.JWT])
         
         return (
-                <ContextWebSocket.Provider value={{ sendMessage, lastMessage, readyState }}>
+                <ContextWebSocket.Provider value={{ sendMessage, lastMessage, readyState, getWebSocket }}>
                         {children}
                 </ContextWebSocket.Provider>
         )

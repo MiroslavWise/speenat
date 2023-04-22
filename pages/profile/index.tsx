@@ -18,7 +18,7 @@ const Profile: FC = () => {
         if(loading) return <Loader />
         
         return (
-                <div className="wrapper-profile">
+                <div className="wrapper-profile show-animate">
                         <div className="header-profile"/>
                         <div className="profile-content">
                                 <p className="profile-name">{user?.profile?.user?.full_name}</p>

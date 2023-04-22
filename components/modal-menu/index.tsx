@@ -1,5 +1,6 @@
 import { FC, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 import { Switch } from "antd";
 
@@ -9,6 +10,8 @@ import { useAuth } from "context/Authorization";
 import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
 import { updateStatus } from "api/api-status";
+import Image from "next/image";
+import LanguageButtons from "./Language";
 
 const objectStatus: Record<TStatus, [string, string]> = {
         online: ["В сети", "green"],
@@ -16,7 +19,10 @@ const objectStatus: Record<TStatus, [string, string]> = {
         busy: ["Занят", "red"],
 }
 
+
+
 const ModalMenu: FC = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const { signOut } = useAuth()
         const active = useModal(state => state.active)
@@ -29,7 +35,7 @@ const ModalMenu: FC = () => {
         const handleUnActive = (event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault()
                 event.stopPropagation()
-                event.defaultPrevented
+                event.defaultPrevented = true
                 set(false)
         }
 
@@ -51,7 +57,7 @@ const ModalMenu: FC = () => {
         return (
                 <div
                         className={`modal-dots ${active && "active"}`}
-                        onClick={handleUnActive}
+                        onClick={(e) => handleUnActive(e)}
                 >
                         <div className={`container-modal ${active && "active"}`}>
                                 <div className="elements">
@@ -59,7 +65,7 @@ const ModalMenu: FC = () => {
                                                 {
                                                         isSpeaker ? (
                                                                 <div className="list-item status">
-                                                                        <p>Статус: </p>
+                                                                        <p>{ t("Status") }: </p>
                                                                         {
                                                                                 isStatus && objectStatus.hasOwnProperty(isStatus) ? (
                                                                                         <p style={{ color: objectStatus[isStatus][1] }}>{objectStatus[isStatus][0]}</p>
@@ -73,21 +79,20 @@ const ModalMenu: FC = () => {
                                                                 </div>
                                                         ) : null
                                                 }
-                                                <div className="list-item" onClick={() => { push('/invited', undefined, { shallow: true }) }}><p>Пригласить друга</p></div>
+                                                <div className="list-item" onClick={() => { push('/chat', undefined, { shallow: true }) }}><p>{ t("Chat") }</p></div>
+                                                <div className="list-item" onClick={() => { push('/invited', undefined, { shallow: true }) }}><p>{ t("Invite_a_friend") }</p></div>
                                                 {
                                                         isStaff ? (
-                                                                <div className="list-item" onClick={() => { push('/analytics', undefined, { shallow: true }) }}><p>Аналитика</p></div>
+                                                                <div className="list-item" onClick={() => { push('/analytics', undefined, { shallow: true }) }}><p>{ t("Analytics") }</p></div>
                                                         ) : null
                                                 }
                                                 {
                                                         isStaff ? (
-                                                                <div className="list-item" onClick={() => { push('/accountant', undefined, { shallow: true }) }}><p>Кабинет бухгалтера</p></div>
+                                                                <div className="list-item" onClick={() => { push('/accountant', undefined, { shallow: true }) }}><p>{ t("Accountant_office") }</p></div>
                                                         ) : null
                                                 }
                                         </div>
-                                        <div className="menu-actions">
-                                                Меню действий
-                                        </div>
+                                        <LanguageButtons />
                                         <div
                                                 onClick={handleUnActive}
                                                 className="close-button"

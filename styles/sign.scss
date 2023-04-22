@@ -9,7 +9,7 @@ $gray: #9b9b9b;
         height: 100vh;
         background-color: transparent;
         z-index: 10;
-        display: grid;
+        display: flex;
         justify-content: center;
         align-items: center;
 }
@@ -37,7 +37,7 @@ $gray: #9b9b9b;
                         display: flex;
                         flex-direction: column;
                         gap: 15px;
-                        padding: 50px;
+                        padding: 1rem;
                         transition: all 0.5s ease-in-out;
                 }
         }
@@ -116,3 +116,89 @@ $gray: #9b9b9b;
                 scale: 1.4;
         }
 }
+
+input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+}
+.radio-btn {
+        position: relative;
+        display: inline-block;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+        border: 2px solid var(--premium-color);
+        transition: all 0.3s;
+}
+
+.radio-btn:active {
+        transform: scale(0.9);
+}
+
+input[type="radio"]:checked + .radio-btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 12px;
+        height: 12px;
+        background-color: var(--cyan);
+        border-radius: 50%;
+}
+.radio-btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background-color: transparent;
+        border-radius: 50%;
+        border: 2px solid var(--premium-color);
+        transition: all 0.3s;
+}
+
+.ant-radio-wrapper {
+        display: flex;
+        align-items: center;
+      
+        .ant-radio-inner {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          border-radius: 50%;
+          border: 2px solid #ccc;
+          position: relative;
+      
+          &:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #1890ff;
+            transition: transform 0.2s ease;
+          }
+      
+          &:checked {
+            border-color: #1890ff;
+          }
+      
+          &:checked:after {
+            transform: translate(-50%, -50%) scale(1);
+          }
+      
+          &:focus {
+            outline: none;
+          }
+        }
+      }

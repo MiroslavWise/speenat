@@ -9,7 +9,7 @@ import UpdatePhoto from "components/profile/change/UpdatePhoto";
 const Change: NextPage = () => {
 
         return (
-                <div className="wrapper-profile">
+                <div className="wrapper-profile show-animate">
                         <div className="header-profile" />
                         <div className="forms-edit">
                                 <FormName />
