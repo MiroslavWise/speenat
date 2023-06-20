@@ -9,19 +9,24 @@ import { useQuery } from "react-query";
 
 const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
         const filters = useProfiles(state => state.filters)
-        const { lastMessage } = useWeb()
+        const { wsChannel } = useWeb()
 
         const { data, isLoading, refetch } = useQuery(["speakers", filters.page, filters.price_gte, filters.price_lte, filters.speaker__status, filters.spec_rating, filters.verified], () => speakers(filters))
 
         useEffect(() => {
-                if (lastMessage) {
-                        const event: any = JSON.parse(lastMessage?.data)
-                        if (event?.data?.type === "update_speaker_list") {
+                const eventUpdate = (event: MessageEventInit<any>) => {
+                        const lastMessage: any = JSON.parse(event?.data)
+                        if (lastMessage?.data?.type === "update_speaker_list") {
                                 refetch()
                         }
                 }
+                if (wsChannel) {
+                        wsChannel?.addEventListener('message', eventUpdate)
+                }
 
-        }, [lastMessage])
+                return () => wsChannel?.removeEventListener('message', eventUpdate)
+
+        }, [wsChannel])
 
         return (
                 <div className="container-list-speaker">

@@ -21,7 +21,7 @@ interface IProps{
 const Messages: FC<IProps> = ({id_speaker, id_student}) => {
         const { query: { uuid } } = useRouter()
         const [value, setValue] = useState<string | undefined>(undefined)
-        const { sendMessage, getWebSocket, readyState } = useWeb()
+        const { wsChannel } = useWeb()
         const isSpeaker = useUser(state => state.is_speaker)
         const userId = useUser(state => state.user?.profile?.profile_id)
         const { data, isLoading, refetch } = useQuery(["chat_messages", uuid], () => getChatMessages(uuid))
@@ -31,7 +31,7 @@ const Messages: FC<IProps> = ({id_speaker, id_student}) => {
         }, [data])
 
         useEffect(() => {
-                getWebSocket()?.addEventListener("message", (event: MessageEventInit<any>) => {
+                const eventMessage = (event: MessageEventInit<any>) => {
                         const response = JSON.parse(event?.data)?.data
                         if (response?.message_info?.chat_uuid === uuid && response?.type === "message_notification" ) {
                                 refetch()
@@ -39,8 +39,12 @@ const Messages: FC<IProps> = ({id_speaker, id_student}) => {
                         if (response?.message === "receive ok!") {
                                 refetch()
                         }
-                })
-        }, [readyState])
+                }
+
+                wsChannel?.addEventListener("message", eventMessage)
+
+                return () => wsChannel?.removeEventListener('message', eventMessage)
+        }, [wsChannel])
 
         const messages: IReturnMessages[] = useMemo(() => {
                 if (data && data?.results?.length > 0) {
@@ -62,7 +66,7 @@ const Messages: FC<IProps> = ({id_speaker, id_student}) => {
         const handleMessage = (event: MouseEvent<HTMLDivElement>) => {
                 event.stopPropagation()
                 event.defaultPrevented = true
-                sendMessage(JSON.stringify({
+                wsChannel?.send(JSON.stringify({
                         data: {
                                 type: "chat_message",
                                 receiver_id: isSpeaker ? id_student : id_speaker,

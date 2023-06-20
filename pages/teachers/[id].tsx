@@ -18,17 +18,24 @@ const ProfileTeacher: NextPage = () => {
         
         const { data, isLoading, refetch } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
 
-        const { lastMessage } = useWeb()
+        const { wsChannel } = useWeb()
         
         useEffect(() => {
-                if (lastMessage) {
-                        const event: any = JSON.parse(lastMessage?.data)
-                        if (event?.data?.type === "update_speaker_list") {
-                                refetch()
+                const eventMessage = (event: MessageEventInit<any>) => {
+                        if (event) {
+                                const message: any = JSON.parse(event?.data)
+                                if (message?.data?.type === "update_speaker_list") {
+                                        refetch()
+                                }
                         }
                 }
 
-        }, [lastMessage])
+                if (wsChannel) {
+                        wsChannel?.addEventListener('message', eventMessage)
+                }
+
+                return wsChannel?.removeEventListener('message', eventMessage)
+        }, [wsChannel])
 
         if(isLoading) return <Loader />
 
