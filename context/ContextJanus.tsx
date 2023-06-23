@@ -513,7 +513,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         videocall: videocall,
                         propsCall: propsCall,
                         doHangup: doHangup,
-                        registerUsername: registerUsername
+                        registerUsername: registerUsername,
                 }}>
                         {children}
                         <ModalCallingJanus

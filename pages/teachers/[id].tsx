@@ -43,11 +43,13 @@ const ProfileTeacher: NextPage = () => {
                 <div className="wrapper-profile">
                         <div className="header-profile" />
                         <div className="profile-content">
-                                <p className="profile-name">{data && data[1]?.full_name}</p>
+                                <p className="profile-name">{data?.[1]?.full_name!}</p>
                                 <div className="profile-info-other">
                                         <Specialization
                                                 data={data?.[0]?.get_all_specialization}
                                                 online={data?.[0]?.profile?.status === "online"}
+                                                speaker={data?.[0]!}
+                                                profile={data?.[1]!}
                                         />
                                         <Feedbacks />
                                 </div>

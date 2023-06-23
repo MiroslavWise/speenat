@@ -318,18 +318,6 @@
                                 align-items: center;
                                 gap: 10px;
 
-                                .but-bell{
-                                        background-color: #fff;
-                                        border-radius: 15px;
-
-                                        p{
-                                                font-weight: 600;
-                                                font-size: 15px;
-                                                line-height: 15px;
-                                                color: var(--premium-color);
-                                        }
-                                }
-
                                 .times{
                                         display: flex;
                                         gap: 5px;
@@ -344,6 +332,18 @@
                                 }
                         }
                 }
+        }
+}
+
+.but-bell{
+        background-color: #fff;
+        border-radius: 15px;
+
+        p{
+                font-weight: 600;
+                font-size: 15px;
+                line-height: 15px;
+                color: var(--premium-color);
         }
 }
 
