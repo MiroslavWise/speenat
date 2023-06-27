@@ -38,6 +38,7 @@ const SignForm: FC = () => {
                                         placeholder="Пароль"
                                 />
                         </Item>
+                        <a className="forgot-password">Забыли пароль?</a>
                 </>
         )
 }

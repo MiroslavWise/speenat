@@ -11,12 +11,12 @@ import { registerUser, IRegister } from "api/api-auth"
 
 const { Item } = Form
 
-interface IValues{
+interface IValues {
         email: string
         password: string
 }
 
-interface IReturnAccess{
+interface IReturnAccess {
         access: boolean,
         error: {
                 message: string
@@ -51,7 +51,6 @@ const ContainerSingAndRegister: FC = () => {
 
         const onRegister = (values: IRegister) => {
                 const { email, password, password2, is_speaker, referral_code, full_name } = values
-                console.log("values: ", values)
                 registerUser({
                         email: email,
                         password: password,
@@ -67,21 +66,21 @@ const ContainerSingAndRegister: FC = () => {
                         .then(response => {
                                 if (response?.email === email) {
                                         userData.login({ email: response?.email, password: password })
-                                        .then((response: IReturnAccess) => {
-                                                if (response?.access === true && response.error === null) {
-                                                        setIsSign(true)
-                                                        setTimeout(() => {
-                                                                setAuthState('main')
-                                                        }, 380)
-                                                }
-                                                if (response?.access === false) {
-                                                        if (response.error !== null && response.error.message === "No token supplied") {
-                                                                message.error("Не верный логин или пароль!")
-                                                        } else {
-                                                                message.error(response.error?.message)
+                                                .then((response: IReturnAccess) => {
+                                                        if (response?.access === true && response.error === null) {
+                                                                setIsSign(true)
+                                                                setTimeout(() => {
+                                                                        setAuthState('main')
+                                                                }, 380)
                                                         }
-                                                }
-                                        })
+                                                        if (response?.access === false) {
+                                                                if (response.error !== null && response.error.message === "No token supplied") {
+                                                                        message.error("Не верный логин или пароль!")
+                                                                } else {
+                                                                        message.error(response.error?.message)
+                                                                }
+                                                        }
+                                                })
                                 } else {
                                         message.error("Юзер с такими же данными уже существует")
                                 }
@@ -91,7 +90,8 @@ const ContainerSingAndRegister: FC = () => {
         return (
                 <div className={`__container-sign__ ${isSign && 'animate'}`}>
                         <div className={`content `}>
-                                <h2 style={{ textAlign: "center" }}>{isState ? 'Регистрация' : 'Войти'}</h2>
+                                <h2 style={{ textAlign: "center" }}>{isState ? 'Регистрация' : 'Войдите в свой аккаунт'}</h2>
+                                <h4>Самый быстрый способ проконсультироваться с преподавателем</h4>
                                 <Form
                                         className="fields"
                                         onFinish={isState ? onRegister : onSubmit}
@@ -107,25 +107,23 @@ const ContainerSingAndRegister: FC = () => {
                                                         ? <RegisterForm />
                                                         : <SignForm />
                                         }
-                                        <Row align="middle" justify="end">
-                                                <Space direction="horizontal" style={{alignItems: "center"}}>
-                                                        <Button
-                                                                type="text"
-                                                                className="state-revers"
-                                                                onClick={() => setIsState(state => !state)}
-                                                        >
-                                                                <p>{!isState ? 'Регистрация' : 'Войти'}</p>
-                                                        </Button>
-                                                        <Button
-                                                                htmlType="submit"
-                                                                className="login-submit"
-                                                        >
-                                                                <p>{ isState ? 'Регистрация' : 'Войти' }</p>
-                                                        </Button>
-                                                </Space>
-                                        </Row>
+                                        <Button
+                                                htmlType="submit"
+                                                className="login-submit"
+                                                style={{ width: '100%' }}
+                                        >
+                                                <p>{isState ? 'Регистрация' : 'Войти'}</p>
+                                        </Button>
+                                        <div className="register-component-button">
+                                                {
+                                                        !isState ? <p>Нет аккаунта? </p> : null
+                                                }
+                                                {
+                                                        !isState ? <a onClick={() => setIsState(state => !state)}>Регистрация</a> : <a onClick={() => setIsState(state => !state)}>Войти</a>
+                                                }
+                                        </div>
                                 </Form>
-                        </div>
+                                </div>
                 </div>
         )
 }

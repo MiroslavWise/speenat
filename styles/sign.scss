@@ -1,20 +1,60 @@
-$primary: rgb(51,54,124);
+$primary: rgb(51, 54, 124);
 $secondary: #38ef7d;
 $white: #fff;
-$gray: #9b9b9b; 
+$gray: #9b9b9b;
 
-.__wrapper-sign__{
+.__wrapper-sign__ {
         position: relative;
         width: 100%;
         height: 100vh;
-        background-color: transparent;
+        background: #FFF;
         z-index: 10;
         display: flex;
         justify-content: center;
         align-items: center;
 }
 
-.__container-sign__{
+.header-sing{
+        position: absolute;
+        top: 20px;
+        transform: translateX(-50%);
+        left: 50%;
+        width: 100%;
+        
+        h1{
+                text-transform: uppercase;
+                text-align: center;
+                color: var(--premium-color);
+                font-weight: 600;
+                letter-spacing: -0.5px;
+        }
+
+        h4{
+                color: #667085;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 16px;
+                letter-spacing: -0.5px;
+                padding: 10px 30px;
+        }
+}
+
+.forgot-password{
+        color: var(--premium-color);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 18px;
+        letter-spacing: -0.5px;
+        text-align: end;
+}
+
+.__container-sign__ {
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 32px;
+        background: #FFF;
+        padding: 0px 30px;
         position: relative;
         z-index: 101;
         height: fit-content;
@@ -22,18 +62,37 @@ $gray: #9b9b9b;
         transition: all 0.4s ease-in-out;
         animation: identifier-position 1.2s;
 
-        &.animate{
+        &.animate {
                 animation: scale-truth 450ms;
         }
 
-        .content{
+        .content {
                 backdrop-filter: blur(6.5px);
                 -webkit-backdrop-filter: blur(6.5px);
                 height: 100%;
                 width: 100%;
                 transition: all 0.5s ease-in-out;
 
-                .fields{
+                h2 {
+                        color: #101828;
+                        text-align: center;
+                        font-size: 22px;
+                        font-weight: 600;
+                        line-height: 26px;
+                        letter-spacing: -0.5px;
+                }
+
+                h4{
+                        color: #667085;
+                        text-align: center;
+                        font-size: 16px;
+                        font-weight: 500;
+                        line-height: 16px;
+                        letter-spacing: -0.5px;
+                        padding: 10px 0px;
+                }
+
+                .fields {
                         display: flex;
                         flex-direction: column;
                         gap: 15px;
@@ -43,27 +102,51 @@ $gray: #9b9b9b;
         }
 }
 
-.login-submit{
+.login-submit {
         background-color: var(--premium-color);
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        padding: 12px 24px;
-        height: 40px;
-        border-radius: 17px;
+        padding: 6px 12px;
+        width: 100% !important;
+        border-radius: 100px;
         border: none;
 
-        p{
-                font-style: normal;
-                font-weight: 600;
-                font-size: 16px;
-                line-height: 19px;
-                color: #fff; 
+        p {
+                color: #FFF;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                letter-spacing: -0.5px;
         }
 }
 
-.state-revers{
+.register-component-button {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        gap: 8px;
+        align-self: stretch;
+
+        p {
+                color: #667085;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                letter-spacing: -0.5px;
+        }
+
+        a {
+                color: var(--premium-color);
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                letter-spacing: -0.5px;
+        }
+}
+
+.state-revers {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -73,7 +156,7 @@ $gray: #9b9b9b;
         border-radius: 17px;
         border: none;
 
-        p{
+        p {
                 font-style: normal;
                 font-weight: 600;
                 font-size: 16px;
@@ -85,23 +168,23 @@ $gray: #9b9b9b;
 .user-box {
         padding: 0;
         margin: 0;
-        border-color: var( --gray-color);
+        border-color: var(--gray-color);
 }
+
 .input-login {
         width: 100%;
-        padding: 10px 10px;
-        font-size: 14px;
+        padding: 6px 10px;
+        font-size: 12px;
         color: #121212;
         margin-bottom: 30px;
         border: 1px solid #131313;
         background: white;
         margin: 0;
-        border-color: var( --gray-color);
-        padding: 12px 24px;
-        height: 40px;
+        border-color: var(--gray-color);
         border-radius: 17px;
 
-        &:focus, :hover{
+        &:focus,
+        :hover {
                 border: 1px solid #666666;
         }
 }
@@ -111,7 +194,8 @@ $gray: #9b9b9b;
                 opacity: 1;
                 scale: 1;
         }
-        to{
+
+        to {
                 opacity: 0.1;
                 scale: 1.4;
         }
@@ -123,6 +207,7 @@ input[type="radio"] {
         width: 0;
         height: 0;
 }
+
 .radio-btn {
         position: relative;
         display: inline-block;
@@ -139,7 +224,7 @@ input[type="radio"] {
         transform: scale(0.9);
 }
 
-input[type="radio"]:checked + .radio-btn::before {
+input[type="radio"]:checked+.radio-btn::before {
         content: "";
         position: absolute;
         top: 50%;
@@ -150,6 +235,7 @@ input[type="radio"]:checked + .radio-btn::before {
         background-color: var(--cyan);
         border-radius: 50%;
 }
+
 .radio-btn::before {
         content: "";
         position: absolute;
@@ -167,38 +253,38 @@ input[type="radio"]:checked + .radio-btn::before {
 .ant-radio-wrapper {
         display: flex;
         align-items: center;
-      
+
         .ant-radio-inner {
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          border-radius: 50%;
-          border: 2px solid #ccc;
-          position: relative;
-      
-          &:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background-color: #1890ff;
-            transition: transform 0.2s ease;
-          }
-      
-          &:checked {
-            border-color: #1890ff;
-          }
-      
-          &:checked:after {
-            transform: translate(-50%, -50%) scale(1);
-          }
-      
-          &:focus {
-            outline: none;
-          }
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                border-radius: 50%;
+                border: 2px solid #ccc;
+                position: relative;
+
+                &:after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%) scale(0);
+                        width: 0.5rem;
+                        height: 0.5rem;
+                        border-radius: 50%;
+                        background-color: #1890ff;
+                        transition: transform 0.2s ease;
+                }
+
+                &:checked {
+                        border-color: #1890ff;
+                }
+
+                &:checked:after {
+                        transform: translate(-50%, -50%) scale(1);
+                }
+
+                &:focus {
+                        outline: none;
+                }
         }
-      }
+}
