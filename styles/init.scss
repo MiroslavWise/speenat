@@ -26,7 +26,6 @@
         --premium-orange: rgb(214,107,94);
         --color-gray: rgb(129,134,179);
         --cyan: rgb(79,175,195);
-        
 }
 
 html, body{
@@ -43,6 +42,14 @@ h2, h1, h3, h4, h5, h6, a, p{
 
 .w-100{
         width: 100%;
+}
+
+.ant-switch{
+        background-color: red !important
+}
+
+.ant-switch.ant-switch-checked{
+        background-color: green !important;
 }
 
 .ant-divider-horizontal{

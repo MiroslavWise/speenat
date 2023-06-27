@@ -10,7 +10,6 @@ import { useAuth } from "context/Authorization";
 import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
 import { updateStatus } from "api/api-status";
-import Image from "next/image";
 import LanguageButtons from "./Language";
 
 const objectStatus: Record<TStatus, [string, string]> = {
@@ -62,9 +61,9 @@ const ModalMenu: FC = () => {
                         <div className={`container-modal ${active && "active"}`}>
                                 <div className="elements">
                                         <div className="list">
-                                                {
+                                                {/* {
                                                         isSpeaker ? (
-                                                                <div className="list-item status">
+                                                                <div className="list-item status"> 
                                                                         <p>{ t("Status") }: </p>
                                                                         {
                                                                                 isStatus && objectStatus.hasOwnProperty(isStatus) ? (
@@ -78,7 +77,7 @@ const ModalMenu: FC = () => {
                                                                         }
                                                                 </div>
                                                         ) : null
-                                                }
+                                                } */}
                                                 <div className="list-item" onClick={() => { push('/chat', undefined, { shallow: true }) }}><p>{ t("Chat") }</p></div>
                                                 <div className="list-item" onClick={() => { push('/invited', undefined, { shallow: true }) }}><p>{ t("Invite_a_friend") }</p></div>
                                                 {

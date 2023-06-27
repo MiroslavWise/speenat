@@ -66,7 +66,6 @@
                                         }
                                 }
                         }
-
                         .flags-container{
                                 position: absolute;
                                 top: 1.5rem;
@@ -155,5 +154,24 @@
                         visibility: visible;
                         opacity: 1;
                 }
+        }
+}
+
+.list-item {
+        padding: 0.3rem;
+        border-radius: 1rem;
+        background-color: #fff;
+        color: #333;
+        p{
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--premium-color);
+        }
+
+        &.status{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
         }
 }

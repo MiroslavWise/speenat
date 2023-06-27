@@ -20,7 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
                                 <Authorization>
                                         <Layout>
                                                 <Component {...pageProps} />
-                                                
                                         </Layout>
                                 </Authorization>
                         </QueryClientProvider>
