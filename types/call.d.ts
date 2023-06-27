@@ -6,26 +6,26 @@ export interface IIncomingCallFromUserProps{
                         specialization?: string, 
                         uuid?: string,
                 },
-                doctor_profile_id?: number,
-                doctor_id?: number | string,
+                speaker_profile_id?: number,
+                speaker_id?: number | string,
                 user_info?:{
                         full_name: string,
                         profile_id?: number | string,
                         avatar_url?: string | null
                 },
-                doctor_info?: {
+                speaker_info?: {
                         profile_id?: number | string,
                         full_name?: string,
                         avatar_url?: string | null,
-                        doctor_id?: number | string
+                        speaker_id?: number | string
                 }
         }
         doctorAnswerCall: (answer: boolean, profile_id: number | string ) => void
 }
 
 export interface ICallData{
-        doctor_id: number
-        doctor_profile_id: number
+        speaker_id: number
+        speaker_profile_id: number
         type: string
         call_info: {
                 chat_uuid: string
@@ -39,11 +39,11 @@ export interface ICallData{
                 full_name: string
                 profile_id: number
         }
-        doctor_info?: {
+        speaker_info?: {
                 profile_id?: number | string,
                 full_name?: string,
                 avatar_url?: string | null,
-                doctor_id?: number | string
+                speaker_id?: number | string
         },
         
 }

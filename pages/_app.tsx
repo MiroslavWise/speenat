@@ -1,5 +1,4 @@
 import type { AppProps } from 'next/app'
-import Script from 'next/script'
 import {
         QueryClient,
         QueryClientProvider,
@@ -21,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                 <Authorization>
                                         <Layout>
                                                 <Component {...pageProps} />
+                                                
                                         </Layout>
                                 </Authorization>
                         </QueryClientProvider>

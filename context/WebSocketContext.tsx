@@ -3,7 +3,6 @@ import useWebSocket, { ReadyState, SendMessage } from "react-use-websocket";
 
 import { URL_SOCKET } from "api/api-general"
 import userData from "helpers/user-data"
-import { WebSocketLike } from "react-use-websocket/dist/lib/types";
 
 const ContextWebSocket = createContext<{
         wsChannel: WebSocket | undefined

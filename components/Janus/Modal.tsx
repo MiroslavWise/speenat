@@ -54,7 +54,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                                                         ?
                                                         propsCall?.user_info?.full_name
                                                         :
-                                                        propsCall?.doctor_info?.full_name
+                                                        propsCall?.speaker_info?.full_name
                                         }
                                         &nbsp;&nbsp;<TimerSession {...{ visible, doHangup, time, setTime, isSpeaker }} />
                                 </div>

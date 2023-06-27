@@ -58,7 +58,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
         useEffect(() => {
                 if (propsCall) {
                         info_id_profile = propsCall?.user_info?.profile_id
-                        doctor_id = propsCall?.doctor_info?.profile_id
+                        doctor_id = propsCall?.speaker_info?.profile_id
                         profile_id = propsCall?.user_info?.profile_id
                         uuid_conf = propsCall?.call_info?.uuid
                 }
@@ -475,7 +475,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
         }
 
         function registerUsername() {
-                console.log('__record__  __register: ', `${is_doctor ? 'doctor' : 'patient'}-${user?.profile?.profile_id}`)
                 if (videocall !== null && user !== null && !REGISTER) {
                         videocall.send({
                                 message: {
@@ -484,8 +483,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                 }
                         })
                         setREGISTER(true)
-                } else {
-                        setTimeout(() => { registerUsername() }, 1000)
                 }
         }
 

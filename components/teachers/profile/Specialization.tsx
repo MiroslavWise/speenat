@@ -45,7 +45,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                         data: {
                                 type: 'call_cancel_user',
                                 speaker_profile_id: speaker?.profile?.profile_id,
-                                patient_id: user?.profile?.profile_id,
+                                student_id: user?.profile?.profile_id,
                                 status: false
                         }
                 }))
@@ -74,6 +74,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                         profile_id: user?.profile?.profile_id,
                         note_id: false
                 }
+                wsChannel?.send(JSON.stringify({ data: data }))
         }
 
         useEffect(() => {
