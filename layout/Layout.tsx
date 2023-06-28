@@ -52,7 +52,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         if (loading) return <Loader />
 
         return (
-                // <ProviderWebSocket>
                         <ProviderJanusContext>
                                 <main className={`${inter.className} show-animate`} style={{ width: '100%', minHeight: '100vh', position: "relative" }}>
                                         <Header />
@@ -83,7 +82,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                                         />
                                 </main>
                         </ProviderJanusContext>
-                // </ProviderWebSocket>
         )
 }
 

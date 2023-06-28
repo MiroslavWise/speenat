@@ -1,60 +1,70 @@
-import { FC, ReactNode } from "react"
-
 import type { TMenu } from "types/menu"
 
-import HomeFill from "@icons-home-fill"
-import HomeRegular from "@icons-home-regular"
-import UserFill from "@icons-user-fill"
-import UserRegular from "@icons-user-regular"
-import Archive from "@icons-archive"
-import BookContent from "@icons-book-content"
-import ArchiveFill from "@icons-archive-fill"
-import BookContentFill from "@icons-book-content-fill"
-import CreditCardAlt from "@icons-credit-card-alt"
-import CreditCardAltFill from "@icons-credit-card-alt-fill"
-
-interface IItemMenuFooter{
+interface IItemMenuFooter {
         title: string
         value: TMenu
         icon: {
-                fill: ReactNode
-                regular: ReactNode
+                fill: string
+                regular: string
         }
 }
 
-const ITEMS_MENU_FOOTER = (isSpeaker: boolean): IItemMenuFooter[] => ([
+export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
         {
-                title: 'Home',
-                value: "",
-                icon: {
-                        fill: <HomeFill />,
-                        regular: <HomeRegular  fill="#fff" />
-                }
-        },
-        {
-                title: "Balance",
-                value: "pay-data",
-                icon: {
-                        fill: <CreditCardAltFill />,
-                        regular: <CreditCardAlt />
-                }
-        },
-        {
-                title: isSpeaker ? "Spec" : "Archive",
+                title: isSpeaker ? 'Специальность' : 'Архив',
                 value: isSpeaker ? 'spec' : 'archive',
                 icon: {
-                        fill: isSpeaker ? <BookContentFill /> : <ArchiveFill />,
-                        regular: isSpeaker ? <BookContent fill="#fff" /> : <Archive fill="#fff" />,
+                        fill: isSpeaker ? '/svg/nav-bar/file-fill.svg' : '/svg/nav-bar/backpack-fill.svg',
+                        regular: isSpeaker ? '/svg/nav-bar/file-gray.svg' : '/svg/nav-bar/backpack-gray.svg',
+                },
+        },
+        {
+                title: 'Баланс',
+                value: 'pay-data',
+                icon: {
+                        fill: '/svg/nav-bar/creadit-fill.svg',
+                        regular: '/svg/nav-bar/creadit-gray.svg',
+                }
+        },
+]
+
+export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => [
+        {
+                title: 'Чат',
+                value: 'chat',
+                icon: {
+                        fill: '/svg/nav-bar/message-chat-fill.svg',
+                        regular: '/svg/nav-bar/message-chat-gray.svg',
                 }
         },
         {
-                title: 'Profile',
-                value: "profile",
+                title: 'Профиль',
+                value: 'profile',
                 icon: {
-                        fill: <UserFill />,
-                        regular: <UserRegular fill="#fff" />
+                        fill: '/svg/nav-bar/user-star-fill.svg',
+                        regular: '/svg/nav-bar/user-star-gray.svg',
                 }
         }
-])
+]
 
-export { ITEMS_MENU_FOOTER }
+export const CENTRAL_ITEM = (isSpeaker: boolean): IItemMenuFooter => (
+        isSpeaker ? (
+                {
+                        title: 'Архив',
+                        value: 'archive',
+                        icon: {
+                                fill: '/svg/nav-bar/backpack-white.svg',
+                                regular: '/svg/nav-bar/backpack-white.svg',
+                        }
+                }
+        ) : (
+                {
+                        title: 'Поиск',
+                        value: 'teachers',
+                        icon: {
+                                fill: '/svg/nav-bar/graduation-white.svg',
+                                regular: '/svg/nav-bar/graduation-white.svg',
+                        }
+                }
+        )
+)
