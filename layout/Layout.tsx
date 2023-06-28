@@ -39,7 +39,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         const notification: ICallData = JSON.parse(event.data).data
 
                         if (notification?.type === "call_accept_ok") {
-                                console.log('notification isDoctor: ', notification)
+                                console.log('notification isSpeaker: ', notification)
                                 setPropsCall({ ...notification })
                         }
                 }

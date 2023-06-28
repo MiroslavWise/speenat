@@ -3,12 +3,12 @@ import { type FC, useEffect } from 'react'
 interface IProps {
         visible?: boolean,
         doHangup: () => void,
-        isDoctor?: boolean,
+        isSpeaker?: boolean,
         time: any,
         setTime: any
 }
 
-export const TimerSession: FC<IProps> = ({ visible, doHangup, time, setTime, isDoctor }) => {
+export const TimerSession: FC<IProps> = ({ visible, doHangup, time, setTime, isSpeaker }) => {
         let minute = (Math.floor(time / 60)).toString().padStart(2, "0")
         let second = (+time - +minute * 60).toString().padStart(2, "0")
         useEffect(() => {
@@ -30,7 +30,7 @@ export const TimerSession: FC<IProps> = ({ visible, doHangup, time, setTime, isD
         return (
                 <>
                         {
-                                time < 20 * 60 - 5 && time > 20 * 59 && !isDoctor
+                                time < 20 * 60 - 5 && time > 20 * 59 && !isSpeaker
                                 &&
                                 <p className={`${time - 20 * 59 < 3 && 'red_timer'}`}>Если вас устраивает качество связи, то через {time - 20 * 59} секунд начнётся списание денег</p>
                         }

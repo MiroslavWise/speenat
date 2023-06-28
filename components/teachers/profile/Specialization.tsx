@@ -83,7 +83,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                         if (message_?.data?.type === "call_accept_cancel") {
                                 Modal.destroyAll()
                                 requestAnimationFrame(() => {
-                                        onCancelDoctorCall()
+                                        onCancelSpeakerCall()
                                 })
                         }
                 }
@@ -221,7 +221,7 @@ const calling = (
 })
 
 
-const onCancelDoctorCall = () => Modal.info({
+const onCancelSpeakerCall = () => Modal.info({
         closable: false,
         width: 'max(350px)',
         icon: null,

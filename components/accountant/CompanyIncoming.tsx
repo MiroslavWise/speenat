@@ -41,7 +41,7 @@ const CompanyIncoming: FC = () => {
         //         {
         //                 key: '4',
         //                 name: 'Общий доход докторов: ',
-        //                 amount: `${statistic?.doctors_earning || 0}`
+        //                 amount: `${statistic?.speakers_earning || 0}`
         //         },
         //         {
         //                 key: '1',

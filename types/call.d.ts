@@ -20,7 +20,7 @@ export interface IIncomingCallFromUserProps{
                         speaker_id?: number | string
                 }
         }
-        doctorAnswerCall: (answer: boolean, profile_id: number | string ) => void
+        speakerAnswerCall: (answer: boolean, profile_id: number | string ) => void
 }
 
 export interface ICallData{

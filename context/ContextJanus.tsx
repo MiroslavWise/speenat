@@ -1,4 +1,4 @@
-import { type FC, type ReactNode, type DispatchWithoutAction, createContext, useEffect, useContext, useState, useMemo } from "react";
+import { type FC, type ReactNode, type DispatchWithoutAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
 const $ = require('jquery')
@@ -41,8 +41,8 @@ var trackId: any = null
 var tracks: any = null
 
 var info_id_profile: any = null
-var is_doctor: any = null
-var doctor_id: any = null
+var is_speaker: any = null
+var speaker_id: any = null
 var profile_id: any = null
 var uuid_conf: any = null
 
@@ -58,7 +58,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
         useEffect(() => {
                 if (propsCall) {
                         info_id_profile = propsCall?.user_info?.profile_id
-                        doctor_id = propsCall?.speaker_info?.profile_id
+                        speaker_id = propsCall?.speaker_info?.profile_id
                         profile_id = propsCall?.user_info?.profile_id
                         uuid_conf = propsCall?.call_info?.uuid
                 }
@@ -80,8 +80,8 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                 const listenerCall = (event: any) => {
                         const notification: ICallData = JSON.parse(event.data).data
 
-                        if (notification?.type === "call_accept_ok" ) {
-                                console.log('notification isDoctor: ', notification)
+                        if (notification?.type === "call_accept_ok") {
+                                console.log('notification isSpeaker: ', notification)
                                 setPropsCall({ ...notification })
                         }
                 }
@@ -99,10 +99,12 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                 janus = new Janus({
                                         server: "wss://meeting.consudoc.online",
                                         success: async function () {
+                                                console.log("---init async session--- ")
                                                 janus.attach({
                                                         plugin: "janus.plugin.videocall",
                                                         opaqueId: opaqueId,
                                                         success: function (pluginHandle: any) {
+                                                                console.log("---init session videocall--- ")
                                                                 videocall = pluginHandle;
                                                         },
                                                         onmessage: function (msg: any, jsep: any) {
@@ -118,13 +120,13 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                         } else if (result["event"]) {
                                                                                 var event = result["event"];
                                                                                 if (event === "registered") {
-                                                                                        if (msg?.result?.username?.includes('doctor')) {
-                                                                                                console.log('doctor doctor: ', info_id_profile)
+                                                                                        if (msg?.result?.username?.includes('speaker')) {
+                                                                                                console.log('speaker: ', info_id_profile)
                                                                                                 const success = (jsep: any) => {
                                                                                                         videocall.send({
                                                                                                                 message: {
                                                                                                                         request: "call",
-                                                                                                                        username: `patient-${info_id_profile}`
+                                                                                                                        username: `student-${info_id_profile}`
                                                                                                                 },
                                                                                                                 jsep
                                                                                                         })
@@ -216,7 +218,8 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                                         }
                                                                                         $("#myvideo" + trackId).remove()
                                                                                         $("#myvideo").remove()
-                                                                                        if (is_doctor) {
+                                                                                        if (is_speaker) {
+                                                                                                console.log(" ---update status is_speaker offline--- ")
                                                                                                 updateStatus("offline")
                                                                                         }
                                                                                         route.push(`/feedback-conference`, undefined, { shallow: true })
@@ -422,9 +425,11 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                 });
                                         },
                                         error: function (error: any) {
+                                                console.log("---init error session videocall--- ", error)
                                                 console.error(error);
                                         },
                                         destroyed: function () {
+                                                console.log("---init destroy session videocall--- ")
                                                 // window.location.reload()
                                         }
                                 });
@@ -467,19 +472,21 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                 message: {
                                         request: "set",
                                         record: true,
-                                        filename: `/opt/janus/share/janus/recordings/${is_doctor ? doctor_id : profile_id}-${uuid_conf}`
+                                        filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : profile_id}-${uuid_conf}`
                                 },
                         });
-                message.info("Началась запись видео")
+                        message.info("Началась запись видео")
                 }, 2500)
         }
 
         function registerUsername() {
-                if (videocall !== null && user !== null && !REGISTER) {
-                        videocall.send({
+                console.log(" ---is_speaker--- ", is_speaker)
+                console.log(" ---videocall--- ", videocall)
+                if (videocall !== null) {
+                        videocall?.send({
                                 message: {
                                         request: "register",
-                                        username: `${is_doctor ? 'doctor' : 'patient'}-${user?.profile?.profile_id}`,
+                                        username: `${is_speaker ? 'speaker' : 'student'}-${user?.profile?.profile_id}`,
                                 }
                         })
                         setREGISTER(true)

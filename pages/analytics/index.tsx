@@ -43,7 +43,7 @@ const Analytics: NextPage = () => {
                         amount: data?.[1]?.count || 0,
                 },
                 {
-                        key: 'doctors',
+                        key: 'speakers',
                         name: 'Кол-во спикеров:',
                         amount: data?.[2]?.count || 0,
                 }
