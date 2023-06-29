@@ -15,7 +15,6 @@ const EditSpec: NextPage = () => {
                                 <FormSpec />
                                 <Divider />
                                 <ListAttachments edit />
-                                <Divider />
                                 <AttachmentsSpec />
                         </div>
                 </div>

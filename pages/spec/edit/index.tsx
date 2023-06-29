@@ -10,6 +10,9 @@ const AddSpec: NextPage = () => {
         return (
                 <div className="content-archive">
                         <div className="header-archive" />
+                        <div className="forms-edit">
+                                {/* <FormSpec /> */}
+                        </div>
                 </div>
         )
 }

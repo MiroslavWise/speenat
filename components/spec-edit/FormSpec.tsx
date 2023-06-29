@@ -79,7 +79,6 @@ const FormSpec: FC = () => {
 
                         const data = {
                                 // ...currentSpec,
-
                                 specialization_id: values?.specialization_id,
                                 university: values?.university,
                                 scientific_degree: values?.scientific_degree,
@@ -88,11 +87,12 @@ const FormSpec: FC = () => {
                                 category: values?.category,
                                 consultation_time: consultation_time,
                         }
-
-                        // console.log("data: ", data)
-
-                        // speakerSpecEdit(id, data)
-                        //         .then(response => console.log("response: ", response))
+                        //@ts-ignore
+                        speakerSpecEdit(id, data)
+                                .then(response => console.log("response: ", response))
+                                .finally(() => {
+                                        setLoading(false)
+                                })
                 }
 
         }

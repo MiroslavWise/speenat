@@ -42,11 +42,12 @@ export interface IDataReplaceSpec extends ISpecItems {
         scientific_degree: boolean
         work_experience: number | string
         category: string
-        consultation_time: {
-                '20min'?: number
-                '5min'?: number
-                '60min'?: number
-        }
+        // consultation_time: {
+        //         '20min'?: number
+        //         '5min'?: number
+        //         '60min'?: number
+        // }
+        consultation_time: any[]
 }
 
 export interface ISpecializationsAll{

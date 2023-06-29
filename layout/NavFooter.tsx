@@ -51,15 +51,15 @@ const NavFooter: FC = () => {
                                                                         <Image
                                                                                 src="/svg/nav-bar/Polygon.svg"
                                                                                 alt="poligon"
-                                                                                width={82}
-                                                                                height={82}
+                                                                                width={92}
+                                                                                height={92}
                                                                         />
                                                                         <Image
                                                                                 className={styles.image}
                                                                                 src={activePash(asPath,  CENTRAL_ITEM(isSpeaker).value) ?  CENTRAL_ITEM(isSpeaker).icon.fill :  CENTRAL_ITEM(isSpeaker).icon.regular}
                                                                                 alt={ CENTRAL_ITEM(isSpeaker).value}
-                                                                                width={24}
-                                                                                height={24}
+                                                                                width={30}
+                                                                                height={30}
                                                                         />
                                                                 </div>
                                                                 <p style={{ color: activePash(asPath, CENTRAL_ITEM(isSpeaker).value) ? 'rgb(51,54,124)' : 'rgb(102, 112, 133)' }}>{CENTRAL_ITEM(isSpeaker).title}</p>

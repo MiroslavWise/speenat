@@ -1,14 +1,19 @@
 import { FC } from "react";
+import Image from "next/image";
 
 import ContainerSingAndRegister from "components/auth/ContainerSingAndRegister";
 
 const SignInComponent: FC = () => {
-
+        
         return (
                 <div className="__wrapper-sign__">
                         <header className="header-sing">
-                                <h1>speenat</h1>
-                                {/* <h4>Самый быстрый способ проконсультироваться с преподавателем</h4> */}
+                                <Image
+                                        src="/images/speanat.png"
+                                        alt="logo"
+                                        width={168.7}
+                                        height={70}
+                                />
                         </header>
                         <ContainerSingAndRegister />
                 </div>

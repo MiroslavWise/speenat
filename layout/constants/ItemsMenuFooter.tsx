@@ -11,7 +11,7 @@ interface IItemMenuFooter {
 
 export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
         {
-                title: isSpeaker ? 'Специальность' : 'Архив',
+                title: isSpeaker ? 'Специаль...' : 'Архив',
                 value: isSpeaker ? 'spec' : 'archive',
                 icon: {
                         fill: isSpeaker ? '/svg/nav-bar/file-fill.svg' : '/svg/nav-bar/backpack-fill.svg',
