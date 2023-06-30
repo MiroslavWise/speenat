@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 
-
-import type { IDataSpecEdit } from "types/store/user";
+import FormSpec from "components/spec-edit/FormSpec";
 
 
 
@@ -11,7 +10,7 @@ const AddSpec: NextPage = () => {
                 <div className="content-archive">
                         <div className="header-archive" />
                         <div className="forms-edit">
-                                {/* <FormSpec /> */}
+                                <FormSpec />
                         </div>
                 </div>
         )

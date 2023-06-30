@@ -36,18 +36,25 @@ export interface ISpecList{
         rating: number
 }
 
-export interface IDataReplaceSpec extends ISpecItems {
-        specialization_id: string | number
+export interface IDataReplaceSpec {
+        profile: {
+                status: string
+        }
         university: string
+        scientific_degree_text: string
         scientific_degree: boolean
         work_experience: number | string
         category: string
+        attachments: {
+                name: string
+                file: string
+        }[]
+        rating: number
         // consultation_time: {
         //         '20min'?: number
         //         '5min'?: number
         //         '60min'?: number
         // }
-        consultation_time: any[]
 }
 
 export interface ISpecializationsAll{

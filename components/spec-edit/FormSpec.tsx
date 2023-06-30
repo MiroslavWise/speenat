@@ -8,7 +8,7 @@ import type { ISpecItems } from "types/store/user"
 
 import Loader from "@loader-spin"
 
-import { speakerSpecEdit, specializationsAllList } from "api/api-spec"
+import { speakerSpecAdd, speakerSpecEdit, specializationsAllList } from "api/api-spec"
 import { specializations } from "api/api-user"
 
 const [{ Item }, { Option }] = [Form, Select]
@@ -50,9 +50,9 @@ const FormSpec: FC = () => {
         const { data: specializationsAll, isLoading: loadSpecs } = useQuery(["specializations_all"], () => specializationsAllList(), { refetchOnWindowFocus: false })
         
         const currentSpec: ISpecItems | undefined = useMemo(() => {
-                if (spec) return spec?.find(item => Number(item?.id) === Number(id))
+                if (spec && id) return spec?.find(item => Number(item?.id) === Number(id))
                 return undefined
-        }, [spec])
+        }, [spec, id])
 
         const object_time: any = useMemo(() => {
                 const times: Record<string, number> = {}
@@ -87,6 +87,7 @@ const FormSpec: FC = () => {
                                 category: values?.category,
                                 consultation_time: consultation_time,
                         }
+
                         //@ts-ignore
                         speakerSpecEdit(id, data)
                                 .then(response => console.log("response: ", response))
@@ -94,7 +95,30 @@ const FormSpec: FC = () => {
                                         setLoading(false)
                                 })
                 }
-
+                if (!currentSpec) {
+                        const data = {
+                                profile: {
+                                        status: "online",
+                                },
+                                university: values?.university!,
+                                scientific_degree: values?.scientific_degree!,
+                                scientific_degree_text: '',
+                                work_experience: values?.work_experience!,
+                                category: values?.category!,
+                                rating: 0,
+                                attachments: [],
+                        }
+                        speakerSpecAdd(data)
+                                .then(response => {
+                                        console.log("response: ", response)
+                                })
+                                .catch(e => {
+                                        console.log("error: ", e)
+                                })
+                                .finally(() => {
+                                        setLoading(false)
+                                })
+                }
         }
 
         if(loadSpecs || loadSpeakerSpec) return <Loader />
@@ -107,7 +131,6 @@ const FormSpec: FC = () => {
                         initialValues={{
                                 specialization_id: currentSpec?.specialization_id,
                                 university: currentSpec?.university,
-                                // scientific_degree: currentSpec?.scientific_degree,
                                 work_experience: currentSpec?.work_experience,
                                 category: currentSpec?.category,
                                 consultation_time: object_time
