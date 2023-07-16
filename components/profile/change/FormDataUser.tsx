@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react"
-
+import dayjs from "dayjs"
+import moment from "moment"
 import { Button, DatePicker, Form, Input, Select } from "antd"
+import { InputMask } from '@react-input/mask'
 
 import { useUser } from "store/use-user"
 import { updateDataUser, IValueDataUser } from "api/put-user"
-import dayjs from "dayjs"
-import moment from "moment"
 
 const FormDataUser: FC = () => {
         const [form] = Form.useForm()
@@ -34,10 +34,16 @@ const FormDataUser: FC = () => {
 
         const handleChange = (event: any) => {
                 const inputPhoneNumber = event.target.value
-                if (inputPhoneNumber.startsWith('+7 ')) {
-                        setNumber(inputPhoneNumber)
-                }
+                setNumber(inputPhoneNumber)
         }
+
+        function changeNumber(number: string) {
+                const regex = /(\d{3})(\d{3})(\d{2})(\d{2})/g;
+                const subst = "+7 ($1) $2-$3-$4";
+                return number.replace(regex, subst);
+        }
+
+        console.log("changeNumber: ", changeNumber(number))
 
         return (
                 <Form
@@ -62,10 +68,10 @@ const FormDataUser: FC = () => {
                                                 },
                                         ]}
                                 >
-                                        <Input
+                                        <InputMask 
                                                 className="form-input"
-                                                value={number}
-                                                onChange={handleChange}
+                                                mask="+7 (___) ___-__-__"
+                                                replacement={{ _: /\d/ }}
                                         />
                                 </Form.Item>
                         </div>

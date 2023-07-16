@@ -7,13 +7,13 @@ import loadImage from "functions/load-image";
 
 import { IProfile } from "types/store/profiles";
 
-const ItemSpeaker: FC<IProfile> = ({id, profile:{full_name, avatar_url, status}, specialization, consultation_time}) => {
+const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_url, status}, specialization, consultation_time}) => {
         const { push } = useRouter()
         
         return (
                 <div
                         className="teacher-card"
-                        onClick={() => push(`/teachers/${id}`)}
+                        onClick={() => push(`/teachers/${speaker_id}`)}
                 >
                         <div className="teacher-image">
                                 <Image

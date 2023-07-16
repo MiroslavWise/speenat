@@ -137,6 +137,7 @@ export interface ISpeakerData{
                 "photo_url": string
                 "status": TStatus
                 "specialization": ISpecItems[]
+                full_name: string
         },
         "additional_info": string
         "additional_info_files": string
@@ -247,6 +248,8 @@ export interface ISpecItems{
                 "price": number | string
         }[]
         "rating": number
+        additional_info: string
+        region_living: string
 }
 
 

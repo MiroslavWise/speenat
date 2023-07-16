@@ -13,7 +13,7 @@ import { useUser } from "store/use-user"
 import { useWeb } from "context/WebSocketContext"
 import PhoneOff from "components/icons/phone-off"
 
-const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: ISpeakerData, profile: IUserCurrent }> = ({ data, online, speaker, profile }) => {
+const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: ISpeakerData }> = ({ data, online, speaker }) => {
         
         const user = useUser(state => state.user)
         const contextJanus = useContext(CreateJanusContext)

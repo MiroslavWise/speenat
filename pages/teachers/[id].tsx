@@ -16,7 +16,7 @@ import { replaceHttps } from "functions/replace-https";
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
         
-        const { data, isLoading, refetch } = useQuery(["speaker", id], () => Promise.all([speakerId(id), profileId(id)]))
+        const { data, isLoading, refetch } = useQuery(["speaker", id], () => speakerId(id))
 
         const { wsChannel } = useWeb()
         
@@ -45,13 +45,12 @@ const ProfileTeacher: NextPage = () => {
                 <div className="wrapper-profile">
                         <div className="header-profile" />
                         <div className="profile-content">
-                                <p className="profile-name">{data?.[1]?.full_name!}</p>
+                                <p className="profile-name">{data?.profile?.full_name}</p>
                                 <div className="profile-info-other">
                                         <Specialization
-                                                data={data?.[0]?.get_all_specialization}
-                                                online={data?.[0]?.profile?.status === "online"}
-                                                speaker={data?.[0]!}
-                                                profile={data?.[1]!}
+                                                data={data?.get_all_specialization}
+                                                online={data?.profile?.status === "online"}
+                                                speaker={data!}
                                         />
                                         <Feedbacks />
                                 </div>
@@ -59,7 +58,7 @@ const ProfileTeacher: NextPage = () => {
                         <div className="profile-avatar-div">
                                 <Image
                                         loader={loadImage}
-                                        src={(data &&  data[0]?.profile?.photo_url) ? replaceHttps(data[0]?.profile?.photo_url) : "/images/default.png"}
+                                        src={(data &&  data?.profile?.photo_url) ? replaceHttps(data?.profile?.photo_url) : "/images/default.png"}
                                         alt="ad"
                                         height={115}
                                         width={115}
@@ -70,7 +69,7 @@ const ProfileTeacher: NextPage = () => {
                                                 margin: 0,
                                         }}
                                 />
-                                <div className={`teacher-status-current ${data?.[0]?.profile?.status === "online" ? "status-online" : data?.[0]?.profile?.status === "busy" ? "status-busy":  "status-offline" }`}/>
+                                <div className={`teacher-status-current ${data?.profile?.status === "online" ? "status-online" : data?.profile?.status === "busy" ? "status-busy":  "status-offline" }`}/>
                         </div>
                         
                 </div>

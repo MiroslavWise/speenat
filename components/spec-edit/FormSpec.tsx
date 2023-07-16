@@ -28,7 +28,7 @@ export const INITIAL_TIME = [
 
 
 
-interface IValuesSpecUpdateData{
+interface IValuesSpecUpdateData {
         specialization_id: number | string
         university: string
         scientific_degree: boolean
@@ -39,16 +39,18 @@ interface IValuesSpecUpdateData{
                 '5min'?: number
                 '60min'?: number
         }
+        additional_info: string
+        region_living: string
 
 }
 
 const FormSpec: FC = () => {
         const [form] = Form.useForm()
-        const { query: { id } } = useRouter()
-        const [loading, setLoading] = useState(false) 
+        const { query: { id }, back } = useRouter()
+        const [loading, setLoading] = useState(false)
         const { data: spec, isLoading: loadSpeakerSpec, refetch } = useQuery(['specializations'], () => specializations(), { refetchOnWindowFocus: false })
         const { data: specializationsAll, isLoading: loadSpecs } = useQuery(["specializations_all"], () => specializationsAllList(), { refetchOnWindowFocus: false })
-        
+
         const currentSpec: ISpecItems | undefined = useMemo(() => {
                 if (spec && id) return spec?.find(item => Number(item?.id) === Number(id))
                 return undefined
@@ -57,7 +59,7 @@ const FormSpec: FC = () => {
         const object_time: any = useMemo(() => {
                 const times: Record<string, number> = {}
                 currentSpec?.consultation_time?.forEach(item => {
-                        Object.assign(times, {[item?.sessions_time]: Number(item?.original_price)})
+                        Object.assign(times, { [item?.sessions_time]: Number(item?.original_price) })
                 })
                 return times
         }, [currentSpec])
@@ -79,6 +81,7 @@ const FormSpec: FC = () => {
 
                         const data = {
                                 // ...currentSpec,
+                                id: Number(id),
                                 specialization_id: values?.specialization_id,
                                 university: values?.university,
                                 scientific_degree: values?.scientific_degree,
@@ -121,7 +124,7 @@ const FormSpec: FC = () => {
                 }
         }
 
-        if(loadSpecs || loadSpeakerSpec) return <Loader />
+        if (loadSpecs || loadSpeakerSpec) return <Loader />
 
         return (
                 <Form
@@ -133,7 +136,8 @@ const FormSpec: FC = () => {
                                 university: currentSpec?.university,
                                 work_experience: currentSpec?.work_experience,
                                 category: currentSpec?.category,
-                                consultation_time: object_time
+                                consultation_time: object_time,
+                                additional_info: currentSpec?.additional_info
                         }}
                 >
                         <div className="item-form">
@@ -176,7 +180,7 @@ const FormSpec: FC = () => {
                                         <p>Научная степень</p>
                                         <Switch
                                                 defaultChecked={currentSpec?.scientific_degree}
-                                                style={{marginLeft: 10}}
+                                                style={{ marginLeft: 10 }}
                                         />
                                 </Form.Item>
                         </div>
@@ -184,48 +188,24 @@ const FormSpec: FC = () => {
                                 <p>Опыт работы</p>
                                 <Form.Item
                                         name="work_experience"
-                                        // rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
+                                // rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
                                 >
-                                        <Input type="number" min={0} max={90} className="form-input"  />
-                                </Form.Item>
-                        </div>
-                        <div className="item-form">
-                                <p>Категория</p>
-                                <Form.Item
-                                        name="category"
-                                        rules={[{ required: true, message: 'Выберите категорию!', },]}
-                                >
-                                        
-                                        <Select
-                                                className="form-input-select"
-                                                size="large"
-                                        >
-                                                {
-                                                        CATEGORY.map(({ value, label}) => (
-                                                                <Option
-                                                                        key={`${value}_cat`}
-                                                                        value={value}
-                                                                >
-                                                                        {label}
-                                                                </Option>
-                                                        ))
-                                                }
-                                        </Select>
+                                        <Input type="number" min={0} max={90} className="form-input" />
                                 </Form.Item>
                         </div>
                         <div className="item-form">
                                 <p>Цена за сеанс(ы)</p>
                                 {
                                         INITIAL_TIME.map(item => (
-                                                <Row key={item?.sessions_time} style={{alignItems: 'center'}}>
+                                                <Row key={item?.sessions_time} style={{ alignItems: 'center' }}>
                                                         <b> до {item?.sessions_time?.replace('min', ' мин')}: </b>
                                                         <Form.Item
                                                                 name={['consultation_time', item?.sessions_time]}
-                                                                style={{margin: 0, padding: 0}}
+                                                                style={{ margin: 0, padding: 0 }}
                                                         >
                                                                 <Input
                                                                         type="number"
-                                                                        style={{marginLeft: 10}}
+                                                                        style={{ marginLeft: 10 }}
                                                                         max={1000000}
                                                                         min={0}
                                                                         className="form-input"
@@ -235,6 +215,22 @@ const FormSpec: FC = () => {
                                         ))
                                 }
                         </div>
+                        <div className="item-form">
+                                <p>Регион проживания</p>
+                                <Form.Item
+                                        name="region_living"
+                                >
+                                        <Input maxLength={50} className="form-input" />
+                                </Form.Item>
+                        </div>
+                        <div className="item-form">
+                                <p>Дополнительные сведения</p>
+                                <Form.Item
+                                        name="additional_info"
+                                >
+                                        <Input maxLength={50} className="form-input" />
+                                </Form.Item>
+                        </div>
                         <br />
                         <div className="item-form">
                                 <Button
@@ -242,7 +238,16 @@ const FormSpec: FC = () => {
                                         htmlType="submit"
                                         loading={loading}
                                 >
-                                        <p>Обновить</p>
+                                        <p>Сохранить</p>
+                                </Button>
+                        </div>
+                        <div className="item-form">
+                                <Button
+                                        className="state-revers"
+                                        onClick={() => { back() }}
+                                        loading={loading}
+                                >
+                                        <p>Отмена</p>
                                 </Button>
                         </div>
                 </Form>
