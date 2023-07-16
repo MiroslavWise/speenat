@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 import { Button, DatePicker, Form, Input, Select } from "antd"
 
@@ -7,9 +7,10 @@ import { updateDataUser, IValueDataUser } from "api/put-user"
 import dayjs from "dayjs"
 import moment from "moment"
 
-const FormDataUser: FC = () => { 
+const FormDataUser: FC = () => {
         const [form] = Form.useForm()
-        const [loading, setLoading]= useState(false)
+        const [number, setNumber] = useState("")
+        const [loading, setLoading] = useState(false)
 
         const user = useUser(state => state.user)
         const getReloadUser = useUser(state => state.getUserData)
@@ -21,6 +22,21 @@ const FormDataUser: FC = () => {
                                 getReloadUser(false)
                                 setLoading(false)
                         })
+        }
+
+        useEffect(() => {
+                if (user?.profile?.phone) {
+                        setNumber(user?.profile?.phone)
+                } else {
+                        setNumber("+7 ")
+                }
+        }, [user?.profile?.phone])
+
+        const handleChange = (event: any) => {
+                const inputPhoneNumber = event.target.value
+                if (inputPhoneNumber.startsWith('+7 ')) {
+                        setNumber(inputPhoneNumber)
+                }
         }
 
         return (
@@ -42,14 +58,15 @@ const FormDataUser: FC = () => {
                                         rules={[
                                                 {
                                                         required: true,
-                                                        message: 'Номер',
+                                                        message: "+7 (___) ___-__-__",
                                                 },
-                                                {
-                                                        max: 11, min: 11, message: 'Введите 11 цифр номера!'
-                                                }
                                         ]}
                                 >
-                                        <Input maxLength={11} type="number" className="form-input" />
+                                        <Input
+                                                className="form-input"
+                                                value={number}
+                                                onChange={handleChange}
+                                        />
                                 </Form.Item>
                         </div>
                         <div className="item-form">
