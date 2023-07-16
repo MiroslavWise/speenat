@@ -31,6 +31,12 @@ const ItemsData: FC = () => {
                 <>
                         <div className="item-data-small">
                                 <div className="circle-image">
+                                        <Envelope size={18} />
+                                </div>
+                                <p>{ user?.profile?.user?.email }</p>
+                        </div>
+                        <div className="item-data-small">
+                                <div className="circle-image">
                                         <CurrentLocation size={18} />
                                 </div>
                                 <p>{ user?.profile?.address || "No adress" }</p>
@@ -46,12 +52,6 @@ const ItemsData: FC = () => {
                                         <Wallet size={18} />
                                 </div>
                                 <p>{ Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
-                        </div>
-                        <div className="item-data-small">
-                                <div className="circle-image">
-                                        <Envelope size={18} />
-                                </div>
-                                <p>{ user?.profile?.user?.email }</p>
                         </div>
                         {
                                 user?.profile?.gender === "male"

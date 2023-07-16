@@ -32,20 +32,6 @@ const FormName: FC = () => {
                         onFinish={onSubmit}
                 >
                         <div className="item-form">
-                                <p>Как к Вам обращаться (ФИО)</p>
-                                <Form.Item
-                                        name="name"
-                                        rules={[
-                                                {
-                                                        required: true,
-                                                        message: 'Введите имя!',
-                                                },
-                                        ]}
-                                >
-                                        <Input maxLength={25} className="form-input" />
-                                </Form.Item>
-                        </div>
-                        <div className="item-form">
                                 <p>E-mail</p>
                                 <Form.Item
                                         name="email"
@@ -57,6 +43,20 @@ const FormName: FC = () => {
                                         ]}
                                 >
                                         <Input maxLength={25} className="form-input disabled" disabled />
+                                </Form.Item>
+                        </div>
+                        <div className="item-form">
+                                <p>Как к Вам обращаться (ФИО)</p>
+                                <Form.Item
+                                        name="name"
+                                        rules={[
+                                                {
+                                                        required: true,
+                                                        message: 'Введите имя!',
+                                                },
+                                        ]}
+                                >
+                                        <Input maxLength={25} className="form-input" />
                                 </Form.Item>
                         </div>
                         <div className="item-form">

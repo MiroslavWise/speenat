@@ -31,7 +31,7 @@ const CurrentSpec: NextPage = () => {
                         })
         }
 
-        if(isLoading) return <Loader />
+        if (isLoading) return <Loader />
 
         return (
                 <div className="content-archive">
@@ -67,10 +67,15 @@ const CurrentSpec: NextPage = () => {
                                         <p>Научная степень, доп:</p>
                                         <i>{currentSpec?.scientific_degree_text || "Нет"}</i>
                                 </div>
-                                <div className="item-form">
-                                        <p>Опыт работы:</p>
-                                        <i>{work_experience(currentSpec?.work_experience || 0)}</i>
-                                </div>
+                                {
+                                        currentSpec?.work_experience
+                                                ? (
+                                                        <div className="item-form">
+                                                                <p>Опыт работы:</p>
+                                                                <i>{work_experience(currentSpec?.work_experience || 0)}</i>
+                                                        </div>
+                                                ) : null
+                                }
                                 <div className="item-form">
                                         <p>Категория:</p>
                                         <i>{currentSpec?.get_category_display}</i>
@@ -81,7 +86,7 @@ const CurrentSpec: NextPage = () => {
                                                 currentSpec && currentSpec?.consultation_time?.length > 0
                                                 &&
                                                 currentSpec?.consultation_time?.map(item => (
-                                                        <i>до {item?.sessions_time?.replace('min', ' мин')}: { item?.price }₸</i>
+                                                        <i>до {item?.sessions_time?.replace('min', ' мин')}: {item?.price}₸</i>
                                                 ))
                                         }
                                 </div>

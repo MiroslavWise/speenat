@@ -107,7 +107,7 @@ const RegisterForm: FC = () => {
                                 <Input
                                         type="text"
                                         className="input-login"
-                                        placeholder="Ваш промокод"
+                                        placeholder="Ваш промокод (не обязательное поле)"
                                 />
                         </Item>
                         

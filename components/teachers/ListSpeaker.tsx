@@ -35,7 +35,7 @@ const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
                                 && (
                                         <div className="descriptions">
                                                 <p>
-                                                        Извините, но преподавателей по данному запросу нет, но вы можете открыть весь список, и записаться на определённое время <span style={{color: 'var(--secondary-color)'}} onClick={handleOpen}>открыть</span>
+                                                Извините, но преподавателей по данному запросу нет. Вы можете открыть весь список и записаться на определённое время <span style={{color: 'var(--secondary-color)'}} onClick={handleOpen}>открыть</span>
                                                 </p>
                                         </div>
                                 )

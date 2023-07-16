@@ -56,7 +56,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                         }}
                 >
                         <div className="wrapper-search">
-                                <div className="block-search">
+                                {/* <div className="block-search">
                                         <p>Длительность сессии</p>
                                         <div className="buttons">
                                                 {
@@ -72,7 +72,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                                 }
                                         </div>
                                 </div>
-                                <Divider />
+                                <Divider /> */}
                                 <div className="block-search">
                                         <p>Цена сессии</p>
                                         <div className="inputs">

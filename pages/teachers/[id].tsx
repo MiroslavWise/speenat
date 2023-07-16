@@ -37,7 +37,9 @@ const ProfileTeacher: NextPage = () => {
                 return wsChannel?.removeEventListener('message', eventMessage)
         }, [wsChannel])
 
-        if(isLoading) return <Loader />
+        if (isLoading) return <Loader />
+        
+        console.log("data: ", data)
 
         return (
                 <div className="wrapper-profile">

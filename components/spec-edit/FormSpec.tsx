@@ -184,7 +184,7 @@ const FormSpec: FC = () => {
                                 <p>Опыт работы</p>
                                 <Form.Item
                                         name="work_experience"
-                                        rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
+                                        // rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
                                 >
                                         <Input type="number" min={0} max={90} className="form-input"  />
                                 </Form.Item>
