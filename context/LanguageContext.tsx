@@ -20,9 +20,9 @@ const antdLangMap = { en, ru, kz } as Record<string, any>;
 
 const AntdLanguageProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
         const { i18n } = useTranslation();
-        const [language, setLanguage] = useState(antdLangMap[i18n.language] || ru);
+        const [language, setLanguage] = useState(antdLangMap[i18n.language] || kz);
 
-        const changeLanguage = (lang: string) => setLanguage(antdLangMap?.[lang] || ru);
+        const changeLanguage = (lang: string) => setLanguage(antdLangMap?.[lang] || kz);
 
         return (
                 <AntdLanguageContext.Provider value={{ language, changeLanguage }}>

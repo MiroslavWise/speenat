@@ -11,7 +11,7 @@ export default i18nPlugin
         .use(initReactI18next)
         .init({
                 resources: { ru: { translations: ru }, en: { translations: en }, kz: { translations: kz } },
-                fallbackLng: 'ru',
+                fallbackLng: 'kz',
                 keySeparator: false,
                 supportedLngs: ['ru', 'en', 'kz'],
                 ns: ['translations'],
