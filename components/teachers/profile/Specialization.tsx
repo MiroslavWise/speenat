@@ -31,7 +31,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                 const onTimer = setTimeout(() => {
                         if (!janusVisible) {
                                 handleCancelCall()
-                                timeDetected()
+                                // timeDetected()
                         } 
                 }, 60_000)
 

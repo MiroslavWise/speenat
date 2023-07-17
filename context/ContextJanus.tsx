@@ -1,4 +1,4 @@
-import { type FC, type ReactNode, type DispatchWithoutAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect } from "react";
+import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
 const $ = require('jquery')
@@ -17,6 +17,7 @@ interface IJanus {
         visible: boolean
         videocall: any
         propsCall: ICallData | null
+        setPropsCall: Dispatch<SetStateAction<ICallData | null>>
         doHangup: DispatchWithoutAction
         registerUsername: DispatchWithoutAction
 }
@@ -222,7 +223,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                                                 console.log(" ---update status is_speaker offline--- ")
                                                                                                 updateStatus("offline")
                                                                                         }
-                                                                                        route.push(`/feedback-conference`, undefined, { shallow: true })
+                                                                                        route.push(`/feedback`, undefined, { shallow: true })
                                                                                         setVisible(false)
                                                                                         tracks = null
                                                                                         localTracks = {}
@@ -518,6 +519,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         propsCall: propsCall,
                         doHangup: doHangup,
                         registerUsername: registerUsername,
+                        setPropsCall: setPropsCall,
                 }}>
                         {children}
                         <ModalCallingJanus
