@@ -1,31 +1,15 @@
 import { Dispatch, FC, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react"
-import useWebSocket, { ReadyState, SendMessage } from "react-use-websocket";
 
 import { URL_SOCKET } from "api/api-general"
 import userData from "helpers/user-data"
 
-const ContextWebSocket = createContext<{
+export const ContextWebSocket = createContext<{
         wsChannel: WebSocket | undefined
         setWsChannel: Dispatch<SetStateAction<WebSocket | undefined>>
 } | undefined>(undefined)
 
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
         const [wsChannel, setWsChannel] = useState<WebSocket | undefined>(undefined)
-
-        useEffect(() => {
-                const messageEvent = (event: any) => {
-                        console.log("event: ", event)
-                }
-
-                if (wsChannel !== undefined) {
-                        wsChannel?.addEventListener('message', messageEvent)
-                }
-
-                return () => {
-                        wsChannel?.removeEventListener('message', messageEvent)
-                }
-        }, [wsChannel])
-
 
         useEffect(() => {
                 let ws: WebSocket;

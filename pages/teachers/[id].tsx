@@ -10,7 +10,7 @@ import Feedbacks from "components/teachers/profile/Feedbacks";
 
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useWeb } from "context/WebSocketContext";
-import { speakerId, profileId } from "api/api-user";
+import { speakerId } from "api/api-user";
 import loadImage from "functions/load-image";
 import { replaceHttps } from "functions/replace-https";
 
@@ -21,22 +21,20 @@ const ProfileTeacher: NextPage = () => {
         const { data, isLoading, refetch } = useQuery(["speaker", id], () => speakerId(id))
 
         const { wsChannel } = useWeb()
-        
+
         useEffect(() => {
-                const eventMessage = (event: MessageEventInit<any>) => {
-                        if (event) {
-                                const message: any = JSON.parse(event?.data)
-                                if (message?.data?.type === "update_speaker_list") {
-                                        refetch()
-                                }
+                const eventUpdate = (event: MessageEventInit<any>) => {
+                        const lastMessage: any = JSON.parse(event?.data)
+                        if (lastMessage?.data?.type === "update_speaker_list") {
+                                refetch()
                         }
                 }
-
                 if (wsChannel) {
-                        wsChannel?.addEventListener('message', eventMessage)
+                        wsChannel?.addEventListener('message', eventUpdate)
                 }
 
-                return wsChannel?.removeEventListener('message', eventMessage)
+                return () => wsChannel?.removeEventListener('message', eventUpdate)
+
         }, [wsChannel])
 
         if (isLoading) return <Loader />
