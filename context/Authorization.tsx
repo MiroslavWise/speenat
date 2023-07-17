@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 import type { TAuthStateType, IAuthContext } from "types/auth";
@@ -11,6 +12,7 @@ import { useUser } from "store/use-user";
 const AuthorizationContext = createContext<IAuthContext | undefined>(undefined)
 
 const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
+        const { push } = useRouter()
         const [authState, setAuthState] = useState<TAuthStateType>("gates")
         const getReset = useUser(state => state.getReset)
 
@@ -24,6 +26,7 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
                 setAuthState("sign-in")
                 userData.delete()
                 getReset()
+                push("/", undefined)
         }
 
         const ShowComponent = Routers[authState]
