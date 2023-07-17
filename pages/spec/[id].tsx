@@ -12,11 +12,13 @@ import ListAttachments from "components/spec-edit/ListAttachments";
 
 import { specializationDelete, specializations } from "api/api-user";
 import { work_experience } from "functions/work-exp";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 
 const CurrentSpec: NextPage = () => {
         const { query: { id }, push } = useRouter()
         const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
+        useDocumentTitle("Моя специализация")
 
         const currentSpec: ISpecItems | undefined = useMemo(() => {
                 if (data) return data?.find(item => Number(item?.id) === Number(id))
@@ -63,10 +65,6 @@ const CurrentSpec: NextPage = () => {
                                         <p>Научная степень:</p>
                                         <i>{currentSpec?.scientific_degree ? "Есть" : "Нет"}</i>
                                 </div>
-                                <div className="item-form">
-                                        <p>Научная степень, доп:</p>
-                                        <i>{currentSpec?.scientific_degree_text || "Нет"}</i>
-                                </div>
                                 {
                                         currentSpec?.work_experience
                                                 ? (
@@ -77,10 +75,6 @@ const CurrentSpec: NextPage = () => {
                                                 ) : null
                                 }
                                 <div className="item-form">
-                                        <p>Категория:</p>
-                                        <i>{currentSpec?.get_category_display}</i>
-                                </div>
-                                <div className="item-form">
                                         <p>Цена за сеанс(ы):</p>
                                         {
                                                 currentSpec && currentSpec?.consultation_time?.length > 0
@@ -90,6 +84,24 @@ const CurrentSpec: NextPage = () => {
                                                 ))
                                         }
                                 </div>
+                                {
+                                        currentSpec?.region_living
+                                                ? (
+                                                        <div className="item-form">
+                                                                <p>Регион проживания:</p>
+                                                                <i>{currentSpec?.region_living}</i>
+                                                        </div>
+                                                ) : null
+                                }
+                                {
+                                        currentSpec?.additional_info
+                                                ? (
+                                                        <div className="item-form">
+                                                                <p>Дополнительные сведения:</p>
+                                                                <i>{currentSpec?.additional_info}</i>
+                                                        </div>
+                                                ) : null
+                                }
                                 <Divider />
                                 <ListAttachments edit={false} />
                         </div>

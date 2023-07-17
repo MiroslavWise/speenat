@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
@@ -6,9 +7,9 @@ import { Table } from "antd";
 
 import Loader from "@loader-spin";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 import { conferenceAll, usersAll, speakersAll } from "api/api-user";
-import { useMemo } from "react";
 
 const columns = [
         {
@@ -28,6 +29,7 @@ const columns = [
 const Analytics: NextPage = () => {
         const isStaff = useUser(state => state.is_staff)
         const loading = useUser(state => state.loading)
+        useDocumentTitle("Архив")
 
         const { data, isLoading } = useQuery(["analytics"], () => Promise.all([usersAll(), conferenceAll(), speakersAll()]))
 

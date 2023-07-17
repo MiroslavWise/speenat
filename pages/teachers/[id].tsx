@@ -8,6 +8,7 @@ import Loader from "@loader-spin";
 import Specialization from "components/teachers/profile/Specialization";
 import Feedbacks from "components/teachers/profile/Feedbacks";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useWeb } from "context/WebSocketContext";
 import { speakerId, profileId } from "api/api-user";
 import loadImage from "functions/load-image";
@@ -15,6 +16,7 @@ import { replaceHttps } from "functions/replace-https";
 
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
+        useDocumentTitle("Преподаватель")
         
         const { data, isLoading, refetch } = useQuery(["speaker", id], () => speakerId(id))
 

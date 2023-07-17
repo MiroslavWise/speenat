@@ -1,20 +1,20 @@
-import { FC } from "react";
-import { useRouter } from "next/router";
-import moment from "moment";
+import { FC } from "react"
+import { useRouter } from "next/router"
+import moment from "moment"
 
-import { Button } from "antd";
+import { Button } from "antd"
 
-import CalendarEvent from "@icons-calendar-event";
-import CurrentLocation from "@icons-current-location";
-import Wallet from "@icons-wallet";
-import Envelope from "@icons-envelope";
-import MaleSign from "@icons-male-sign";
-import FemaleSign from "@icons-female-sign";
-import Phone from "@icons-phone";
+import CalendarEvent from "@icons-calendar-event"
+import CurrentLocation from "@icons-current-location"
+import Wallet from "@icons-wallet"
+import Envelope from "@icons-envelope"
+import MaleSign from "@icons-male-sign"
+import FemaleSign from "@icons-female-sign"
+import Phone from "@icons-phone"
 
-import { useUser } from "store/use-user";
-import { useAuth } from "context/Authorization";
-
+import { useUser } from "store/use-user"
+import { useAuth } from "context/Authorization"
+import { changeNumber } from "functions/change-number"
 
 const ItemsData: FC = () => {
         const { push } = useRouter()
@@ -78,7 +78,7 @@ const ItemsData: FC = () => {
                                 <div className="circle-image">
                                         <Phone size={18} />
                                 </div>
-                                <p>{ user?.profile?.phone }</p>
+                                <p>{changeNumber(user?.profile?.phone.toString()!)}</p>
                         </div>
                         <div className="buttons">
                                 <Button

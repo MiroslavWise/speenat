@@ -6,7 +6,10 @@ import FormName from "components/profile/change/FormName";
 import FormDataUser from "components/profile/change/FormDataUser";
 import UpdatePhoto from "components/profile/change/UpdatePhoto";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
+
 const Change: NextPage = () => {
+        useDocumentTitle("Редактирование профиля")
 
         return (
                 <div className="wrapper-profile show-animate">

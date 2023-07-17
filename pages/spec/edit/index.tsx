@@ -2,9 +2,10 @@ import { NextPage } from "next";
 
 import FormSpec from "components/spec-edit/FormSpec";
 
-
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const AddSpec: NextPage = () => {
+        useDocumentTitle("Создание специализации")
 
         return (
                 <div className="content-archive">

@@ -151,14 +151,20 @@
                         margin-bottom: 30px;
                         background: white;
                         margin: 0;
-                        border-color: var( --gray-color);
-                        padding: 12px;
+                        border-color: var( --gray-color) !important;
+                        // padding: 12px;
                         height: 40px;
                         border-radius: 17px;
                         color: var(--premium-color);
+
+                        &.mask{
+                                padding-left: 12px;
+                                width: calc(100% - 16px);
+                                outline: none !important;
+                        }
                 
                         &:focus, :hover{
-                                border: 1px solid #666666;
+                                border: 1px solid #666666 !important;
                         }
                         &.date-picker{
                                 border: transparent !important;

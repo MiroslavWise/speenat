@@ -5,15 +5,17 @@ import Image from "next/image";
 import ItemsData from "components/profile/ItemsData";
 import Loader from "@loader-spin";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
-import loadImage from "functions/load-image";
 import { replaceHttps } from "functions/replace-https";
+import loadImage from "functions/load-image";
 
 
 const Profile: FC = () => {
         const { push } = useRouter()
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
+        useDocumentTitle("Мой профиль")
 
         if(loading) return <Loader />
         

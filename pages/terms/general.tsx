@@ -1,14 +1,12 @@
 import { NextPage } from "next";
-
-
-
-
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const General: NextPage = () => {
+        useDocumentTitle("Условия использования учебного портала")
 
         return (
                 <div className="wrapper terms show-animate">
-                        <p className="title">Условия использования медицинского портала (далее – Портала) «Speenat»</p>
+                        <p className="title">Условия использования учебного портала (далее – Портала) «Speenat»</p>
                         <p className="sub-title">1. Общие положения</p>
                         <p>1.1. ТОО «Speenat» (далее – «Speenat») предлагает Студент сети Интернет (далее – «Учащийся»)
                                 использовать Портал «Speenat», доступный по адресу <a href="https://speenat.kz/">https://speenat.kz/</a> (далее – «Портал»).

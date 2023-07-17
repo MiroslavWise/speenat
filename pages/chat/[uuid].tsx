@@ -8,12 +8,14 @@ import Messages from "components/chat/Messages";
 
 import { useUser } from "store/use-user";
 import { getChatData } from "api/api-chat";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const CurrentChatUUID: NextPage = () => {
         const { query, push } = useRouter()
         const { data, isLoading } = useQuery(["chat_data", query.uuid], () => getChatData(query.uuid), { refetchOnWindowFocus: false })
         const loadingUser = useUser(state => state.loading)
         const isSpeaker = useUser(state => state.is_speaker)
+        useDocumentTitle("Чат")
 
         useEffect(() => {
                 if (isSpeaker && !loadingUser && data) {

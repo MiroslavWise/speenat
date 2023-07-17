@@ -1,6 +1,8 @@
 import { NextPage } from "next";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const SafePay: NextPage = () => {
+        useDocumentTitle("Безопасность онлайн-платежей")
 
         return (
                 <div className="wrapper terms show-animate">

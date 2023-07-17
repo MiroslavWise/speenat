@@ -5,6 +5,7 @@ import { Button } from "antd";
 
 import Loader from "@loader-spin";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { specializations, specializationDelete } from "api/api-user";
 import { work_experience } from "functions/work-exp";
 import { useRouter } from "next/router";
@@ -12,6 +13,7 @@ import { useRouter } from "next/router";
 const Spec: NextPage = () => {
         const { push } = useRouter()
         const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
+        useDocumentTitle("Мои специализации")
 
         const onDeleteSpec = (value: number) => {
                 specializationDelete(value)
@@ -39,7 +41,6 @@ const Spec: NextPage = () => {
                                                                 <div className="descriptions">
                                                                         <p>ВУЗ: <span>{item?.university}</span></p>
                                                                         <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
-                                                                        <p>Категория: <span>{item?.get_category_display}</span></p>
                                                                         <p>Продолжительность консультации: </p>
                                                                         {
                                                                                 item?.consultation_time?.map(time => (
@@ -51,6 +52,8 @@ const Spec: NextPage = () => {
                                                                                         </p>
                                                                                 ))
                                                                         }
+                                                                        <p>Регион проживания: <span>{item?.region_living}</span></p>
+                                                                        <p>Дополнительные сведения: <span>{item?.additional_info}</span></p>
                                                                         <br />
                                                                         <div className="buttons">
                                                                                 <Button

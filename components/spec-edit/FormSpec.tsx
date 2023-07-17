@@ -46,7 +46,7 @@ interface IValuesSpecUpdateData {
 
 const FormSpec: FC = () => {
         const [form] = Form.useForm()
-        const { query: { id }, back } = useRouter()
+        const { query: { id }, back, push } = useRouter()
         const [loading, setLoading] = useState(false)
         const { data: spec, isLoading: loadSpeakerSpec, refetch } = useQuery(['specializations'], () => specializations(), { refetchOnWindowFocus: false })
         const { data: specializationsAll, isLoading: loadSpecs } = useQuery(["specializations_all"], () => specializationsAllList(), { refetchOnWindowFocus: false })
@@ -68,21 +68,15 @@ const FormSpec: FC = () => {
         const onUpdate = (values: IValuesSpecUpdateData) => {
                 setLoading(true)
                 if (!!currentSpec) {
-                        const consultation_time = [
-                                ...currentSpec?.consultation_time?.map(item => {
-                                        return {
-                                                ...item,
-                                                id: item?.id,
-                                                original_price: values.hasOwnProperty(item?.sessions_time) ? values?.consultation_time[item?.sessions_time] : 0,
-                                                sessions_time: item?.sessions_time
-                                        }
-                                })
-                        ]
+                        const consultation_time = [{
+                                sessions_time: "20min",
+                                original_price: values?.consultation_time,
+                        }]
                         const data = {
                                 id: Number(id),
                                 specialization_id: values.specialization_id,
                                 university: values.university,
-                                scientific_degree: values.scientific_degree || "",
+                                scientific_degree: values.scientific_degree || false,
                                 work_experience: values.work_experience || 0,
                                 consultation_time: consultation_time,
                                 region_living: values.region_living,
@@ -91,22 +85,23 @@ const FormSpec: FC = () => {
 
                         //@ts-ignore
                         speakerSpecEdit(id, data)
-                                .then(response => console.log("response: ", response))
+                                .then(response => {
+                                        console.log("response: ", response)
+                                        push(`/spec`, undefined, { shallow: true })
+                                })
                                 .finally(() => {
                                         setLoading(false)
                                 })
                 }
                 if (!currentSpec) {
-                        const consultation_time = Object
-                                .entries(values?.consultation_time)
-                                .map(item => ({
-                                        sessions_time: item[0],
-                                        original_price: item[1],
-                                }))
+                        const consultation_time = [{
+                                sessions_time: "20min",
+                                original_price: values?.consultation_time,
+                        }]
                         const data = {
                                 specialization_id: values.specialization_id,
                                 university: values.university,
-                                scientific_degree: values.scientific_degree || "",
+                                scientific_degree: values.scientific_degree || false,
                                 work_experience: values.work_experience || 0,
                                 consultation_time: consultation_time,
                                 region_living: values.region_living,
@@ -116,6 +111,7 @@ const FormSpec: FC = () => {
                         speakerSpecAdd(data)
                                 .then(response => {
                                         console.log("response: ", response)
+                                        push(`/spec`, undefined, { shallow: true })
                                 })
                                 .catch(e => {
                                         console.log("error: ", e)
@@ -138,7 +134,8 @@ const FormSpec: FC = () => {
                                 university: currentSpec?.university,
                                 work_experience: currentSpec?.work_experience,
                                 category: currentSpec?.category,
-                                consultation_time: object_time,
+                                consultation_time: currentSpec?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price,
+                                region_living: currentSpec?.region_living,
                                 additional_info: currentSpec?.additional_info
                         }}
                 >
@@ -170,16 +167,15 @@ const FormSpec: FC = () => {
                                         name="university"
                                         rules={[{ required: true, message: 'Введите название ВУЗа!', },]}
                                 >
-
                                         <Input maxLength={50} className="form-input" />
                                 </Form.Item>
                         </div>
                         <div className="item-form">
+                                <p>Научная степень</p>
                                 <Form.Item
                                         name="scientific_degree"
-                                        rules={[{ required: false, message: 'Введите!', },]}
+                                        rules={[{ required: false, message: 'Введите!', }]}
                                 >
-                                        <p>Научная степень</p>
                                         <Switch
                                                 defaultChecked={currentSpec?.scientific_degree}
                                                 style={{ marginLeft: 10 }}
@@ -197,25 +193,17 @@ const FormSpec: FC = () => {
                         </div>
                         <div className="item-form">
                                 <p>Цена за сеанс(ы)</p>
-                                {
-                                        INITIAL_TIME.map(item => (
-                                                <Row key={item?.sessions_time} style={{ alignItems: 'center' }}>
-                                                        <b> до {item?.sessions_time?.replace('min', ' мин')}: </b>
-                                                        <Form.Item
-                                                                name={['consultation_time', item?.sessions_time]}
-                                                                style={{ margin: 0, padding: 0 }}
-                                                        >
-                                                                <Input
-                                                                        type="number"
-                                                                        style={{ marginLeft: 10 }}
-                                                                        max={1000000}
-                                                                        min={0}
-                                                                        className="form-input"
-                                                                />
-                                                        </Form.Item>
-                                                </Row>
-                                        ))
-                                }
+                                <Form.Item
+                                        name="consultation_time"
+                                        style={{ margin: 0, padding: 0 }}
+                                >
+                                        <Input
+                                                type="number"
+                                                max={1000000}
+                                                min={0}
+                                                className="form-input"
+                                        />
+                                </Form.Item>
                         </div>
                         <div className="item-form">
                                 <p>Регион проживания</p>

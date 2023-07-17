@@ -4,16 +4,18 @@ import { useRouter } from "next/router"
 
 import { Button } from "antd"
 
+import Loader from "@loader-spin"
 import DrawerSearch from "components/teachers/DrawerSearch"
 import ListSpeaker from "components/teachers/ListSpeaker"
 
-import Loader from "@loader-spin"
+import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
 
 const Teachers: NextPage = () => {
         const { push } = useRouter()
         const [open, setOpen] = useState(false)
         const handleOpen = () => setOpen(true)
+        useDocumentTitle("Преподаватели")
 
         const isSpeaker = useUser(state => state.is_speaker)
         const loadingUser = useUser(state => state.loading)

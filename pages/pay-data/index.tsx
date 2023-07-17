@@ -1,16 +1,12 @@
 import { Button, Form, Input, InputNumber } from "antd";
 import { NextPage } from "next";
 
-
-
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
-
-
-
-
 
 const PayData: NextPage = () => {
         const isSpeaker = useUser(state => state.is_speaker)
+        useDocumentTitle("Финансы")
 
         const onOutMoney = (values: { 'money-out': any }) => {
 

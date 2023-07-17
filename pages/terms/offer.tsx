@@ -1,6 +1,8 @@
 import { NextPage } from "next";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const Offer: NextPage = () => {
+        useDocumentTitle("ПУБЛИЧНАЯ ОФЕРТА")
 
         return (
                 <div className="wrapper terms show-animate">

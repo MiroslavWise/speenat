@@ -7,6 +7,7 @@ import moment from "moment";
 
 import Loader from "@loader-spin";
 
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 import { replaceHttps } from "functions/replace-https";
 import { srcImage } from "functions/src-image";
@@ -18,6 +19,7 @@ const Chats: NextPage = () => {
         const { data, isLoading } = useQuery(["chats"], () => chatsAll())
         const loadingUser = useUser(state => state.loading)
         const isSpeaker = useUser(state => state.is_speaker)
+        useDocumentTitle("Чат")
 
         if(isLoading || loadingUser) return <Loader />
 

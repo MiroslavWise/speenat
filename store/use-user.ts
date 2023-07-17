@@ -2,6 +2,7 @@ import { create } from "zustand"
 
 import type { IUser, IUserStore } from "types/store/user"
 import { profileMy } from "api/api-user"
+import { updateStatus } from "api/api-status"
 
 export const useUser = create<IUserStore>(
         (set, get) => ({
@@ -29,6 +30,9 @@ export const useUser = create<IUserStore>(
                                 })
                 },
                 getReset() {
+                        if (get().is_speaker) {
+                                updateStatus("offline")
+                        }
                         set({
                                 user: undefined,
                                 loading: false,

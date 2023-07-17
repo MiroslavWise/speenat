@@ -5,11 +5,11 @@ import { Button, DatePicker, Form, Input, Select } from "antd"
 import { InputMask } from '@react-input/mask'
 
 import { useUser } from "store/use-user"
+import { changeNumber } from "functions/change-number"
 import { updateDataUser, IValueDataUser } from "api/put-user"
 
 const FormDataUser: FC = () => {
         const [form] = Form.useForm()
-        const [number, setNumber] = useState("")
         const [loading, setLoading] = useState(false)
 
         const user = useUser(state => state.user)
@@ -27,30 +27,11 @@ const FormDataUser: FC = () => {
                         })
         }
 
-        useEffect(() => {
-                if (user?.profile?.phone) {
-                        setNumber(user?.profile?.phone)
-                } else {
-                        setNumber("+7 ")
-                }
-        }, [user?.profile?.phone])
-
-        const handleChange = (event: any) => {
-                const inputPhoneNumber = event.target.value
-                setNumber(inputPhoneNumber)
-        }
-
-        function changeNumber(number: string) {
-                const regex = /(\d{3})(\d{3})(\d{2})(\d{2})/g;
-                const subst = "+7 ($1) $2-$3-$4";
-                return number.replace(regex, subst);
-        }
-
         return (
                 <Form
                         form={form}
                         initialValues={{
-                                phone: user?.profile?.phone,
+                                phone: changeNumber(user?.profile?.phone?.toString()!),
                                 address: user?.profile?.address,
                                 birthday: user?.profile?.birthday ? dayjs(user?.profile?.birthday) : dayjs(),
                                 gender: user?.profile?.gender,
@@ -70,7 +51,7 @@ const FormDataUser: FC = () => {
                                         ]}
                                 >
                                         <InputMask 
-                                                className="form-input"
+                                                className="form-input mask"
                                                 mask="+7 (___) ___-__-__"
                                                 replacement={{ _: /\d/ }}
                                         />
