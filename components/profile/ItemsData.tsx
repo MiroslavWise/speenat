@@ -33,19 +33,19 @@ const ItemsData: FC = () => {
                                 <div className="circle-image">
                                         <Envelope size={18} />
                                 </div>
-                                <p>{ user?.profile?.user?.email }</p>
+                                <p>{user?.profile?.user?.email}</p>
                         </div>
                         <div className="item-data-small">
                                 <div className="circle-image">
                                         <CurrentLocation size={18} />
                                 </div>
-                                <p>{ user?.profile?.address || "No adress" }</p>
+                                <p>{user?.profile?.address || "No adress"}</p>
                         </div>
                         <div className="item-data-small">
                                 <div className="circle-image">
                                         <Wallet size={18} />
                                 </div>
-                                <p>{ Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
+                                <p>{Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
                         </div>
                         {
                                 user?.profile?.gender === "male"
@@ -54,7 +54,7 @@ const ItemsData: FC = () => {
                                                         <div className="circle-image">
                                                                 <MaleSign size={18} />
                                                         </div>
-                                                        <p>{ user?.profile?.gender_display }</p>
+                                                        <p>{user?.profile?.gender_display}</p>
                                                 </div>
                                         )
                                         : user?.profile?.gender === "female"
@@ -63,17 +63,22 @@ const ItemsData: FC = () => {
                                                                 <div className="circle-image">
                                                                         <FemaleSign size={18} />
                                                                 </div>
-                                                                <p>{ user?.profile?.gender_display }</p>
+                                                                <p>{user?.profile?.gender_display}</p>
                                                         </div>
                                                 )
                                                 : null
                         }
-                        <div className="item-data-small">
-                                <div className="circle-image">
-                                        <Phone size={18} />
-                                </div>
-                                <p>{changeNumber(user?.profile?.phone.toString()!)}</p>
-                        </div>
+                        {
+                                user?.profile?.phone
+                                        ? (
+                                                <div className="item-data-small">
+                                                        <div className="circle-image">
+                                                                <Phone size={18} />
+                                                        </div>
+                                                        <p>{user?.profile?.phone ? changeNumber(user?.profile?.phone.toString()!) : ""}</p>
+                                                </div>
+                                        ) : null
+                        }
                         <div className="buttons">
                                 <Button
                                         className="login-submit"

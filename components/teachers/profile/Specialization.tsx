@@ -123,8 +123,14 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                         <p className="name">Опыт работы и образование:</p>
                                                         <p className="sub-name"><b>ВУЗ: </b>{item?.university}</p>
                                                         <p className="sub-name"><b>Стаж: </b>{work_experience(item?.work_experience)}</p>
-                                                        <p className="sub-name"><b>Регион проживания: </b>{item?.region_living}</p>
-                                                        <p className="sub-name"><b>Дополнительные сведения: </b>{item?.additional_info}</p>
+                                                        {
+                                                                item?.region_living
+                                                                ? <p className="sub-name"><b>Регион проживания: </b>{item?.region_living}</p> : null
+                                                        }
+                                                        {
+                                                                item?.additional_info
+                                                                ? <p className="sub-name"><b>Дополнительные сведения: </b>{item?.additional_info}</p> : null
+                                                        }
                                                 </div>
                                                 <div className="consultation-time-list">
                                                         {
