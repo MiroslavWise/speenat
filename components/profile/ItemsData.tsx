@@ -43,12 +43,6 @@ const ItemsData: FC = () => {
                         </div>
                         <div className="item-data-small">
                                 <div className="circle-image">
-                                        <CalendarEvent size={18} />
-                                </div>
-                                <p>{ user?.profile?.birthday ? moment(user?.profile?.birthday).fromNow(true) : "No data birthday" }</p>
-                        </div>
-                        <div className="item-data-small">
-                                <div className="circle-image">
                                         <Wallet size={18} />
                                 </div>
                                 <p>{ Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>

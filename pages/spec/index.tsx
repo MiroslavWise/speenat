@@ -41,17 +41,7 @@ const Spec: NextPage = () => {
                                                                 <div className="descriptions">
                                                                         <p>ВУЗ: <span>{item?.university}</span></p>
                                                                         <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
-                                                                        <p>Продолжительность консультации: </p>
-                                                                        {
-                                                                                item?.consultation_time?.map(time => (
-                                                                                        <p
-                                                                                                key={`${time?.id}_${time?.sessions_time}_time`}
-                                                                                                style={{marginLeft: 10}}
-                                                                                        >
-                                                                                                <span>{time?.sessions_time} - { time?.price }₸</span>
-                                                                                        </p>
-                                                                                ))
-                                                                        }
+                                                                        <p>Продолжительность консультации: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
                                                                         <p>Регион проживания: <span>{item?.region_living}</span></p>
                                                                         <p>Дополнительные сведения: <span>{item?.additional_info}</span></p>
                                                                         <br />

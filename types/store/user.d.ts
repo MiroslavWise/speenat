@@ -128,6 +128,8 @@ export interface ISpec{
                 "price": string
         }[]
         "rating": number
+        region_living: string
+        additional_info: string
 }
 
 export interface ISpeakerData{

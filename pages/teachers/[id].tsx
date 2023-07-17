@@ -40,8 +40,6 @@ const ProfileTeacher: NextPage = () => {
         }, [wsChannel])
 
         if (isLoading) return <Loader />
-        
-        console.log("data: ", data)
 
         return (
                 <div className="wrapper-profile">

@@ -33,7 +33,6 @@ const FormDataUser: FC = () => {
                         initialValues={{
                                 phone: changeNumber(user?.profile?.phone?.toString()!),
                                 address: user?.profile?.address,
-                                birthday: user?.profile?.birthday ? dayjs(user?.profile?.birthday) : dayjs(),
                                 gender: user?.profile?.gender,
                         } as IValueDataUser}
                         className="form"
@@ -89,24 +88,6 @@ const FormDataUser: FC = () => {
                                                 <Select.Option value="male">Мужской</Select.Option>
                                                 <Select.Option value="female">Женский</Select.Option>
                                         </Select>
-                                </Form.Item>
-                        </div>
-                        <div className="item-form">
-                                <p>Дата рождения</p>
-                                <Form.Item
-                                        name="birthday"
-                                        rules={[
-                                                {
-                                                        required: true,
-                                                        message: 'Введите адрес!',
-                                                },
-                                        ]}
-                                >
-                                        <DatePicker
-                                                className="form-input date-picker"
-                                                format={"DD-MM-YYYY"}
-                                                disabledDate={current => dayjs(current).valueOf() > moment().valueOf()}
-                                        />
                                 </Form.Item>
                         </div>
                         <div className="item-form">
