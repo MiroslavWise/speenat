@@ -78,17 +78,15 @@ const FormSpec: FC = () => {
                                         }
                                 })
                         ]
-
                         const data = {
-                                // ...currentSpec,
                                 id: Number(id),
-                                specialization_id: values?.specialization_id,
-                                university: values?.university,
-                                scientific_degree: values?.scientific_degree,
-                                scientific_degree_text: '',
-                                work_experience: values?.work_experience,
-                                category: values?.category,
+                                specialization_id: values.specialization_id,
+                                university: values.university,
+                                scientific_degree: values.scientific_degree || "",
+                                work_experience: values.work_experience || 0,
                                 consultation_time: consultation_time,
+                                region_living: values.region_living,
+                                additional_info: values.additional_info,
                         }
 
                         //@ts-ignore
@@ -99,18 +97,22 @@ const FormSpec: FC = () => {
                                 })
                 }
                 if (!currentSpec) {
+                        const consultation_time = Object
+                                .entries(values?.consultation_time)
+                                .map(item => ({
+                                        sessions_time: item[0],
+                                        original_price: item[1],
+                                }))
                         const data = {
-                                profile: {
-                                        status: "online",
-                                },
-                                university: values?.university!,
-                                scientific_degree: values?.scientific_degree!,
-                                scientific_degree_text: '',
-                                work_experience: values?.work_experience!,
-                                category: values?.category!,
-                                rating: 0,
-                                attachments: [],
+                                specialization_id: values.specialization_id,
+                                university: values.university,
+                                scientific_degree: values.scientific_degree || "",
+                                work_experience: values.work_experience || 0,
+                                consultation_time: consultation_time,
+                                region_living: values.region_living,
+                                additional_info: values.additional_info,
                         }
+                        //@ts-ignore
                         speakerSpecAdd(data)
                                 .then(response => {
                                         console.log("response: ", response)

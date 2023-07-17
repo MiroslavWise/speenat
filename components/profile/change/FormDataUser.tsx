@@ -17,7 +17,10 @@ const FormDataUser: FC = () => {
 
         const onSubmit = (value: IValueDataUser) => {
                 setLoading(true)
-                updateDataUser(value)
+                updateDataUser({
+                        ...value,
+                        phone: value.phone.replace(/\D/g, "")
+                })
                         .finally(() => {
                                 getReloadUser(false)
                                 setLoading(false)
@@ -42,8 +45,6 @@ const FormDataUser: FC = () => {
                 const subst = "+7 ($1) $2-$3-$4";
                 return number.replace(regex, subst);
         }
-
-        console.log("changeNumber: ", changeNumber(number))
 
         return (
                 <Form

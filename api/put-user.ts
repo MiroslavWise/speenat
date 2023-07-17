@@ -16,7 +16,7 @@ export const updateUser = async ({ name }: { name: string }): Promise<any> => {
 }
 
 export interface IValueDataUser{
-        phone: number| string
+        phone: string
         address: string
         birthday: any
         gender:TGender | null
