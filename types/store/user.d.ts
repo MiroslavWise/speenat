@@ -80,7 +80,7 @@ export interface IUserStore{
         is_active: boolean
 
         getUserData: Dispatch<boolean> | DispatchWithoutAction
-        getReset: DispatchWithoutAction
+        getReset(): Promise<[any, void]>
 }
 
 export interface IUserCurrent{

@@ -53,6 +53,7 @@ const Feedbacks: FC<{}> = ({ }) => {
                                                         </div>
                                                         <div className="footer-feed">
                                                                 <Rate
+                                                                        disabled
                                                                         defaultValue={item?.rating || 0}
                                                                         className="rate-item"
                                                                 />

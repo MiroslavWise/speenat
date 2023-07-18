@@ -138,7 +138,7 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                         <Divider />
                         <Row justify="center" className="w-100">
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{ color: 'black', textAlign: 'center' }}>Качество разговора с пациентом зависит от вашего интернет-соединения</p>
+                                        <p style={{ color: 'black', textAlign: 'center' }}>Качество разговора со студентом зависит от вашего интернет-соединения</p>
                                 </Row>
                         </Row>
                         <br />

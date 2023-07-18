@@ -11,6 +11,7 @@ import loadImage from "functions/load-image";
 import { archives } from "api/api-user";
 import { statusCallConf } from "functions/status-conf";
 import { replaceHttps } from "functions/replace-https";
+import dayjs from "dayjs";
 
 const ListArchive: FC = () => {
         const [page, setPage] = useState(1)
@@ -26,6 +27,8 @@ const ListArchive: FC = () => {
                         return item 
                 }
         }
+
+        console.log("data: ", data)
 
         if(isLoading || loading) return <Loader />
 
@@ -51,7 +54,8 @@ const ListArchive: FC = () => {
                                                         />
                                                         <div className="descriptions">
                                                                 <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{ isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
-                                                                <p>Про-сть сесии: <span>{ item?.conference_time?.sessions_time }</span></p>
+                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
+                                                                <p>Дата сессии: <span>{ dayjs(item?.created_at).format("HH:mm DD/MM/YYYY") }</span></p>
                                                                 <p>Оплата: <span>{item?.conference_time?.price}₸</span></p>
                                                                 <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
                                                                 {

@@ -9,7 +9,7 @@ const ServiceRule: NextPage = () => {
         return (
                 <div className="wrapper terms show-animate">
                         <p className="title">Правила пользования ресурсом</p>
-                        <p>Правила пользования ресурсом Consudoc.online для пациентов:</p>
+                        <p>Правила пользования ресурсом Consudoc.online для студентов:</p>
                         <p className="left">Пройдите регистрацию</p>
                         <p className="left">Войдите в профиль студента</p>
                         <p className="left" >Зайдите в раздел «Найти спикера» - «Параметры поиска»</p>

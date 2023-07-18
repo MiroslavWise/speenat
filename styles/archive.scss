@@ -8,8 +8,8 @@
 
         }
         .list-archive{
-                padding: 1rem;
-                width: calc(100% - 2rem);
+                padding: 0.7rem;
+                width: calc(100% - 1.4rem);
                 display: flex;
                 flex-direction: column;
                 gap: 7px;
@@ -41,7 +41,7 @@
 
                                 p{
                                         font-weight: 600;
-                                        font-size: 16px;
+                                        font-size: 13px;
                                         line-height: 15px;
                                         color: var(--premium-color);
                                         text-overflow: ellipsis;

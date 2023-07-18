@@ -40,7 +40,7 @@ const CompanyIncoming: FC = () => {
         //         },
         //         {
         //                 key: '4',
-        //                 name: 'Общий доход докторов: ',
+        //                 name: 'Общий доход преподавателей: ',
         //                 amount: `${statistic?.speakers_earning || 0}`
         //         },
         //         {

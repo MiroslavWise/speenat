@@ -39,6 +39,9 @@ const Feedback = () => {
               push('/archive')
               //@ts-ignore
               setPropsCall(null)
+              setTimeout(() => {
+                location.reload()
+              }, 15)
             })
         })
     } else {
@@ -54,6 +57,9 @@ const Feedback = () => {
           push('/teachers')
           //@ts-ignore
           setPropsCall(null)
+          setTimeout(() => {
+            location.reload()
+          }, 15)
         })
     }
 
@@ -69,7 +75,7 @@ const Feedback = () => {
             : <h3>Оцените преподавателя {propsCall?.speaker_info?.full_name}</h3>
         }
         {
-          isSpeaker
+          !isSpeaker
             ? (
               <Row className="w-100" style={{
                 alignItems: "center",
@@ -89,7 +95,7 @@ const Feedback = () => {
             className="w-100"
             rows={4}
             minLength={10}
-            placeholder={isSpeaker ? `Напишите рекомендацию пациенту ${propsCall?.user_info?.full_name}` : "Отзыв"}
+            placeholder={isSpeaker ? `Напишите рекомендацию студенту ${propsCall?.user_info?.full_name}` : "Отзыв"}
             onChange={(value) => { setText(value?.target?.value) }}
             value={text}
           />

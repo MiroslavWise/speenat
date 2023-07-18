@@ -30,18 +30,18 @@ export const useUser = create<IUserStore>(
                                 })
                 },
                 getReset() {
-                        if (get().is_speaker) {
-                                updateStatus("offline")
-                        }
-                        set({
-                                user: undefined,
-                                loading: false,
-                                is_speaker: false,
-                                is_superuser: false,
-                                is_admin: false,
-                                is_staff: false,
-                                is_active: false,
-                        })
+                        return Promise.all([
+                                get().is_speaker ? updateStatus("offline") : Promise.resolve(true),
+                                Promise.resolve(set({
+                                        user: undefined,
+                                        loading: false,
+                                        is_speaker: false,
+                                        is_superuser: false,
+                                        is_admin: false,
+                                        is_staff: false,
+                                        is_active: false,
+                                }))
+                        ])
                 }
         })
 )
