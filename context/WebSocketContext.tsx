@@ -19,15 +19,17 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
                 function createChannel() {
                         ws?.removeEventListener("close", closeWsConnect);
                         ws?.close();
-                        ws = new WebSocket(URL_SOCKET(userData.JWT));
-                        ws.onopen = (e) => {
-                                console.log("on open");
-                        };
-                        ws.onclose = () => {
-                                closeWsConnect();
-                                console.log('on close: ')
-                        };
-                        setWsChannel(ws);
+                        if (userData.JWT) {
+                                ws = new WebSocket(URL_SOCKET(userData.JWT));
+                                ws.onopen = (e) => {
+                                        console.log("on open");
+                                };
+                                ws.onclose = () => {
+                                        closeWsConnect();
+                                        console.log('on close: ')
+                                };
+                                setWsChannel(ws);
+                        }
                 }
                 if (userData.isUserOk) {
                         if (userData.JWT) {
@@ -37,6 +39,7 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
                 return () => {
                         ws?.removeEventListener("close", closeWsConnect);
                         ws?.close();
+                        setWsChannel(undefined)
                 };
         }, [userData.JWT])
 

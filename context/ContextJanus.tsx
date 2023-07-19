@@ -488,7 +488,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
         }
 
         function doHangup() {
-                console.log('__record__  do_hangup: ', uuid_conf)
                 for (var i in tracks) {
                         var mst = tracks[i];
                         if (mst !== null && mst !== undefined) mst.stop();
