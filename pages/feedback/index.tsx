@@ -21,10 +21,23 @@ const Feedback = () => {
   }), shallow)
 
   const btnCancel = () => {
-    push(isSpeaker ? "/archive" : "/teachers")
-    setTimeout(() => {
-      location.reload()
-    }, 250)
+
+    if (isSpeaker) {
+      updateStatus("online")
+        .finally(() => {
+          push('/archive')
+          //@ts-ignore
+          setPropsCall(null)
+          setTimeout(() => {
+            location.reload()
+          }, 250)
+        })
+    } else {
+      push("/teachers")
+      setTimeout(() => {
+        location.reload()
+      }, 250)
+    }
   }
 
   const sendReview = () => {
