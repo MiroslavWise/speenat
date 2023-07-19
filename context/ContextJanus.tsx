@@ -90,7 +90,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
 
         useEffect(() => {
                 Janus?.init({
-                        debug: false,
+                        debug: true,
                         callback: function () {
                                 janus = new Janus({
                                         server: "wss://meeting.itbhub.kz",
