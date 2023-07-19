@@ -68,11 +68,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
         let close: boolean = false;
         let isTimer: boolean = false;
 
-        useEffect(() => {
-                console.log('__record__ __uuid: ', propsCall?.call_info?.uuid)
-                console.log('__record__ __propsCall: ', propsCall?.call_info?.uuid)
-        }, [propsCall])
-
         const context = useWeb()
 
         const wsChannel = context?.wsChannel || undefined
@@ -98,14 +93,12 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         debug: false,
                         callback: function () {
                                 janus = new Janus({
-                                        server: "wss://meeting.consudoc.online",
+                                        server: "wss://meeting.itbhub.kz",
                                         success: async function () {
-                                                console.log("---init async session--- ")
                                                 janus.attach({
                                                         plugin: "janus.plugin.videocall",
                                                         opaqueId: opaqueId,
                                                         success: function (pluginHandle: any) {
-                                                                console.log("---init session videocall--- ")
                                                                 videocall = pluginHandle;
                                                         },
                                                         onmessage: function (msg: any, jsep: any) {
