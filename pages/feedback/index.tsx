@@ -22,6 +22,9 @@ const Feedback = () => {
 
   const btnCancel = () => {
     push(isSpeaker ? "/archive" : "/teachers")
+    setTimeout(() => {
+      location.reload()
+    }, 250)
   }
 
   const sendReview = () => {
@@ -41,7 +44,7 @@ const Feedback = () => {
               setPropsCall(null)
               setTimeout(() => {
                 location.reload()
-              }, 15)
+              }, 250)
             })
         })
     } else {
@@ -59,7 +62,7 @@ const Feedback = () => {
           setPropsCall(null)
           setTimeout(() => {
             location.reload()
-          }, 15)
+          }, 250)
         })
     }
 
