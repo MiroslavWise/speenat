@@ -68,13 +68,13 @@ const ListArchive: FC = () => {
                                         ))
                                 }
                                 {
-                                        data &&data?.count < 6
+                                        data &&data?.count < 11
                                                 ? null
                                                 : <Pagination
                                                         current={page}
                                                         total={data?.count || 0}
                                                         onChange={setPage}
-                                                        defaultPageSize={5}
+                                                        defaultPageSize={10}
                                                         showSizeChanger={false}
                                                 />
                                 }

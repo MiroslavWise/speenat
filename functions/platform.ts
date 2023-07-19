@@ -1,5 +1,4 @@
 const userAgent = () => {
-        
         if (typeof window !== 'undefined') {
                 return navigator.userAgent
         }
