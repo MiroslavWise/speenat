@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { shallow } from "zustand/shallow"
 
 import { CreateJanusContext } from "context/ContextJanus"
@@ -19,6 +19,16 @@ const Feedback = () => {
     isSpeaker: state.is_speaker,
     user: state.user,
   }), shallow)
+
+  useEffect(() => {
+    if (!propsCall) {
+      if (isSpeaker) {
+        push('/archive')
+      } else {
+        push("/teachers")
+      }
+    }
+  }, [])
 
   const btnCancel = () => {
 

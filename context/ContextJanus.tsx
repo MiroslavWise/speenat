@@ -207,7 +207,8 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                                         }
                                                                                 } else if (event === "hangup") {
                                                                                         if (!close) {
-                                                                                                closeVideoCallTalk().then((data: any) => { console.log('object __r: ', data); })
+                                                                                                closeVideoCallTalk()
+                                                                                                        
                                                                                                 close = true
                                                                                         }
                                                                                         $("#myvideo" + trackId).remove()
@@ -216,7 +217,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                                                 console.log(" ---update status is_speaker offline--- ")
                                                                                                 updateStatus("offline")
                                                                                         }
-                                                                                        route.push(`/feedback`, undefined, { shallow: true })
                                                                                         setVisible(false)
                                                                                         tracks = null
                                                                                         localTracks = {}
@@ -449,6 +449,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         })
                         .finally(() => {
                                 console.log("-----Finally Call End-----");
+                                route.push(`/feedback`, undefined, { shallow: true })
                                 close = false
                         })
         }
