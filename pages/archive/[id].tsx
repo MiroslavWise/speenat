@@ -53,7 +53,11 @@ export default function ArchiveCurrent() {
           <p>Статус: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p>
           {
             data?.record_url !== "not_found"
-              ? <p>Видео: <a href={data?.record_url}>Скачать</a></p>
+              ? (
+                <video controls style={{width: '100%', height: "auto"}}>
+                  <source src={data?.record_url} type="video/mp4" />
+                </video>
+              )
               : null
           }
         </div>

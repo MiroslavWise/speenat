@@ -61,11 +61,6 @@ const ListArchive: FC = () => {
                                                                 <p>Дата сессии: <span>{ dayjs(item?.created_at).format("HH:mm DD/MM/YYYY") }</span></p>
                                                                 <p>Оплата: <span>{item?.conference_time?.price}₸</span></p>
                                                                 <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
-                                                                {
-                                                                        item?.record_url !== "not_found"
-                                                                                ? <p>Видео: <a href={item?.record_url}>Скачать</a></p>
-                                                                                : null
-                                                                }
                                                         </div>
                                                 </div>
                                         ))
