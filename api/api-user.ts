@@ -14,7 +14,7 @@ export const profileId = async (id: any): Promise<IUserCurrent> => {
 
 export const speakers = async ({ page, verified, spec_rating, price_gte, price_lte, speaker__status }: IFilterProfiles): Promise<IDataProfile> => {
 
-        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${spec_rating ? `&spec_rating=${spec_rating}` : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker_status=${speaker__status}`: ""}`)
+        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${spec_rating ? `&spec_rating=${spec_rating}` : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker__profile__status=${speaker__status}`: ""}`)
                 .then(response => response.data)
                 .catch(e => { console.error("USER DATA: ", e) })
 }
