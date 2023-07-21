@@ -22,8 +22,6 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
 
         const duration = useSearch(state => state.duration)
         const use = useSearch(state => state.use)
-
-        const [duration_, setDuration_] = useState<TDuration>(duration)
         const [price_, setPrice_] = useState<{ min: number, max: number }>({
                 min: filters.price_gte,
                 max: filters.price_lte,
@@ -56,23 +54,6 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                         }}
                 >
                         <div className="wrapper-search">
-                                {/* <div className="block-search">
-                                        <p>Длительность сессии</p>
-                                        <div className="buttons">
-                                                {
-                                                        DURATION.map(item => (
-                                                                <Button
-                                                                        key={`${item}_duration`}
-                                                                        className={`button-duration ${item === duration_ && 'active'}`}
-                                                                        onClick={() => { setDuration_(item) }}
-                                                                >
-                                                                        <p>{ item } минут</p>
-                                                                </Button>
-                                                        ))
-                                                }
-                                        </div>
-                                </div>
-                                <Divider /> */}
                                 <div className="block-search">
                                         <p>Цена сессии</p>
                                         <div className="inputs">
