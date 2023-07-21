@@ -6,12 +6,7 @@ import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const Archive: NextPage = () => {
         useDocumentTitle("Архив")
-
-        return (
-                <>
-                        <ListArchive />
-                </>
-        )
+        return <ListArchive />
 }
 
 export default Archive

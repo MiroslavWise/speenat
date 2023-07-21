@@ -182,3 +182,20 @@
                 opacity: 1;
         }
 }
+
+.descriptions-archive{
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        p{
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 15px;
+                color: var(--premium-color);
+                text-overflow: ellipsis;
+                span{
+                        color: var(--cyan);
+                }
+        }
+}

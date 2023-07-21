@@ -29,10 +29,16 @@ export const feedbackSpeakerId = async (id: any, page: number): Promise<IFeedbac
         return axiosInstance.get(`/speaker/${id}/feedback/?page=${page}`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 }
 
-export const archives = async (): Promise<IArchive> => {
+export const archives = async (page: number): Promise<IArchive> => {
 
-        return axiosInstance.get(`/profile/conference-archive/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+        return axiosInstance.get(`/profile/conference-archive/?page=${page}`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 }
+
+export const conference = async (id: any): Promise<any> => {
+
+        return axiosInstance.get(`/conference/${id}`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+}
+
 
 export const specializations = async (): Promise<ISpecItems[]> => {
 

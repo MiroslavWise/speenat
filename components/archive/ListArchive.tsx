@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import { useQuery } from "react-query";
 import Image from "next/image";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 import { Pagination } from "antd";
 
@@ -11,14 +13,14 @@ import loadImage from "functions/load-image";
 import { archives } from "api/api-user";
 import { statusCallConf } from "functions/status-conf";
 import { replaceHttps } from "functions/replace-https";
-import dayjs from "dayjs";
 
 const ListArchive: FC = () => {
         const [page, setPage] = useState(1)
+        const { push } = useRouter()
         const userId = useUser(state => state.user?.profile?.profile_id)
         const loading = useUser(state => state.loading)
         const isSpeaker = useUser(state => state.is_speaker)
-        const { data, isLoading } = useQuery(['archive', userId, page], () => archives())
+        const { data, isLoading } = useQuery(['archive', userId, page], () => archives(page))
 
         const srcImage = (item: string) => {
                 if (item?.includes('default')) {
@@ -27,8 +29,6 @@ const ListArchive: FC = () => {
                         return item 
                 }
         }
-
-        console.log("data: ", data)
 
         if(isLoading || loading) return <Loader />
 
@@ -42,7 +42,10 @@ const ListArchive: FC = () => {
                                         data?.results?.map(item => (
                                                 <div 
                                                         key={item?.uuid}
-                                                        className="item-archive"
+                                                        className="item-archive cursor-pointer"
+                                                        onClick={() => {
+                                                                push(`/archive/${item?.uuid}`)
+                                                        }}
                                                 >
                                                         <Image
                                                                 loader={loadImage}
