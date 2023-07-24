@@ -1,4 +1,4 @@
-import { type FC, type DispatchWithoutAction, useState, useEffect, useContext } from 'react'
+import { type FC, type DispatchWithoutAction, useState, useEffect, useContext, MutableRefObject } from 'react'
 import { shallow } from 'zustand/shallow'
 
 import type { ICallData } from 'types/call'
@@ -17,9 +17,11 @@ interface IProps {
         videocall: any
         propsCall: ICallData | null
         doHangup: DispatchWithoutAction
+        refVideoLeft: MutableRefObject<HTMLDivElement | null>
+        refVideoRight: MutableRefObject<HTMLDivElement | null>
 }
 
-export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, doHangup }) => {
+export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, doHangup, refVideoLeft, refVideoRight }) => {
         const [toggleAudio, setToggleAudio] = useState<boolean>(true)
         const [toggleVideo, setToggleVideo] = useState<boolean>(true)
         const [time, setTime] = useState<any>(20 * 60)
@@ -47,7 +49,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
         return (
                 <div className={`modal_janus ${visible && "visible_janus"}`}>
                         <div className={`container_video ${visible && "visible_janus"}`} id="videocall">
-                                <div className="panel-body" id="videoright" />
+                                <div className="panel-body" id="videoright" ref={refVideoRight} />
                                 <div className='partner_text'>
                                         {
                                                 isSpeaker
@@ -58,7 +60,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                                         }
                                         &nbsp;&nbsp;<TimerSession {...{ visible, doHangup, time, setTime, isSpeaker }} />
                                 </div>
-                                <div className="panel-body" id="videoleft" />
+                                <div className="panel-body" id="videoleft" ref={refVideoLeft} />
                                 <div className="btn-group btn-group-xs pull-right hide btn_group">
                                         <button
                                                 className={`btn btn__`}

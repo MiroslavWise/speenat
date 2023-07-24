@@ -1,8 +1,8 @@
-import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect } from "react";
+import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect, useRef } from "react";
 import { useRouter } from "next/router";
 const { v4: uuidv4 } = require('uuid')
 
-const $ = require('jquery')
+// const $ = require('jquery')
 import { message, Modal } from "antd";
 
 import type { ICallData } from 'types/call'
@@ -28,13 +28,11 @@ type TProps = FC<{
 }>
 
 export const CreateJanusContext = createContext<IJanus | null>(null)
-var opaqueId = "videocall-" + Janus.randomString(12);
-var localTracks: any = {}
-var localVideos = 0
-var remoteTracks: any = {}
-var remoteVideos = 0
+// var localTracks: any = {}
+// var localVideos = 0
+// var remoteTracks: any = {}
+// var remoteVideos = 0
 var bitrateTimer: any = null;
-var spinner: any = null;
 var simulcastStarted = false;
 var videocall: any = null;
 var janus: any = null;
@@ -50,11 +48,48 @@ var uuid_conf: any = null
 
 var doSimulcast = false;
 
+interface IValuesJanusState{
+        localTracks: any
+        localVideos: number
+        remoteTracks: any
+        remoteVideos: number
+        bitrateTimer: any
+        simulcastStarted: boolean
+        videocall: any
+        janus: any
+        trackId: any
+        tracks: any
+        info_id_profile: any
+        speaker_id: any
+        profile_id: any
+        uuid_conf: any
+        doSimulcast: boolean
+}
+
 export const ProviderJanusContext: TProps = ({ children }) => {
         const route = useRouter()
         const [propsCall, setPropsCall] = useState<ICallData | null>(null)
         const [visible, setVisible] = useState<boolean>(false)
         const { user, is_speaker, loading } = useUser() ?? {}
+        const refVideoLeft = useRef<HTMLDivElement>()
+        const refVideoRight = useRef<HTMLDivElement>()
+        const [dataJanusState, setDataJanusState] = useState<IValuesJanusState>({
+                localTracks: {},
+                localVideos: 0,
+                remoteVideos: 0,
+                remoteTracks: {},
+                bitrateTimer: null,
+                simulcastStarted: false,
+                videocall: null,
+                janus: null,
+                trackId: null,
+                tracks: null,
+                info_id_profile: null,
+                speaker_id: null,
+                profile_id: null,
+                uuid_conf: null,
+                doSimulcast: false,
+        })
 
         useEffect(() => {
                 if (propsCall) {
@@ -64,6 +99,8 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         uuid_conf = propsCall?.call_info?.uuid
                 }
         }, [propsCall])
+
+        const uuid = useMemo(() => uuidv4(), [])
 
         let close: boolean = false;
         let isTimer: boolean = false;
@@ -88,108 +125,216 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                 return () => wsChannel?.removeEventListener("message", listenerCall)
         }, [wsChannel])
 
-        // useEffect(() => {
-        //         Janus.init({
-        //                 debug: false,
-        //                 dependencies: Janus.useDefaultDependencies(),
-        //                 callback() {
-        //                         janus = new Janus({
-        //                                 server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
-        //                                 async success() {
-        //                                         janus.attach({
-        //                                                 plugin: "janus.plugin.videocall",
-        //                                                 opaqueId: uuidv4(),
-        //                                                 success(pluginHandle: any) {
-        //                                                         videocall = pluginHandle
-        //                                                 },
-        //                                                 onmessage: onMessageHandler,
-        //                                                 onlocaltrack: onLocalTrackHandler,
-        //                                                 onremotetrack: onRemoteTrackHandler,
-        //                                                 ondataopen: onDataOpenHandler,
-        //                                                 ondata: onDataHandler,
-        //                                                 oncleanup: onCleanUpHandler,
-        //                                         })
-        //                                 },
-        //                                 error() { },
-        //                                 destroyed() { },
-        //                         })
-        //                 },
-        //         })
-        // }, [])
+        useEffect(() => {
+                Janus.init({
+                        debug: false,
+                        dependencies: Janus.useDefaultDependencies(),
+                        callback: () => {
+                                janus = new Janus({
+                                        server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
+                                        async success() {
+                                                janus.attach({
+                                                        plugin: "janus.plugin.videocall",
+                                                        opaqueId: uuid,
+                                                        success(pluginHandle: any) {
+                                                                videocall = pluginHandle
+                                                        },
+                                                        onmessage: onMessageHandler,
+                                                        onlocaltrack: onLocalTrackHandler,
+                                                        onremotetrack: onRemoteTrackHandler,
+                                                        ondataopen: onDataOpenHandler,
+                                                        ondata: onDataHandler,
+                                                        oncleanup: onCleanUpHandler,
+                                                })
+                                        },
+                                        error(error: any) { console.error(`---error init janus---`, error) },
+                                        destroyed() { console.log("---init destroy session videocall--- ") },
+                                })
+                        },
+                })
+        }, [])
 
         function onMessageHandler(msg: any, jsep: any) {
                 jsep = jsep
-                let result = msg["result"]
-                let username: any = msg?.result?.username
-                if (result) {
-                        if (result["event"]) {
-                                let event = result["event"]
-                                if (event === "registered") {
-                                        if (username?.includes("speaker")) {
-                                                const success = (jsep: any) => {
-                                                        videocall.send({
-                                                                message: {
-                                                                        request: "call",
-                                                                        username: `student-${info_id_profile}`
-                                                                },
-                                                                jsep,
-                                                        })
-                                                }
-                                                videocall.createOffer(
-                                                        {
-                                                                tracks: [
-                                                                        { type: 'audio', capture: true, recv: true },
-                                                                        { type: 'video', capture: true, recv: true, simulcast: doSimulcast },
-                                                                        { type: 'data' },
-                                                                ],
-                                                                success: success,
-                                                                error: (error: any) => {
-                                                                        console.error("WebRTC error...", error)
-                                                                }
-                                                        })
-                                                videocall.send({
-                                                        message: {
-                                                                request: "list"
-                                                        }
-                                                })
+                var result = msg["result"]
+                var username: any = msg?.result?.username
+                console.log("record msg: ", msg)
+                // if (false) {
+                //         if (result) {
+                //                 if (result["event"]) {
+                //                         var event = result["event"]
+                //                         if (event === "registered") {
+                //                                 console.log("registered", username)
+                //                                 if (username?.includes("speaker")) {
+                //                                         console.log("on call student", info_id_profile)
+                //                                         const success = (jsep: any) => {
+                //                                                 videocall.send({
+                //                                                         message: {
+                //                                                                 request: "call",
+                //                                                                 username: `student-${info_id_profile}`
+                //                                                         },
+                //                                                         jsep,
+                //                                                 })
+                //                                         }
+                //                                         videocall.createOffer(
+                //                                                 {
+                //                                                         tracks: [
+                //                                                                 { type: 'audio', capture: true, recv: true },
+                //                                                                 { type: 'video', capture: true, recv: true, simulcast: doSimulcast },
+                //                                                                 { type: 'data' },
+                //                                                         ],
+                //                                                         success: success,
+                //                                                         error: (error: any) => {
+                //                                                                 console.error("----WebRTC error---- ", error)
+                //                                                         }
+                //                                                 })
+                //                                         videocall.send({
+                //                                                 message: {
+                //                                                         request: "list"
+                //                                                 }
+                //                                         })
+                //                                 }
+                //                         } else if (event === "calling") {
+                //                                 console.log("---record calling---")
+                //                         } else if (event === "incomingcall") {
+                //                                 console.log("incomingcall", username)
+                //                                 videocall.createAnswer(
+                //                                         {
+                //                                                 jsep: jsep,
+                //                                                 tracks: [
+                //                                                         { type: 'audio', capture: true, recv: true },
+                //                                                         { type: 'video', capture: true, recv: true },
+                //                                                         { type: 'data' },
+                //                                                 ],
+                //                                                 success(jsep: any) {
+                //                                                         videocall.send({
+                //                                                                 message: {
+                //                                                                         request: "accept"
+                //                                                                 },
+                //                                                                 jsep: jsep
+                //                                                         })
+                //                                                 },
+                //                                                 error(error: any) {
+                //                                                         console.error("---WebRTC error---", error)
+                //                                                 }
+                //                                         })
+                //                         } else if (event === "accepted") {
+                //                                 console.log("accepted", username)
+                //                                 Modal.destroyAll()
+                //                                 setVisible(true)
+                //                                 getTimer()
+                //                                 let peer = username
+                //                                 if (!jsep) { videocall.handleRemoteJsep({ jsep }) }
+                //                                 Record()
+                //                         } else if (event === "update") {
+                //                                 console.log("update", username)
+                //                                 if (jsep) {
+                //                                         if (jsep.type === "answer") {
+                //                                                 videocall.handleRemoteJsep({ jsep })
+                //                                         } else {
+                //                                                 videocall.createAnswer({
+                //                                                         jsep: jsep,
+                //                                                         tracks: [
+                //                                                                 { type: 'audio', capture: true, recv: true },
+                //                                                                 { type: 'video', capture: true, recv: true },
+                //                                                                 { type: 'data' },
+                //                                                         ],
+                //                                                         success(jsep: any) {
+                //                                                                 videocall.send({
+                //                                                                         message: {
+                //                                                                                 request: "set"
+                //                                                                         },
+                //                                                                         jsep: jsep
+                //                                                                 });
+                //                                                         },
+                //                                                         error(error: any) {
+                //                                                                 console.error("---WebRTC error---", error)
+                //                                                         },
+                //                                                 })
+                //                                         }
+                //                                 }
+                //                         } else if (event === "hangup") {
+                //                                 console.log("hangup", username)
+                //                                 if (!close) {
+                //                                         closeVideoCallTalk()
+                //                                                 .finally(() => {
+                //                                                         close = true
+                //                                                 })
+                //                                 }
+                //                                 if (is_speaker) { updateStatus("offline") }
+                //                                 setVisible(false)
+                //                                 tracks = null
+                //                                 localTracks = {}
+                //                                 videocall.hangup()
+                //                                 janus.destroy()
+                //                         } else if (event === "simulcast") {
+                //                                 console.log("simulcast", username)
+                //                                 let substream = result["substream"]
+                //                                 let temporal = result["temporal"]
+                //                                 if (
+                //                                         (substream !== null && substream !== undefined) ||
+                //                                         (temporal !== null && temporal !== undefined)
+                //                                 ) {
+                //                                         if (!simulcastStarted) {
+                //                                                 simulcastStarted = true;
+                //                                         }
+                //                                 }
+                //                         }
+                //                 } else {
+                //                         console.log("event else")
+                //                         setVisible(false)
+                //                         videocall.hangup()
+                //                         if (bitrateTimer) clearInterval(bitrateTimer);
+                //                         bitrateTimer = null
+                //                 }
+                //         }
+                // }
+                if (true) {
+                        if (result) {
+                                if (result["list"]) {
+                                        var list = result["list"];
+                                        for (var mp in list) {
+                                                console.debug(`>>> ${list[mp]}`);
                                         }
-                                }
-                                if (event === "incomingcall") {
-                                        videocall.createAnswer(
-                                                {
-                                                        jsep: jsep,
-                                                        tracks: [
-                                                                { type: 'audio', capture: true, recv: true },
-                                                                { type: 'video', capture: true, recv: true },
-                                                                { type: 'data' },
-                                                        ],
-                                                        success(jsep: any) {
+                                } else if (result["event"]) {
+                                        var event = result["event"]
+                                        if (event === "registered") {
+                                                console.log("registered", username)
+                                                if (username?.includes("speaker")) {
+                                                        console.log("on call student", info_id_profile)
+                                                        const success = (jsep: any) => {
                                                                 videocall.send({
                                                                         message: {
-                                                                                request: "accept"
+                                                                                request: "call",
+                                                                                username: `student-${info_id_profile}`
                                                                         },
-                                                                        jsep: jsep
+                                                                        jsep,
                                                                 })
-                                                        },
-                                                        error(error: any) {
-                                                                console.error("---WebRTC error---", error)
                                                         }
-                                                })
-                                }
-                                if (event === "accepted") {
-                                        Modal.destroyAll()
-                                        setVisible(true)
-                                        getTimer()
-                                        let peer = username
-                                        if (!jsep) { videocall.handleRemoteJsep({ jsep }) }
-                                        Record()
-                                }
-                                if (event === "update") {
-                                        if (jsep) {
-                                                if (jsep.type === "answer") {
-                                                        videocall.handleRemoteJsep({ jsep })
-                                                } else {
-                                                        videocall.createAnswer({
+                                                        videocall.createOffer(
+                                                                {
+                                                                        tracks: [
+                                                                                { type: 'audio', capture: true, recv: true },
+                                                                                { type: 'video', capture: true, recv: true, simulcast: doSimulcast },
+                                                                                { type: 'data' },
+                                                                        ],
+                                                                        success: success,
+                                                                        error: (error: any) => {
+                                                                                console.error("----WebRTC error---- ", error)
+                                                                        }
+                                                                })
+                                                        videocall.send({
+                                                                message: {
+                                                                        request: "list"
+                                                                }
+                                                        })
+                                                }
+                                        } else if (event === "calling") {
+                                                console.log("record calling");
+                                        } else if (event === "incomingcall") {
+                                                console.log("incomingcall", username)
+                                                videocall.createAnswer(
+                                                        {
                                                                 jsep: jsep,
                                                                 tracks: [
                                                                         { type: 'audio', capture: true, recv: true },
@@ -199,38 +344,94 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                                 success(jsep: any) {
                                                                         videocall.send({
                                                                                 message: {
-                                                                                        request: "set"
+                                                                                        request: "accept"
                                                                                 },
                                                                                 jsep: jsep
-                                                                        });
+                                                                        })
                                                                 },
                                                                 error(error: any) {
                                                                         console.error("---WebRTC error---", error)
-                                                                },
+                                                                }
                                                         })
+                                        } else if (event === "accepted") {
+                                                Modal.destroyAll()
+                                                setVisible(true)
+                                                getTimer()
+                                                var peer = escapeXmlTags(result["username"]);
+                                                console.log("accepted", peer)
+                                                if (!peer) {
+                                                } else {
+                                                }
+                                                if (jsep) { videocall.handleRemoteJsep({ jsep }); }
+                                                Record()
+                                        } else if (event === "update") {
+                                                if (jsep) {
+                                                        if (jsep.type === "answer") {
+                                                                videocall.handleRemoteJsep({ jsep: jsep });
+                                                        } else {
+                                                                videocall.createAnswer({
+                                                                        jsep: jsep,
+                                                                        tracks: [
+                                                                                { type: 'audio', capture: true, recv: true },
+                                                                                { type: 'video', capture: true, recv: true },
+                                                                                { type: 'data' },
+                                                                        ],
+                                                                        success: function (jsep: any) {
+                                                                                console.debug("Got SDP!", jsep);
+                                                                                videocall.send({
+                                                                                        message: {
+                                                                                                request: "set"
+                                                                                        },
+                                                                                        jsep: jsep
+                                                                                });
+                                                                        },
+                                                                        error: function (error: any) {
+                                                                                console.error("WebRTC error:", error);
+                                                                        },
+                                                                });
+                                                        }
+                                                }
+                                        } else if (event === "hangup") {
+                                                console.log("hangup", username)
+                                                if (!close) {
+                                                        closeVideoCallTalk()
+                                                                .finally(() => {
+                                                                        close = true
+                                                                })
+                                                }
+                                                if (is_speaker) { updateStatus("offline") }
+                                                setVisible(false)
+                                                tracks = null
+                                                setDataJanusState(prev => ({ ...prev, localTracks: {} }))
+                                                videocall.hangup()
+                                                janus.destroy()
+                                        } else if (event === "simulcast") {
+                                                var substream = result["substream"];
+                                                var temporal = result["temporal"];
+                                                if (
+                                                        (substream !== null && substream !== undefined) ||
+                                                        (temporal !== null && temporal !== undefined)
+                                                ) {
+                                                        if (!simulcastStarted) {
+                                                                simulcastStarted = true;
+                                                        }
                                                 }
                                         }
                                 }
-                                if (event === "hangup") {
-                                        if (!close) {
-                                                closeVideoCallTalk()
-                                                        .finally(() => {
-                                                                close = true
-                                                        })
-                                        }
-                                }
                         } else {
-                                setVisible(false)
-                                videocall.hangup()
-                                if (bitrateTimer) clearInterval(bitrateTimer);
-                                bitrateTimer = null
+                                        console.log("event else")
+                                        setVisible(false)
+                                        videocall.hangup()
+                                        if (bitrateTimer) clearInterval(bitrateTimer);
+                                        bitrateTimer = null
                         }
                 }
         }
 
         function onLocalTrackHandler(track: any, on: any) {
+                console.log("---onLocalTrackHandler---")
                 trackId = track.id.replace(/[{}]/g, "")
-                let stream = localTracks[trackId]
+                let stream = dataJanusState.localTracks[trackId]
                 if (!on) {
                         if (stream) {
                                 try {
@@ -247,367 +448,475 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                 return
                         }
                 }
-                //ДОДЕЛАТЬ
+                if (stream) {
+                        return
+                }
+                const videoleftVideo = refVideoLeft.current?.querySelector("video")
+                if (!videoleftVideo) {
+                        setVisible(true)
+                }
+                if (track.kind === "audio") {
+
+                } else {
+                        stream = new MediaStream()
+                        stream.addTrack(track.clone())
+                        setDataJanusState(state => ({ ...state, localTracks: { ...state.localTracks, trackId: stream }, localVideos: state.localVideos + 1 }))
+                        const newElementVideo = document.createElement("video")
+                        newElementVideo.className = "rounded centered"
+                        newElementVideo.id = `myvideo${trackId}`
+                        newElementVideo.style.width = "100%"
+                        newElementVideo.style.height = "100%"
+                        newElementVideo.autoplay = true
+                        newElementVideo.playsInline = true
+                        newElementVideo.muted = true
+                        refVideoLeft.current?.appendChild(newElementVideo)
+                        Janus.attachMediaStream(document.getElementById(`myvideo${trackId}`), stream)
+                }
         }
 
         function onRemoteTrackHandler(track: any, mid: any, on: any) {
-                //Сделать
+                console.log("---onRemoteTrackHandler---")
+                // let stream = remoteTracks[mid]
+                let stream = dataJanusState.remoteTracks[mid]
+                if (!on) {
+                        if (stream) {
+                                try {
+                                        var tracks = stream.getTracks();
+                                        for (var i in tracks) {
+                                                var mst = tracks[i];
+                                                if (mst) mst.stop();
+                                        }
+                                } catch (e) { console.error("---error remove tracks---", e) }
+                        }
+                        if (track.kind === "video") {
+                                // remoteVideos--
+                                setDataJanusState(state => ({
+                                        ...state,
+                                        remoteVideos: state.remoteVideos - 1,
+                                }))
+                        }
+                        // delete remoteTracks[mid]
+                        setDataJanusState(state => ({
+                                ...state,
+                                remoteTracks: {
+                                        ...state.remoteTracks,
+                                        mid: undefined,
+                                }
+                        }))
+                        return
+                }
+                let addButtons = false
+                const videorightAudio = refVideoRight?.current?.querySelector("audio")
+                const videorightVideo = refVideoRight?.current?.querySelector("video")
+                if (videorightAudio && videorightVideo) {
+                        addButtons = true
+                }
+                if (track.kind === "audio") {
+                        stream = new MediaStream()
+                        stream.addTrack(track.clone())
+                        // remoteTracks[mid] = stream
+                        setDataJanusState(state => ({
+                                ...state,
+                                remoteTracks: {
+                                        ...state.remoteTracks,
+                                        mid: stream,
+                                }
+                        }))
+                        const newAudioElement = document.createElement("audio")
+                        newAudioElement.className = "hide"
+                        newAudioElement.id = `peervideo${mid}`
+                        newAudioElement.autoplay = true
+                        refVideoRight.current?.appendChild(newAudioElement)
+                        Janus.attachMediaStream(document.getElementById(`peervideo${mid}`), stream)
+                } else {
+                        stream = new MediaStream()
+                        stream.addTrack(track.clone())
+                        // remoteTracks[mid] = stream
+                        setDataJanusState(state => ({
+                                ...state,
+                                remoteTracks: {
+                                        ...state.remoteTracks,
+                                        mid: stream,
+                                },
+                                remoteVideos: state.remoteVideos + 1,
+                        }))
+                        const newElementVideo = document.createElement("video")
+                        newElementVideo.className = "rounded centered peervideo"
+                        newElementVideo.id = `peervideo${mid}`
+                        newElementVideo.style.width = "100%"
+                        newElementVideo.style.height = "100%"
+                        newElementVideo.autoplay = true
+                        newElementVideo.playsInline = true
+                        newElementVideo.muted = true
+                        refVideoRight.current?.appendChild(newElementVideo)
+                        Janus.attachMediaStream(document.getElementById(`peervideo${mid}`), stream)
+                }
+                if (!addButtons) return
+
         }
 
         function onDataOpenHandler() {
-
+                setVisible(true)
         }
 
         function onDataHandler(data: any) {
-
         }
 
         function onCleanUpHandler() {
-
+                simulcastStarted = false
+                setDataJanusState(state => ({
+                        ...state,
+                        localVideos: 0,
+                        localTracks: {},
+                        simulcastStarted: false,
+                        remoteVideos: 0,
+                        remoteTracks: {},
+                }))
+                // remoteTracks = {};
+                // remoteVideos = 0;
         }
 
-        useEffect(() => {
-                Janus?.init({
-                        debug: true,
-                        dependencies: Janus.useDefaultDependencies(),
-                        callback: () => {
-                                janus = new Janus({
-                                        server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
-                                        success: async function () {
-                                                janus.attach({
-                                                        plugin: "janus.plugin.videocall",
-                                                        opaqueId: opaqueId,
-                                                        success: function (pluginHandle: any) {
-                                                                videocall = pluginHandle;
-                                                        },
-                                                        onmessage: function (msg: any, jsep: any) {
-                                                                jsep = jsep
-                                                                console.log("record msg: ", msg)
-                                                                var result = msg["result"];
-                                                                if (result) {
-                                                                        if (result["list"]) {
-                                                                                var list = result["list"];
-                                                                                for (var mp in list) {
-                                                                                        console.debug(`>>> ${list[mp]}`);
-                                                                                }
-                                                                        } else if (result["event"]) {
-                                                                                var event = result["event"];
-                                                                                if (event === "registered") {
-                                                                                        if (msg?.result?.username?.includes('speaker')) {
-                                                                                                console.log('speaker: ', info_id_profile)
-                                                                                                const success = (jsep: any) => {
-                                                                                                        videocall.send({
-                                                                                                                message: {
-                                                                                                                        request: "call",
-                                                                                                                        username: `student-${info_id_profile}`
-                                                                                                                },
-                                                                                                                jsep
-                                                                                                        })
-                                                                                                }
-                                                                                                videocall.createOffer(
-                                                                                                        {
-                                                                                                                tracks: [
-                                                                                                                        { type: 'audio', capture: true, recv: true },
-                                                                                                                        { type: 'video', capture: true, recv: true, simulcast: doSimulcast },
-                                                                                                                        { type: 'data' },
-                                                                                                                ],
-                                                                                                                success: success,
-                                                                                                                error: (error: any) => {
-                                                                                                                        console.error("WebRTC error...", error)
-                                                                                                                }
-                                                                                                        });
-                                                                                        }
-                                                                                        videocall.send({
-                                                                                                message: {
-                                                                                                        request: "list"
-                                                                                                }
-                                                                                        });
-                                                                                } else if (event === "calling") {
-                                                                                        console.log("record calling");
-                                                                                } else if (event === "incomingcall") {
-                                                                                        videocall.createAnswer(
-                                                                                                {
-                                                                                                        jsep: jsep,
-                                                                                                        tracks: [
-                                                                                                                { type: 'audio', capture: true, recv: true },
-                                                                                                                { type: 'video', capture: true, recv: true },
-                                                                                                                { type: 'data' },
-                                                                                                        ],
-                                                                                                        success: function (jsep: any) {
-                                                                                                                console.log("incomingcall")
-                                                                                                                videocall.send({
-                                                                                                                        message: {
-                                                                                                                                request: "accept"
-                                                                                                                        },
-                                                                                                                        jsep: jsep
-                                                                                                                })
-                                                                                                        },
-                                                                                                        error: function (error: any) {
-                                                                                                                console.error("WebRTC error:", error);
-                                                                                                        }
-                                                                                                });
-                                                                                } else if (event === "accepted") {
-                                                                                        setVisible(true)
-                                                                                        Modal.destroyAll()
-                                                                                        getTimer()
-                                                                                        // stop()
-                                                                                        var peer = escapeXmlTags(result["username"]);
-                                                                                        if (!peer) {
-                                                                                        } else {
-                                                                                        }
-                                                                                        if (jsep) { videocall.handleRemoteJsep({ jsep }); }
-                                                                                        Record()
-                                                                                } else if (event === "update") {
-                                                                                        if (jsep) {
-                                                                                                if (jsep.type === "answer") {
-                                                                                                        videocall.handleRemoteJsep({ jsep: jsep });
-                                                                                                } else {
-                                                                                                        videocall.createAnswer({
-                                                                                                                jsep: jsep,
-                                                                                                                tracks: [
-                                                                                                                        { type: 'audio', capture: true, recv: true },
-                                                                                                                        { type: 'video', capture: true, recv: true },
-                                                                                                                        { type: 'data' },
-                                                                                                                ],
-                                                                                                                success: function (jsep: any) {
-                                                                                                                        console.debug("Got SDP!", jsep);
-                                                                                                                        videocall.send({
-                                                                                                                                message: {
-                                                                                                                                        request: "set"
-                                                                                                                                },
-                                                                                                                                jsep: jsep
-                                                                                                                        });
-                                                                                                                },
-                                                                                                                error: function (error: any) {
-                                                                                                                        console.error("WebRTC error:", error);
-                                                                                                                },
-                                                                                                        });
-                                                                                                }
-                                                                                        }
-                                                                                } else if (event === "hangup") {
-                                                                                        if (!close) {
-                                                                                                closeVideoCallTalk()
-                                                                                                close = true
-                                                                                        }
-                                                                                        $("#myvideo" + trackId).remove()
-                                                                                        $("#myvideo").remove()
-                                                                                        if (is_speaker) {
-                                                                                                console.log(" ---update status is_speaker offline--- ")
-                                                                                                updateStatus("offline")
-                                                                                        }
-                                                                                        setVisible(false)
-                                                                                        tracks = null
-                                                                                        localTracks = {}
-                                                                                        videocall.hangup();
-                                                                                        janus.destroy();
-                                                                                        if (spinner) spinner.stop();
-                                                                                        $("#videos").hide();
-                                                                                } else if (event === "simulcast") {
-                                                                                        var substream = result["substream"];
-                                                                                        var temporal = result["temporal"];
-                                                                                        if (
-                                                                                                (substream !== null && substream !== undefined) ||
-                                                                                                (temporal !== null && temporal !== undefined)
-                                                                                        ) {
-                                                                                                if (!simulcastStarted) {
-                                                                                                        simulcastStarted = true;
-                                                                                                }
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                } else {
-                                                                        var error = msg["error"];
-                                                                        setVisible(false)
-                                                                        videocall.hangup();
-                                                                        if (spinner) spinner.stop();
-                                                                        $("#videos").hide();
-                                                                        if (bitrateTimer) clearInterval(bitrateTimer);
-                                                                        bitrateTimer = null;
-                                                                }
-                                                        },
-                                                        onlocaltrack: function (track: any, on: any) {
-                                                                trackId = track.id.replace(/[{}]/g, "");
-                                                                if (!on) {
-                                                                        var stream = localTracks[trackId]
-                                                                        if (stream) {
-                                                                                try {
-                                                                                        tracks = stream.getTracks();
-                                                                                        for (var i in tracks) {
-                                                                                                var mst = tracks[i];
-                                                                                                if (mst !== null && mst !== undefined) mst.stop();
-                                                                                        }
-                                                                                } catch (e) {
-                                                                                        console.error('random error: ', e)
-                                                                                }
-                                                                        }
-                                                                        if (track.kind === "video") {
-                                                                                $("#myvideo" + trackId).remove();
-                                                                                localVideos--;
-                                                                                for (var i in tracks) {
-                                                                                        var mst = tracks[i];
-                                                                                        if (mst !== null && mst !== undefined) mst.stop();
-                                                                                }
-                                                                                if (localVideos === 0) {
-                                                                                        if ($("#videoleft .no-video-container").length === 0) {
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                        delete localTracks[trackId];
-                                                                        return;
-                                                                }
-                                                                var stream = localTracks[trackId];
-                                                                if (stream) {
-                                                                        return;
-                                                                }
-                                                                if ($("#videoleft video").length === 0) {
-                                                                        $("#videos").removeClass("hide").show();
-                                                                }
-                                                                if (track.kind === "audio") {
-                                                                        if (localVideos === 0) {
-                                                                                if ($("#videoleft .no-video-container").length === 0) {
-                                                                                }
-                                                                        }
-                                                                } else {
-                                                                        localVideos++;
-                                                                        $("#videoleft .no-video-container").remove();
-                                                                        stream = new MediaStream();
-                                                                        stream.addTrack(track.clone());
-                                                                        localTracks[trackId] = stream;
-                                                                        $("#videoleft").append(
-                                                                                '<video className="rounded centered" id="myvideo' +
-                                                                                trackId +
-                                                                                '" width="100%" height="100%" autoplay playsinline border-radius="10px" muted="muted"/>'
-                                                                        );
-                                                                        Janus.attachMediaStream(
-                                                                                $("#myvideo" + trackId).get(0),
-                                                                                stream
-                                                                        );
-                                                                }
-                                                                if (
-                                                                        videocall.webrtcStuff.pc.iceConnectionState !== "completed" &&
-                                                                        videocall.webrtcStuff.pc.iceConnectionState !== "connected"
-                                                                ) {
-                                                                }
-                                                        },
-                                                        onremotetrack: function (track: any, mid: any, on: any) {
-                                                                if (!on) {
-                                                                        var stream = remoteTracks[mid];
-                                                                        if (stream) {
-                                                                                try {
-                                                                                        var tracks = stream.getTracks();
-                                                                                        for (var i in tracks) {
-                                                                                                var mst = tracks[i];
-                                                                                                if (mst) mst.stop();
-                                                                                        }
-                                                                                } catch (e) { }
-                                                                        }
-                                                                        $("#peervideo" + mid).remove();
-                                                                        if (track.kind === "video") {
-                                                                                remoteVideos--;
-                                                                                if (remoteVideos === 0) {
-                                                                                        if ($("#videoright .no-video-container").length === 0) {
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                        delete remoteTracks[mid];
-                                                                        return;
-                                                                }
-                                                                let addButtons = false;
-                                                                if (
-                                                                        $("#videoright audio").length === 0 &&
-                                                                        $("#videoright video").length === 0
-                                                                ) {
-                                                                        addButtons = true;
-                                                                        $("#videos").removeClass("hide").show();
-                                                                }
-                                                                if (track.kind === "audio") {
-                                                                        stream = new MediaStream();
-                                                                        stream.addTrack(track.clone());
-                                                                        remoteTracks[mid] = stream;
-                                                                        $("#videoright").append(
-                                                                                '<audio className="hide" id="peervideo' +
-                                                                                mid +
-                                                                                '" autoplay playsinline />'
-                                                                        );
-                                                                        Janus.attachMediaStream($("#peervideo" + mid).get(0), stream);
-                                                                        if (remoteVideos === 0) {
-                                                                                if ($("#videoright .no-video-container").length === 0) {
-                                                                                }
-                                                                        }
-                                                                } else {
-                                                                        remoteVideos++;
-                                                                        $("#videoright .no-video-container").remove();
-                                                                        stream = new MediaStream();
-                                                                        stream.addTrack(track.clone());
-                                                                        remoteTracks[mid] = stream;
-                                                                        console.log("Created remote video stream:", stream);
-                                                                        $("#videoright").append(
-                                                                                '<video className="rounded centered peervideo" id="peervideo' +
-                                                                                mid +
-                                                                                '" width="100%" height="100%" autoplay playsinline muted="true" />'
-                                                                        );
-                                                                        Janus.attachMediaStream($("#peervideo" + mid).get(0), stream);
-                                                                }
-                                                                if (!addButtons) return;
-                                                                $("#bitrate a")
-                                                                        .removeAttr("disabled")
-                                                                        .click(function () {
-                                                                                //@ts-ignore
-                                                                                var id = $(this).attr("id");
-                                                                                var bitrate = parseInt(id) * 1000;
-                                                                                if (bitrate === 0) {
-                                                                                        console.log("Not limiting bandwidth via REMB");
-                                                                                } else {
-                                                                                        console.log(
-                                                                                                "Capping bandwidth to " + bitrate + " via REMB"
-                                                                                        );
-                                                                                }
-                                                                                $("#bitrateset")
-                                                                                        //@ts-ignore
-                                                                                        .html($(this).html() + '<span className="caret"></span>')
-                                                                                        .parent()
-                                                                                        .removeClass("open");
-                                                                                videocall.send({
-                                                                                        message: { request: "set", bitrate: bitrate },
-                                                                                });
-                                                                                return false;
-                                                                        });
-                                                        },
-                                                        ondataopen: function () {
-                                                                $("#videos").removeClass("hide").show();
-                                                                $("#datasend").removeAttr("disabled");
-                                                        },
-                                                        ondata: function (data: any) {
-                                                                console.debug("We got data from the DataChannel!", data);
-                                                                $("#datarecv").val(data);
-                                                        },
-                                                        oncleanup: function () {
-                                                                $("#videoright").empty();
-                                                                $("#videos").hide();
-                                                                if (bitrateTimer) clearInterval(bitrateTimer);
-                                                                bitrateTimer = null;
-                                                                $("#videos").hide();
-                                                                simulcastStarted = false;
-                                                                $("#simulcast").remove();
-                                                                localTracks = {};
-                                                                localVideos = 0;
-                                                                remoteTracks = {};
-                                                                remoteVideos = 0;
-                                                        },
-                                                });
-                                        },
-                                        error: function (error: any) {
-                                                console.log("---init error session videocall--- ", error)
-                                                console.error(error);
-                                        },
-                                        destroyed: function () {
-                                                console.log("---init destroy session videocall--- ")
-                                                // window.location.reload()
-                                        }
-                                });
-                        },
-                })
-        }, [])
+        // useEffect(() => {
+        //         Janus?.init({
+        //                 debug: true,
+        //                 dependencies: Janus.useDefaultDependencies(),
+        //                 callback: () => {
+        //                         janus = new Janus({
+        //                                 server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
+        //                                 success: async function () {
+        //                                         janus.attach({
+        //                                                 plugin: "janus.plugin.videocall",
+        //                                                 opaqueId: uuid,
+        //                                                 success: function (pluginHandle: any) {
+        //                                                         videocall = pluginHandle;
+        //                                                 },
+        //                                                 onmessage: function (msg: any, jsep: any) {
+        //                                                         jsep = jsep
+        //                                                         console.log("record msg: ", msg)
+        //                                                         var result = msg["result"];
+        //                                                         if (result) {
+        //                                                                 if (result["list"]) {
+        //                                                                         var list = result["list"];
+        //                                                                         for (var mp in list) {
+        //                                                                                 console.debug(`>>> ${list[mp]}`);
+        //                                                                         }
+        //                                                                 } else if (result["event"]) {
+        //                                                                         var event = result["event"];
+        //                                                                         if (event === "registered") {
+        //                                                                                 if (msg?.result?.username?.includes('speaker')) {
+        //                                                                                         console.log('speaker: ', info_id_profile)
+        //                                                                                         const success = (jsep: any) => {
+        //                                                                                                 videocall.send({
+        //                                                                                                         message: {
+        //                                                                                                                 request: "call",
+        //                                                                                                                 username: `student-${info_id_profile}`
+        //                                                                                                         },
+        //                                                                                                         jsep
+        //                                                                                                 })
+        //                                                                                         }
+        //                                                                                         videocall.createOffer(
+        //                                                                                                 {
+        //                                                                                                         tracks: [
+        //                                                                                                                 { type: 'audio', capture: true, recv: true },
+        //                                                                                                                 { type: 'video', capture: true, recv: true, simulcast: doSimulcast },
+        //                                                                                                                 { type: 'data' },
+        //                                                                                                         ],
+        //                                                                                                         success: success,
+        //                                                                                                         error: (error: any) => {
+        //                                                                                                                 console.error("WebRTC error...", error)
+        //                                                                                                         }
+        //                                                                                                 });
+        //                                                                                 }
+        //                                                                                 videocall.send({
+        //                                                                                         message: {
+        //                                                                                                 request: "list"
+        //                                                                                         }
+        //                                                                                 });
+        //                                                                         } else if (event === "calling") {
+        //                                                                                 console.log("record calling");
+        //                                                                         } else if (event === "incomingcall") {
+        //                                                                                 videocall.createAnswer(
+        //                                                                                         {
+        //                                                                                                 jsep: jsep,
+        //                                                                                                 tracks: [
+        //                                                                                                         { type: 'audio', capture: true, recv: true },
+        //                                                                                                         { type: 'video', capture: true, recv: true },
+        //                                                                                                         { type: 'data' },
+        //                                                                                                 ],
+        //                                                                                                 success: function (jsep: any) {
+        //                                                                                                         console.log("incomingcall")
+        //                                                                                                         videocall.send({
+        //                                                                                                                 message: {
+        //                                                                                                                         request: "accept"
+        //                                                                                                                 },
+        //                                                                                                                 jsep: jsep
+        //                                                                                                         })
+        //                                                                                                 },
+        //                                                                                                 error: function (error: any) {
+        //                                                                                                         console.error("WebRTC error:", error);
+        //                                                                                                 }
+        //                                                                                         });
+        //                                                                         } else if (event === "accepted") {
+        //                                                                                 setVisible(true)
+        //                                                                                 Modal.destroyAll()
+        //                                                                                 getTimer()
+        //                                                                                 // stop()
+        //                                                                                 var peer = escapeXmlTags(result["username"]);
+        //                                                                                 if (!peer) {
+        //                                                                                 } else {
+        //                                                                                 }
+        //                                                                                 if (jsep) { videocall.handleRemoteJsep({ jsep }); }
+        //                                                                                 Record()
+        //                                                                         } else if (event === "update") {
+        //                                                                                 if (jsep) {
+        //                                                                                         if (jsep.type === "answer") {
+        //                                                                                                 videocall.handleRemoteJsep({ jsep: jsep });
+        //                                                                                         } else {
+        //                                                                                                 videocall.createAnswer({
+        //                                                                                                         jsep: jsep,
+        //                                                                                                         tracks: [
+        //                                                                                                                 { type: 'audio', capture: true, recv: true },
+        //                                                                                                                 { type: 'video', capture: true, recv: true },
+        //                                                                                                                 { type: 'data' },
+        //                                                                                                         ],
+        //                                                                                                         success: function (jsep: any) {
+        //                                                                                                                 console.debug("Got SDP!", jsep);
+        //                                                                                                                 videocall.send({
+        //                                                                                                                         message: {
+        //                                                                                                                                 request: "set"
+        //                                                                                                                         },
+        //                                                                                                                         jsep: jsep
+        //                                                                                                                 });
+        //                                                                                                         },
+        //                                                                                                         error: function (error: any) {
+        //                                                                                                                 console.error("WebRTC error:", error);
+        //                                                                                                         },
+        //                                                                                                 });
+        //                                                                                         }
+        //                                                                                 }
+        //                                                                         } else if (event === "hangup") {
+        //                                                                                 if (!close) {
+        //                                                                                         closeVideoCallTalk()
+        //                                                                                         close = true
+        //                                                                                 }
+        //                                                                                 $("#myvideo" + trackId).remove()
+        //                                                                                 $("#myvideo").remove()
+        //                                                                                 if (is_speaker) {
+        //                                                                                         console.log(" ---update status is_speaker offline--- ")
+        //                                                                                         updateStatus("offline")
+        //                                                                                 }
+        //                                                                                 setVisible(false)
+        //                                                                                 tracks = null
+        //                                                                                 localTracks = {}
+        //                                                                                 videocall.hangup();
+        //                                                                                 janus.destroy();
+        //                                                                                 if (spinner) spinner.stop();
+        //                                                                                 $("#videos").hide();
+        //                                                                         } else if (event === "simulcast") {
+        //                                                                                 var substream = result["substream"];
+        //                                                                                 var temporal = result["temporal"];
+        //                                                                                 if (
+        //                                                                                         (substream !== null && substream !== undefined) ||
+        //                                                                                         (temporal !== null && temporal !== undefined)
+        //                                                                                 ) {
+        //                                                                                         if (!simulcastStarted) {
+        //                                                                                                 simulcastStarted = true;
+        //                                                                                         }
+        //                                                                                 }
+        //                                                                         }
+        //                                                                 }
+        //                                                         } else {
+        //                                                                 var error = msg["error"];
+        //                                                                 setVisible(false)
+        //                                                                 videocall.hangup();
+        //                                                                 if (spinner) spinner.stop();
+        //                                                                 $("#videos").hide();
+        //                                                                 if (bitrateTimer) clearInterval(bitrateTimer);
+        //                                                                 bitrateTimer = null;
+        //                                                         }
+        //                                                 },
+        //                                                 onlocaltrack: function (track: any, on: any) {
+        //                                                         trackId = track.id.replace(/[{}]/g, "");
+        //                                                         if (!on) {
+        //                                                                 var stream = localTracks[trackId]
+        //                                                                 if (stream) {
+        //                                                                         try {
+        //                                                                                 tracks = stream.getTracks();
+        //                                                                                 for (var i in tracks) {
+        //                                                                                         var mst = tracks[i];
+        //                                                                                         if (mst !== null && mst !== undefined) mst.stop();
+        //                                                                                 }
+        //                                                                         } catch (e) {
+        //                                                                                 console.error('random error: ', e)
+        //                                                                         }
+        //                                                                 }
+        //                                                                 if (track.kind === "video") {
+        //                                                                         $("#myvideo" + trackId).remove();
+        //                                                                         localVideos--;
+        //                                                                         for (var i in tracks) {
+        //                                                                                 var mst = tracks[i];
+        //                                                                                 if (mst !== null && mst !== undefined) mst.stop();
+        //                                                                         }
+        //                                                                         if (localVideos === 0) {
+        //                                                                                 if ($("#videoleft .no-video-container").length === 0) {
+        //                                                                                 }
+        //                                                                         }
+        //                                                                 }
+        //                                                                 delete localTracks[trackId];
+        //                                                                 return;
+        //                                                         }
+        //                                                         var stream = localTracks[trackId];
+        //                                                         if (stream) {
+        //                                                                 return;
+        //                                                         }
+        //                                                         if ($("#videoleft video").length === 0) {
+        //                                                                 $("#videos").removeClass("hide").show();
+        //                                                         }
+        //                                                         if (track.kind === "audio") {
+        //                                                                 if (localVideos === 0) {
+        //                                                                         if ($("#videoleft .no-video-container").length === 0) {
+        //                                                                         }
+        //                                                                 }
+        //                                                         } else {
+        //                                                                 localVideos++;
+        //                                                                 $("#videoleft .no-video-container").remove();
+        //                                                                 stream = new MediaStream();
+        //                                                                 stream.addTrack(track.clone());
+        //                                                                 localTracks[trackId] = stream;
+        //                                                                 $("#videoleft").append(
+        //                                                                         '<video className="rounded centered" id="myvideo' +
+        //                                                                         trackId +
+        //                                                                         '" width="100%" height="100%" autoplay playsinline border-radius="10px" muted="muted"/>'
+        //                                                                 );
+        //                                                                 Janus.attachMediaStream(
+        //                                                                         $("#myvideo" + trackId).get(0),
+        //                                                                         stream
+        //                                                                 );
+        //                                                         }
+        //                                                         if (
+        //                                                                 videocall.webrtcStuff.pc.iceConnectionState !== "completed" &&
+        //                                                                 videocall.webrtcStuff.pc.iceConnectionState !== "connected"
+        //                                                         ) {
+        //                                                         }
+        //                                                 },
+        //                                                 onremotetrack: function (track: any, mid: any, on: any) {
+        //                                                         if (!on) {
+        //                                                                 var stream = remoteTracks[mid];
+        //                                                                 if (stream) {
+        //                                                                         try {
+        //                                                                                 var tracks = stream.getTracks();
+        //                                                                                 for (var i in tracks) {
+        //                                                                                         var mst = tracks[i];
+        //                                                                                         if (mst) mst.stop();
+        //                                                                                 }
+        //                                                                         } catch (e) { }
+        //                                                                 }
+        //                                                                 $("#peervideo" + mid).remove();
+        //                                                                 if (track.kind === "video") {
+        //                                                                         remoteVideos--;
+        //                                                                         if (remoteVideos === 0) {
+        //                                                                                 if ($("#videoright .no-video-container").length === 0) {
+        //                                                                                 }
+        //                                                                         }
+        //                                                                 }
+        //                                                                 delete remoteTracks[mid];
+        //                                                                 return;
+        //                                                         }
+        //                                                         let addButtons = false;
+        //                                                         if (
+        //                                                                 $("#videoright audio").length === 0 &&
+        //                                                                 $("#videoright video").length === 0
+        //                                                         ) {
+        //                                                                 addButtons = true;
+        //                                                                 $("#videos").removeClass("hide").show();
+        //                                                         }
+        //                                                         if (track.kind === "audio") {
+        //                                                                 stream = new MediaStream();
+        //                                                                 stream.addTrack(track.clone());
+        //                                                                 remoteTracks[mid] = stream;
+        //                                                                 $("#videoright").append(
+        //                                                                         '<audio className="hide" id="peervideo' +
+        //                                                                         mid +
+        //                                                                         '" autoplay playsinline />'
+        //                                                                 );
+        //                                                                 Janus.attachMediaStream($("#peervideo" + mid).get(0), stream);
+        //                                                                 if (remoteVideos === 0) {
+        //                                                                         if ($("#videoright .no-video-container").length === 0) {
+        //                                                                         }
+        //                                                                 }
+        //                                                         } else {
+        //                                                                 remoteVideos++;
+        //                                                                 $("#videoright .no-video-container").remove();
+        //                                                                 stream = new MediaStream();
+        //                                                                 stream.addTrack(track.clone());
+        //                                                                 remoteTracks[mid] = stream;
+        //                                                                 $("#videoright").append(
+        //                                                                         '<video className="rounded centered peervideo" id="peervideo' +
+        //                                                                         mid +
+        //                                                                         '" width="100%" height="100%" autoplay playsinline muted="true" />'
+        //                                                                 );
+        //                                                                 Janus.attachMediaStream($("#peervideo" + mid).get(0), stream);
+        //                                                         }
+        //                                                         if (!addButtons) return;
+        //                                                         $("#bitrate a")
+        //                                                                 .removeAttr("disabled")
+        //                                                                 .click(function () {
+        //                                                                         //@ts-ignore
+        //                                                                         var id = $(this).attr("id");
+        //                                                                         var bitrate = parseInt(id) * 1000;
+        //                                                                         if (bitrate === 0) {
+        //                                                                                 console.log("Not limiting bandwidth via REMB");
+        //                                                                         } else {
+        //                                                                                 console.log(
+        //                                                                                         "Capping bandwidth to " + bitrate + " via REMB"
+        //                                                                                 );
+        //                                                                         }
+        //                                                                         $("#bitrateset")
+        //                                                                                 //@ts-ignore
+        //                                                                                 .html($(this).html() + '<span className="caret"></span>')
+        //                                                                                 .parent()
+        //                                                                                 .removeClass("open");
+        //                                                                         videocall.send({
+        //                                                                                 message: { request: "set", bitrate: bitrate },
+        //                                                                         });
+        //                                                                         return false;
+        //                                                                 });
+        //                                                 },
+        //                                                 ondataopen: function () {
+        //                                                         $("#videos").removeClass("hide").show();
+        //                                                         $("#datasend").removeAttr("disabled");
+        //                                                 },
+        //                                                 ondata: function (data: any) {
+        //                                                         console.debug("We got data from the DataChannel!", data);
+        //                                                         $("#datarecv").val(data);
+        //                                                 },
+        //                                                 oncleanup: function () {
+        //                                                         $("#videoright").empty();
+        //                                                         $("#videos").hide();
+        //                                                         if (bitrateTimer) clearInterval(bitrateTimer);
+        //                                                         bitrateTimer = null;
+        //                                                         $("#videos").hide();
+        //                                                         simulcastStarted = false;
+        //                                                         $("#simulcast").remove();
+        //                                                         localTracks = {};
+        //                                                         localVideos = 0;
+        //                                                         remoteTracks = {};
+        //                                                         remoteVideos = 0;
+        //                                                 },
+        //                                         });
+        //                                 },
+        //                                 error: function (error: any) {
+        //                                         console.log("---init error session videocall--- ", error)
+        //                                         console.error(error);
+        //                                 },
+        //                                 destroyed: function () {
+        //                                         console.log("---init destroy session videocall--- ")
+        //                                         // window.location.reload()
+        //                                 }
+        //                         });
+        //                 },
+        //         })
+        // }, [])
 
         async function closeVideoCallTalk() {
                 return await axiosInstance.post(
@@ -695,6 +1004,10 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                 videocall={videocall}
                                 propsCall={propsCall}
                                 doHangup={doHangup}
+                                //@ts-ignore
+                                refVideoLeft={refVideoLeft}
+                                //@ts-ignore
+                                refVideoRight={refVideoRight}
                         />
                 </CreateJanusContext.Provider>
         )

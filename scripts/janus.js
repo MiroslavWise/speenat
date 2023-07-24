@@ -1,5 +1,4 @@
 import adapter from 'webrtc-adapter';
-import $ from 'jquery'
 
 Janus.sessions = {};
 

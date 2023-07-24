@@ -11,7 +11,6 @@ export default {
         async login({ email = "", password = "", curRefreshToken = "", isRefresh = false }) {
                 try {
                         const data = isRefresh ? await refreshToken(curRefreshToken) : await ApiLogin({ email: email, password: password })
-                        console.log("data: ", data)
                         const { access, refresh } = data
 
                         const jwtData = jwt.decode(access, '', true)
