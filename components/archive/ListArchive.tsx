@@ -59,7 +59,7 @@ const ListArchive: FC = () => {
                                                         />
                                                         <div className="descriptions">
                                                                 <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
-                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
+                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time?.replace("min", " мин")}</span></p>
                                                                 <p>Дата сессии: <span>{dayjs(item?.created_at).format("HH:mm DD.MM.YYYY")}</span></p>
                                                                 <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
                                                         </div>

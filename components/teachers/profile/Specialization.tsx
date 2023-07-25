@@ -14,7 +14,7 @@ import { useWeb } from "context/WebSocketContext"
 import PhoneOff from "components/icons/phone-off"
 
 const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: ISpeakerData }> = ({ data, online, speaker }) => {
-        
+
         const user = useUser(state => state.user)
         const contextJanus = useContext(CreateJanusContext)
         const registerUsername = contextJanus?.registerUsername
@@ -23,7 +23,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
         const [uuidRecord, setUuidRecord] = useState<string>('')
         const [visible, setVisible] = useState<boolean>(false)
 
-        const [paramSpec, setParamSpec] = useState<{spec_id: number | null, time_id: number | null}>({spec_id: null, time_id: null})
+        const [paramSpec, setParamSpec] = useState<{ spec_id: number | null, time_id: number | null }>({ spec_id: null, time_id: null })
         const { wsChannel } = useWeb()
         const janusVisible = contextJanus?.visible
 
@@ -32,7 +32,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                         if (!janusVisible) {
                                 handleCancelCall()
                                 // timeDetected()
-                        } 
+                        }
                 }, 60_000)
 
                 if (value === false) {
@@ -121,15 +121,15 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                 </div>
                                                 <div className="content">
                                                         <p className="name">Опыт работы и образование:</p>
-                                                        <p className="sub-name"><b>ВУЗ: </b>{item?.university}</p>
+                                                        {item?.university ? <p className="sub-name"><b>ВУЗ: </b>{item?.university}</p> : null}
                                                         <p className="sub-name"><b>Стаж: </b>{work_experience(item?.work_experience)}</p>
                                                         {
                                                                 item?.region_living
-                                                                ? <p className="sub-name"><b>Регион проживания: </b>{item?.region_living}</p> : null
+                                                                        ? <p className="sub-name"><b>Регион проживания: </b>{item?.region_living}</p> : null
                                                         }
                                                         {
                                                                 item?.additional_info
-                                                                ? <p className="sub-name"><b>Дополнительные сведения: </b>{item?.additional_info}</p> : null
+                                                                        ? <p className="sub-name"><b>Дополнительные сведения: </b>{item?.additional_info}</p> : null
                                                         }
                                                 </div>
                                                 <div className="consultation-time-list">
@@ -141,7 +141,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                                                                 <Button
                                                                                                         type="text"
                                                                                                         className="but-bell"
-                                                                                                        onClick={() => handleBell(time?.id, item?.specialization_id, item, time, )}
+                                                                                                        onClick={() => handleBell(time?.id, item?.specialization_id, item, time,)}
                                                                                                 >
                                                                                                         <p>Позвонить</p>
                                                                                                 </Button>
@@ -149,7 +149,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                                                 }
                                                                                 <div className="times">
                                                                                         <Time size={25} fill="var(--cyan)" />
-                                                                                        <p>{time?.sessions_time}</p>
+                                                                                        <p>{time?.sessions_time?.replace("min", " мин")}</p>
                                                                                 </div>
                                                                                 <div className="times">
                                                                                         <Wallet size={25} fill="var(--cyan)" />
@@ -176,7 +176,7 @@ const calling = (
         startEndTimer: Dispatch<boolean>
 ) => Modal.info({
         closable: false,
-        width:'max(500px)',
+        width: 'max(500px)',
         icon: null,
         footer: null,
         onCancel() {
@@ -186,7 +186,7 @@ const calling = (
         content: (
                 <div className="w-100">
                         <Row justify="center" className="w-100">
-                                <h4><span> Ожидание ответа от&nbsp;</span><span>{ speaker?.profile?.full_name }</span></h4>
+                                <h4><span> Ожидание ответа от&nbsp;</span><span>{speaker?.profile?.full_name}</span></h4>
                         </Row>
                         <Space direction="vertical">
                                 <p><b>Специальность</b>: {info?.specialization?.name}</p>
@@ -195,13 +195,13 @@ const calling = (
                         <Divider />
                         <Row justify="center" className="w-100">
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <h3 style={{color: 'red',  textAlign: 'center' }}>Идёт соединение</h3>
+                                        <h3 style={{ color: 'red', textAlign: 'center' }}>Идёт соединение</h3>
                                 </Row>
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{color: 'red', textAlign: 'center' }}>Подождите немного - не закрывайте приложение и не блокируйте телефон</p>
+                                        <p style={{ color: 'red', textAlign: 'center' }}>Подождите немного - не закрывайте приложение и не блокируйте телефон</p>
                                 </Row>
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{ textAlign: 'center'}}>Время ответа спикера зависит от качества вашего интернет-соединения</p>
+                                        <p style={{ textAlign: 'center' }}>Время ответа спикера зависит от качества вашего интернет-соединения</p>
                                 </Row>
                         </Row>
                         <br />
@@ -236,8 +236,8 @@ const onCancelSpeakerCall = () => Modal.info({
         footer: null,
         content: (
                 <div className="w-100">
-                        <Row justify="center" className="w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                                <p style={{color: 'red', textAlign: 'center' }}>Спикер отклонил ваш вызов</p>
+                        <Row justify="center" className="w-100" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                <p style={{ color: 'red', textAlign: 'center' }}>Спикер отклонил ваш вызов</p>
                         </Row>
                         <br />
                         <Row justify="center">
@@ -253,7 +253,7 @@ const onCancelSpeakerCall = () => Modal.info({
                                                         alignItems: 'center'
                                                 }}
                                         >
-                                                <span style={{ margin: '0 0 0 0.5rem', color: 'white'}}>Ок</span>
+                                                <span style={{ margin: '0 0 0 0.5rem', color: 'white' }}>Ок</span>
                                         </div>
                                 </Button>
                         </Row>
@@ -270,8 +270,8 @@ const timeDetected = () => Modal.info({
         centered: true,
         content: (
                 <div className="w-100">
-                        <Row justify="center" className="w-100" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                                <p style={{color: 'red', textAlign: 'center' }}>Время вызова истекло, и спикер не принял ваш вызов</p>
+                        <Row justify="center" className="w-100" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                <p style={{ color: 'red', textAlign: 'center' }}>Время вызова истекло, и спикер не принял ваш вызов</p>
                         </Row>
                         <br />
                         <Row justify="center">
@@ -287,7 +287,7 @@ const timeDetected = () => Modal.info({
                                                         alignItems: 'center'
                                                 }}
                                         >
-                                                <span style={{ margin: '0 0 0 0.5rem', color: 'white'}}>Ок</span>
+                                                <span style={{ margin: '0 0 0 0.5rem', color: 'white' }}>Ок</span>
                                         </div>
                                 </Button>
                         </Row>

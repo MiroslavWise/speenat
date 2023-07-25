@@ -32,7 +32,7 @@ const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_u
                                 <p className="teacher-specialization">{specialization?.name}</p>
                                 <ul className="teacher-prices">
                                         {consultation_time.map((price) => (
-                                                <li key={`${price.sessions_time}_${price.price}`}>{price.sessions_time}: {price.price}₸</li>
+                                                <li key={`${price.sessions_time}_${price.price}`}>{price.sessions_time?.replace("min", " мин")}: {price.price}₸</li>
                                         ))}
                                 </ul>
                         </div>

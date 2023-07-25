@@ -40,17 +40,11 @@ const Spec: NextPage = () => {
                                                         >
                                                                 <div className="descriptions">
                                                                         <p style={{textAlign: "center"}}>{item?.specialization?.name}</p>
-                                                                        <p>ВУЗ: <span>{item?.university}</span></p>
+                                                                        <p>ВУЗ: <span>{item?.university || <i>ВУЗ не заполнен</i>}</span></p>
                                                                         <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
                                                                         <p>Продолжительность консультации: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
-                                                                        {
-                                                                                item?.region_living
-                                                                                ? <p>Регион проживания: <span>{item?.region_living}</span></p> : null
-                                                                        }
-                                                                        {
-                                                                                item?.additional_info
-                                                                                        ? <p>Дополнительные сведения: <span>{item?.additional_info}</span></p> : null
-                                                                        }
+                                                                        <p>Регион проживания: <span>{item?.region_living || <i>Региона проживания не заполнен</i>}</span></p>
+                                                                        <p>Дополнительные сведения: <span>{item?.additional_info || <i>Дополнительные сведения не заполнены</i>}</span></p>
                                                                         <br />
                                                                         <div className="buttons">
                                                                                 <Button
