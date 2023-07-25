@@ -43,7 +43,7 @@ const Spec: NextPage = () => {
                                                                         <p>ВУЗ: <span>{item?.university || <i>ВУЗ не заполнен</i>}</span></p>
                                                                         <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
                                                                         <p>Продолжительность консультации: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
-                                                                        <p>Регион проживания: <span>{item?.region_living || <i>Региона проживания не заполнен</i>}</span></p>
+                                                                        <p>Регион проживания: <span>{item?.region_living || <i>Регион проживания не заполнен</i>}</span></p>
                                                                         <p>Дополнительные сведения: <span>{item?.additional_info || <i>Дополнительные сведения не заполнены</i>}</span></p>
                                                                         <br />
                                                                         <div className="buttons">

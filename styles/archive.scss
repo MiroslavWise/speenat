@@ -47,6 +47,9 @@
                                         text-overflow: ellipsis;
                                         span{
                                                 color: var(--cyan);
+                                                i{
+                                                        color: var(--premium-orange);
+                                                }
                                         }
                                 }
                         }

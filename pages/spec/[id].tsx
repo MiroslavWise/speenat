@@ -87,7 +87,7 @@ const CurrentSpec: NextPage = () => {
                                 </div>
                                 <div className="item-form">
                                         <p>Регион проживания:</p>
-                                        <i>{currentSpec?.region_living || <span>Региона проживания не заполнен</span>}</i>
+                                        <i>{currentSpec?.region_living || <span>Регион проживания не заполнен</span>}</i>
                                 </div>
                                 <div className="item-form">
                                         <p>Дополнительные сведения:</p>
