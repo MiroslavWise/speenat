@@ -37,6 +37,28 @@ export default function ArchiveCurrent() {
     <div className="content-archive">
       <div className="header-archive" />
       <div className="list-archive">
+        <section className={styles.container}>
+          <Image
+            loader={loadImage}
+            src={srcImage((isSpeaker && data?.student_profile?.photo_url) ? replaceHttps(data?.student_profile?.photo_url) : data?.speaker?.profile?.photo_url ? replaceHttps(data?.speaker?.profile?.photo_url) : 'default')}
+            alt="photo"
+            height={200}
+            width={200}
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "cover",
+              borderRadius: 10,
+              aspectRatio: "1/1",
+            }}
+            className="avatar"
+          />
+          <ul>
+            <li><p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? data?.student_profile?.full_name : data?.speaker?.profile?.full_name}</span></p></li>
+            <li><p>Дата сессии: <span>{dayjs(data?.created_at).format("HH:mm DD.MM.YYYY")}</span></p></li>
+            <li><p>Статус: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p></li>
+          </ul>
+        </section>
         {
           data?.record_url !== "not_found"
             ? (
@@ -52,29 +74,6 @@ export default function ArchiveCurrent() {
             )
             : null
         }
-        <section className={styles.container}>
-          <Image
-            loader={loadImage}
-            src={srcImage((isSpeaker && data?.student_profile?.photo_url) ? replaceHttps(data?.student_profile?.photo_url) : data?.speaker?.profile?.photo_url ? replaceHttps(data?.speaker?.profile?.photo_url) : 'default')}
-            alt="photo"
-            height={200}
-            width={200}
-            style={{
-              width: "100%",
-              objectFit: "cover",
-              borderRadius: 10,
-              aspectRatio: "1/1",
-            }}
-            className="avatar"
-          />
-          <ul>
-            <li><p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? data?.student_profile?.full_name : data?.speaker?.profile?.full_name}</span></p></li>
-            <li><p>Продолжительность сессии: <span>{data?.conference_time?.sessions_time?.replace("min", " минут")}</span></p></li>
-            <li><p>Дата сессии: <span>{dayjs(data?.created_at).format("HH:mm DD.MM.YYYY")}</span></p></li>
-            <li><p>Оплата: <span>{data?.conference_time?.price}₸</span></p></li>
-            <li><p>Статус: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p></li>
-          </ul>
-        </section>
       </div>
     </div>
   )

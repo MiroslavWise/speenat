@@ -37,50 +37,47 @@ const ListArchive: FC = () => {
         return (
                 <div className="content-archive">
                         <div className="header-archive" />
-                        <div className="list-archive">
-                                <MotionUL classNames={["list-archive"]}>
-                                        {
-                                                data && data?.results?.length > 0
-                                                &&
-                                                data?.results?.map(item => (
-                                                        <MotionLI
-                                                                key={item?.uuid}
-                                                                classNames={["item-archive", "cursor-pointer"]}
-                                                                onClick={() => {
-                                                                        push(`/archive/${item?.uuid}`)
-                                                                }}
-                                                        >
-                                                                <Image
-                                                                        loader={loadImage}
-                                                                        src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? replaceHttps(item?.student_profile?.photo_url) : item?.speaker?.profile?.photo_url ? replaceHttps(item?.speaker?.profile?.photo_url) : 'default')}
-                                                                        alt="photo"
-                                                                        height={100}
-                                                                        width={100}
-                                                                        className="avatar"
-                                                                />
-                                                                <div className="descriptions">
-                                                                        <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
-                                                                        <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
-                                                                        <p>Дата сессии: <span>{dayjs(item?.created_at).format("HH:mm DD/MM/YYYY")}</span></p>
-                                                                        <p>Оплата: <span>{item?.conference_time?.price}₸</span></p>
-                                                                        <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
-                                                                </div>
-                                                        </MotionLI>
-                                                ))
-                                        }
-                                        {
-                                                data && data?.count < 11
-                                                        ? null
-                                                        : <Pagination
-                                                                current={page}
-                                                                total={data?.count || 0}
-                                                                onChange={setPage}
-                                                                defaultPageSize={10}
-                                                                showSizeChanger={false}
+                        <MotionUL classNames={["list-archive"]}>
+                                {
+                                        data && data?.results?.length > 0
+                                        &&
+                                        data?.results?.map(item => (
+                                                <MotionLI
+                                                        key={item?.uuid}
+                                                        classNames={["item-archive", "cursor-pointer"]}
+                                                        onClick={() => {
+                                                                push(`/archive/${item?.uuid}`)
+                                                        }}
+                                                >
+                                                        <Image
+                                                                loader={loadImage}
+                                                                src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? replaceHttps(item?.student_profile?.photo_url) : item?.speaker?.profile?.photo_url ? replaceHttps(item?.speaker?.profile?.photo_url) : 'default')}
+                                                                alt="photo"
+                                                                height={100}
+                                                                width={100}
+                                                                className="avatar"
                                                         />
-                                        }
-                                </MotionUL>
-                        </div>
+                                                        <div className="descriptions">
+                                                                <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
+                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
+                                                                <p>Дата сессии: <span>{dayjs(item?.created_at).format("HH:mm DD/MM/YYYY")}</span></p>
+                                                                <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
+                                                        </div>
+                                                </MotionLI>
+                                        ))
+                                }
+                                {
+                                        data && data?.count < 11
+                                                ? null
+                                                : <Pagination
+                                                        current={page}
+                                                        total={data?.count || 0}
+                                                        onChange={setPage}
+                                                        defaultPageSize={10}
+                                                        showSizeChanger={false}
+                                                />
+                                }
+                        </MotionUL>
                 </div>
         )
 }

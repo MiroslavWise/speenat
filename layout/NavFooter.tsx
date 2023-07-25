@@ -3,12 +3,9 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { isMobile } from "react-device-detect";
 
-import type { TMenu } from "types/menu";
-
 import { useUser } from "store/use-user";
 
 import { FIRST_ITEM, CENTRAL_ITEM, LAST_ITEMS } from "./constants/ItemsMenuFooter";
-import { activePath } from "functions/name-route";
 
 import styles from "./styles/footer.module.scss"
 
@@ -29,7 +26,7 @@ const NavFooter: FC = () => {
                 isMobile
                         ? (
                                 <div className={styles.container}>
-                                        <ul className={styles.content}>
+                                        <ul>
                                                 {
                                                         FIRST_ITEM(isSpeaker).map(item => (
                                                                 <li key={`${item?.value}_${item?.title}`} onClick={() => handleTo(`/${item.value}`)}>

@@ -11,7 +11,7 @@ export const PlyrPlayer = forwardRef<HTMLVideoElement, PlyrProps>((props, ref) =
   const {
     source,
     options = {
-      autoplay: true,
+      autoplay: false,
       controls: ['play', 'progress', 'current-time', 'mute', 'volume', "fullscreen"],
       volume: 70,
   }, ...rest } = props

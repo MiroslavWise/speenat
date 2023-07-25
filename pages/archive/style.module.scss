@@ -2,11 +2,12 @@
   width: 100%;
   height: auto;
   display: grid;
-  grid-template-columns: calc(44% - 2.5px) calc(56% - 2.5px);
+  grid-template-columns: calc(38% - 2.5px) calc(62% - 2.5px);
   gap: 5px;
   z-index: 2;
 
   ul{
+    margin-top: 0;
     width: 100%;
     display: flex;
     flex-direction: column;

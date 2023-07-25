@@ -2,7 +2,6 @@ import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, typ
 import { useRouter } from "next/router";
 const { v4: uuidv4 } = require('uuid')
 
-// const $ = require('jquery')
 import { message, Modal } from "antd";
 
 import type { ICallData } from 'types/call'
