@@ -100,11 +100,11 @@ const FormSpec: FC = () => {
                         }]
                         const data = {
                                 specialization_id: values.specialization_id,
-                                university: values.university,
+                                university: values.university || "",
                                 scientific_degree: values.scientific_degree || false,
                                 work_experience: values.work_experience || 0,
                                 consultation_time: consultation_time,
-                                region_living: values.region_living,
+                                region_living: values.region_living || "",
                                 additional_info: values.additional_info,
                         }
                         //@ts-ignore
@@ -165,7 +165,7 @@ const FormSpec: FC = () => {
                                 <p>Какой ВУЗ окончили</p>
                                 <Form.Item
                                         name="university"
-                                        rules={[{ required: true, message: 'Введите название ВУЗа!', },]}
+                                        // rules={[{ required: true, message: 'Введите название ВУЗа!', },]}
                                 >
                                         <Input maxLength={50} className="form-input" />
                                 </Form.Item>
@@ -196,6 +196,7 @@ const FormSpec: FC = () => {
                                 <Form.Item
                                         name="consultation_time"
                                         style={{ margin: 0, padding: 0 }}
+                                        rules={[{ required: true, message: 'Обязательное поле!', },]}
                                 >
                                         <Input
                                                 type="number"

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { Pagination } from "antd";
 
 import Loader from "@loader-spin";
+import { MotionUL } from "components/motion/MotionUL";
+import { MotionLI } from "components/motion/MotionLI";
 
 import { useUser } from "store/use-user";
 import loadImage from "functions/load-image";
@@ -26,56 +28,58 @@ const ListArchive: FC = () => {
                 if (item?.includes('default')) {
                         return '/images/default.png'
                 } else {
-                        return item 
+                        return item
                 }
         }
 
-        if(isLoading || loading) return <Loader />
+        if (isLoading || loading) return <Loader />
 
         return (
                 <div className="content-archive">
                         <div className="header-archive" />
                         <div className="list-archive">
-                                {
-                                        data && data?.results?.length > 0
-                                        &&
-                                        data?.results?.map(item => (
-                                                <div 
-                                                        key={item?.uuid}
-                                                        className="item-archive cursor-pointer"
-                                                        onClick={() => {
-                                                                push(`/archive/${item?.uuid}`)
-                                                        }}
-                                                >
-                                                        <Image
-                                                                loader={loadImage}
-                                                                src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? replaceHttps(item?.student_profile?.photo_url) : item?.speaker?.profile?.photo_url ? replaceHttps(item?.speaker?.profile?.photo_url) : 'default')}
-                                                                alt="photo"
-                                                                height={100}
-                                                                width={100}
-                                                                className="avatar"
+                                <MotionUL classNames={["list-archive"]}>
+                                        {
+                                                data && data?.results?.length > 0
+                                                &&
+                                                data?.results?.map(item => (
+                                                        <MotionLI
+                                                                key={item?.uuid}
+                                                                classNames={["item-archive", "cursor-pointer"]}
+                                                                onClick={() => {
+                                                                        push(`/archive/${item?.uuid}`)
+                                                                }}
+                                                        >
+                                                                <Image
+                                                                        loader={loadImage}
+                                                                        src={srcImage((isSpeaker && item?.student_profile?.photo_url) ? replaceHttps(item?.student_profile?.photo_url) : item?.speaker?.profile?.photo_url ? replaceHttps(item?.speaker?.profile?.photo_url) : 'default')}
+                                                                        alt="photo"
+                                                                        height={100}
+                                                                        width={100}
+                                                                        className="avatar"
+                                                                />
+                                                                <div className="descriptions">
+                                                                        <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
+                                                                        <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
+                                                                        <p>Дата сессии: <span>{dayjs(item?.created_at).format("HH:mm DD/MM/YYYY")}</span></p>
+                                                                        <p>Оплата: <span>{item?.conference_time?.price}₸</span></p>
+                                                                        <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
+                                                                </div>
+                                                        </MotionLI>
+                                                ))
+                                        }
+                                        {
+                                                data && data?.count < 11
+                                                        ? null
+                                                        : <Pagination
+                                                                current={page}
+                                                                total={data?.count || 0}
+                                                                onChange={setPage}
+                                                                defaultPageSize={10}
+                                                                showSizeChanger={false}
                                                         />
-                                                        <div className="descriptions">
-                                                                <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{ isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
-                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time}</span></p>
-                                                                <p>Дата сессии: <span>{ dayjs(item?.created_at).format("HH:mm DD/MM/YYYY") }</span></p>
-                                                                <p>Оплата: <span>{item?.conference_time?.price}₸</span></p>
-                                                                <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
-                                                        </div>
-                                                </div>
-                                        ))
-                                }
-                                {
-                                        data &&data?.count < 11
-                                                ? null
-                                                : <Pagination
-                                                        current={page}
-                                                        total={data?.count || 0}
-                                                        onChange={setPage}
-                                                        defaultPageSize={10}
-                                                        showSizeChanger={false}
-                                                />
-                                }
+                                        }
+                                </MotionUL>
                         </div>
                 </div>
         )

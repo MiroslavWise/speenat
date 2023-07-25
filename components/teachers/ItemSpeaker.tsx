@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
+import { MotionLI } from "components/motion/MotionLI";
 
 import loadImage from "functions/load-image";
 
@@ -11,8 +12,8 @@ const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_u
         const { push } = useRouter()
         
         return (
-                <div
-                        className="teacher-card"
+                <MotionLI
+                        classNames={["teacher-card"]}
                         onClick={() => push(`/teachers/${speaker_id}`)}
                 >
                         <div className="teacher-image">
@@ -35,7 +36,7 @@ const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_u
                                         ))}
                                 </ul>
                         </div>
-                </div>
+                </MotionLI>
         )
 }
 

@@ -7,6 +7,7 @@
 .history
 /.history
 .env
+/.env
 
 # testing
 /coverage
@@ -36,3 +37,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/docker-compose.yml
+/Dockerfile
+docker-compose.yml
+Dockerfile

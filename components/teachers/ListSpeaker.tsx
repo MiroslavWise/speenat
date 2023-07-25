@@ -1,11 +1,13 @@
 import { DispatchWithoutAction, FC, useEffect } from "react";
+import { useQuery } from "react-query";
 
 import ItemSpeaker from "./ItemSpeaker";
+
+import { MotionUL } from "components/motion/MotionUL";
 
 import { useWeb } from "context/WebSocketContext";
 import { useProfiles } from "store/use-profiles";
 import { speakers } from "api/api-user"
-import { useQuery } from "react-query";
 
 const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
         const filters = useProfiles(state => state.filters)
@@ -42,11 +44,9 @@ const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
                         }
                         {
                                 data && data?.results?.length > 0 && isLoading === false ? (
-                                        <div className="teacher-list">
-                                                {
-                                                        data?.results?.map(item => (<ItemSpeaker {...item} key={`${item?.id}_item_speaker`} />))
-                                                }
-                                        </div>
+                                        <MotionUL classNames={["teacher-list"]}>
+                                                {data?.results?.map(item => (<ItemSpeaker {...item} key={`${item?.id}_item_speaker`} />))}
+                                        </MotionUL>
                                 ) : (
                                                 null
                                         )
