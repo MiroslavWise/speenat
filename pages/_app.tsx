@@ -9,6 +9,7 @@ import { AntdLanguageProvider } from 'context/LanguageContext'
 import Layout from 'layout/Layout'
 
 import 'styles/init.scss'
+import "plyr-react/plyr.css"
 import 'helpers/i18n'
 
 const queryClient = new QueryClient()

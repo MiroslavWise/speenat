@@ -1,6 +1,5 @@
 import { useRef, useEffect, forwardRef } from "react"
 import Plyr, { PlyrOptions, PlyrSource, APITypes } from "plyr-react"
-import "plyr-react/plyr.css"
 
 interface PlyrProps {
   source: PlyrSource;
