@@ -39,6 +39,7 @@ const Spec: NextPage = () => {
                                                                 }}
                                                         >
                                                                 <div className="descriptions">
+                                                                        <p style={{textAlign: "center"}}>{item?.specialization?.name}</p>
                                                                         <p>ВУЗ: <span>{item?.university}</span></p>
                                                                         <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
                                                                         <p>Продолжительность консультации: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>

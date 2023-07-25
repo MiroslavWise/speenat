@@ -57,10 +57,11 @@ const CurrentSpec: NextPage = () => {
                                                 <p>Удалить</p>
                                         </Button>
                                 </div>
+                                <div className="item-form"><p>{currentSpec?.specialization?.name}</p></div>
                                 <div className="item-form">
                                         <p>ВУЗ:</p>
-                                        <i>{currentSpec?.university || ""}</i>
-                                </div>
+                                        <i>{currentSpec?.university || <span>ВУЗ не заполнен</span>}</i>
+                                        pd</div>
                                 <div className="item-form">
                                         <p>Научная степень:</p>
                                         <i>{currentSpec?.scientific_degree ? "Есть" : "Нет"}</i>
@@ -84,24 +85,14 @@ const CurrentSpec: NextPage = () => {
                                                 ))
                                         }
                                 </div>
-                                {
-                                        currentSpec?.region_living
-                                                ? (
-                                                        <div className="item-form">
-                                                                <p>Регион проживания:</p>
-                                                                <i>{currentSpec?.region_living}</i>
-                                                        </div>
-                                                ) : null
-                                }
-                                {
-                                        currentSpec?.additional_info
-                                                ? (
-                                                        <div className="item-form">
-                                                                <p>Дополнительные сведения:</p>
-                                                                <i>{currentSpec?.additional_info}</i>
-                                                        </div>
-                                                ) : null
-                                }
+                                <div className="item-form">
+                                        <p>Регион проживания:</p>
+                                        <i>{currentSpec?.region_living || <span>Региона проживания не заполнен</span>}</i>
+                                </div>
+                                <div className="item-form">
+                                        <p>Дополнительные сведения:</p>
+                                        <i>{currentSpec?.additional_info || <span>Дополнительные сведения не заполнены</span>}</i>
+                                </div>
                                 <Divider />
                                 <ListAttachments edit={false} />
                         </div>

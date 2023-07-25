@@ -143,6 +143,10 @@
                         font-weight: 500;
                         padding-left: 20px;
                         color: var(--color-gray);
+
+                        span{
+                                color: var(--premium-orange);
+                        }
                 }
                 .form-input{
                         width: 100%;
