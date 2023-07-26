@@ -108,4 +108,17 @@ export default {
         "Voluntary consent": "Ерікті келісім",
         "Rules of use": "Пайдалану ережелері",
         "Online payments": "Онлайн төлемдер",
+
+        "No account": "Тіркелгі жоқ",
+        "The fastest way to consult with a teacher": "Оқытушымен кеңесудің ең жылдам жолы",
+        "Log in to your account": "Тіркелгіңізге кіріңіз",
+        "Invalid username or password": "Логин немесе құпия сөз дұрыс емес",
+        "A user with the same data already exists": "Пайдаланушы дәл осындай деректермен бұрыннан бар",
+        "Enter your name": "Атыңызды енгізіңіз",
+        "Invalid E-mail": "Жарамсыз E-mail",
+        "Please enter your E-mail": "Электрондық поштаңызды енгізіңіз",
+        "Enter the password": "Құпия сөзді енгізіңіз",
+        Password: "Құпия сөз",
+        "Your promo code (optional field)": "Сіздің жарнамалық кодыңыз (міндетті өріс емес)",
+        "Forgot your password": "Құпия сөзді ұмыттыңыз ба",
 } as Record<string, string>

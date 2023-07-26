@@ -1,11 +1,11 @@
 import { FC } from "react";
-
-
+import { useTranslation } from "react-i18next";
 import { Form, Input } from "antd";
 
 const { Item } = Form
 
 const SignForm: FC = () => {
+        const { t } = useTranslation()
         return (
                 <>
                         <Item
@@ -14,11 +14,11 @@ const SignForm: FC = () => {
                                 rules={[
                                         {
                                                 type: 'email',
-                                                message: 'Не валидный E-mail!',
+                                                message: `${t("Invalid E-mail")}!`,
                                         },
                                         {
                                                 required: true,
-                                                message: 'Пожалуйста, введите свой E-mail!',
+                                                message: `${t("Please enter your E-mail")}!`,
                                         },
                                 ]}
                         >
@@ -32,13 +32,13 @@ const SignForm: FC = () => {
                                 name="password"
                                 className="user-box"
                         >
-                                <Input
+                                <Input.Password
                                         type="password"
                                         className="input-login"
-                                        placeholder="Пароль"
+                                        placeholder={`${t("Password")}`}
                                 />
                         </Item>
-                        <a className="forgot-password">Забыли пароль?</a>
+                        <a className="forgot-password">{t("Forgot your password")}?</a>
                 </>
         )
 }

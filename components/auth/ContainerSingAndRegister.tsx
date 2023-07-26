@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next"
 import { FC, useCallback, useState } from "react"
-
-import { Button, Form, Input, Row, Space, message } from "antd"
+import { Button, Form, Input, message } from "antd"
 
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
@@ -8,8 +8,6 @@ import SignForm from "./SignForm"
 import userData from "helpers/user-data"
 import { useAuth } from "context/Authorization"
 import { registerUser, IRegister } from "api/api-auth"
-
-const { Item } = Form
 
 interface IValues {
         email: string
@@ -25,6 +23,7 @@ interface IReturnAccess {
 }
 
 const ContainerSingAndRegister: FC = () => {
+        const { t } = useTranslation()
         const { setAuthState } = useAuth()
         const [isSign, setIsSign] = useState(false)
         const [isState, setIsState] = useState(false)
@@ -41,7 +40,7 @@ const ContainerSingAndRegister: FC = () => {
                                 }
                                 if (response?.access === false) {
                                         if (response.error !== null && response.error.message === "No token supplied") {
-                                                message.error("Не верный логин или пароль!")
+                                                message.error(`${t("Invalid username or password")}!`)
                                         } else {
                                                 message.error(response.error?.message)
                                         }
@@ -75,14 +74,14 @@ const ContainerSingAndRegister: FC = () => {
                                                         }
                                                         if (response?.access === false) {
                                                                 if (response.error !== null && response.error.message === "No token supplied") {
-                                                                        message.error("Не верный логин или пароль!")
+                                                                        message.error(`${t("Invalid username or password")}!`)
                                                                 } else {
                                                                         message.error(response.error?.message)
                                                                 }
                                                         }
                                                 })
                                 } else {
-                                        message.error("Юзер с такими же данными уже существует")
+                                        message.error(`${t("A user with the same data already exists")}`)
                                 }
                         })
         }
@@ -90,8 +89,8 @@ const ContainerSingAndRegister: FC = () => {
         return (
                 <div className={`__container-sign__ ${isSign && 'animate'}`}>
                         <div className={`content `}>
-                                <h2 style={{ textAlign: "center" }}>{isState ? 'Регистрация' : 'Войдите в свой аккаунт'}</h2>
-                                <h4>Самый быстрый способ проконсультироваться с преподавателем</h4>
+                                <h2 style={{ textAlign: "center" }}>{isState ? t("Registration") : t("Log in to your account")}</h2>
+                                <h4>{t("The fastest way to consult with a teacher")}</h4>
                                 <Form
                                         className="fields"
                                         onFinish={isState ? onRegister : onSubmit}
@@ -112,14 +111,14 @@ const ContainerSingAndRegister: FC = () => {
                                                 className="login-submit"
                                                 style={{ width: '100%' }}
                                         >
-                                                <p>{isState ? 'Регистрация' : 'Войти'}</p>
+                                                <p>{isState ? t("Registration") : t("Enter")}</p>
                                         </Button>
                                         <div className="register-component-button">
                                                 {
-                                                        !isState ? <p>Нет аккаунта? </p> : null
+                                                        !isState ? <p>{ t("No account")}? </p> : null
                                                 }
                                                 {
-                                                        !isState ? <a onClick={() => setIsState(state => !state)}>Регистрация</a> : <a onClick={() => setIsState(state => !state)}>Войти</a>
+                                                        !isState ? <a onClick={() => setIsState(state => !state)}>{t("Registration")}</a> : <a onClick={() => setIsState(state => !state)}>{t("Enter")}</a>
                                                 }
                                         </div>
                                 </Form>

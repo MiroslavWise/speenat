@@ -108,4 +108,17 @@ export default {
         "Voluntary consent": "Voluntary consent",
         "Rules of use": "Rules of use",
         "Online payments": "Online payments",
+
+        "No account": "No account",
+        "The fastest way to consult with a teacher": "The fastest way to consult with a teacher",
+        "Log in to your account": "Log in to your account",
+        "Invalid username or password": "Invalid username or password",
+        "A user with the same data already exists": "A user with the same data already exists",
+        "Enter your name": "Enter your name",
+        "Invalid E-mail": "Invalid E-mail",
+        "Please enter your E-mail": "Please enter your E-mail",
+        "Enter the password": "Enter the password",
+        Password: "Password",
+        "Your promo code (optional field)": "Your promo code (optional field)",
+        "Forgot your password": "Forgot your password",
 } as Record<string, string>

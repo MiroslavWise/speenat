@@ -1,11 +1,11 @@
 import { FC } from "react";
-
-
+import { useTranslation } from "react-i18next";
 import { Form, Input, Radio, Space } from "antd";
 
 const { Item } = Form
 
 const RegisterForm: FC = () => {
+        const { t } = useTranslation()
 
         return (
                 <>
@@ -15,8 +15,8 @@ const RegisterForm: FC = () => {
                         >
                                 <Radio.Group>
                                         <Space direction="horizontal">
-                                                <Radio value={false}><p>Студент</p></Radio>
-                                                <Radio value={true}><p>Преподаватель</p></Radio>
+                                                <Radio value={false}><p>{ t("Student")}</p></Radio>
+                                                <Radio value={true}><p>{ t("Speaker")}</p></Radio>
                                         </Space>
                                 </Radio.Group>
                         </Item>
@@ -26,7 +26,7 @@ const RegisterForm: FC = () => {
                                 rules={[
                                         {
                                                 required: true,
-                                                message: 'Введите ваше имя',
+                                                message: `${t("Enter your name")}`,
                                                 min: 2,
                                         },
                                 ]}
@@ -34,7 +34,7 @@ const RegisterForm: FC = () => {
                                 <Input
                                         type="text"
                                         className="input-login"
-                                        placeholder="Как к Вам обращаться (ФИО)"
+                                        placeholder={`${t("How to contact you (full name)")}`}
                                 />
                         </Item>
                         <Item
@@ -43,11 +43,11 @@ const RegisterForm: FC = () => {
                                 rules={[
                                         {
                                                 type: 'email',
-                                                message: 'Не валидный E-mail!',
+                                                message: `${t("Invalid E-mail")}!`,
                                         },
                                         {
                                                 required: true,
-                                                message: 'Пожалуйста, введите свой E-mail!',
+                                                message: `${t("Please enter your E-mail")}!`,
                                         },
                                 ]}
                         >
@@ -63,12 +63,12 @@ const RegisterForm: FC = () => {
                                 rules={[
                                         {
                                                 required: true,
-                                                message: 'Введите пароль!',
+                                                message: `${t("Enter the password")}!`,
                                                 min: 4,
                                         },
                                 ]}
                         >
-                                <Input
+                                <Input.Password
                                         type="password"
                                         className="input-login"
                                         placeholder="Пароль"
@@ -94,10 +94,10 @@ const RegisterForm: FC = () => {
                                         }),
                                 ]}
                         >
-                                <Input
+                                <Input.Password
                                         type="password"
                                         className="input-login"
-                                        placeholder="Пароль"
+                                        placeholder={`${t("Password")}`}
                                 />
                         </Item>
                         <Item
@@ -107,7 +107,7 @@ const RegisterForm: FC = () => {
                                 <Input
                                         type="text"
                                         className="input-login"
-                                        placeholder="Ваш промокод (не обязательное поле)"
+                                        placeholder={`${t("Your promo code (optional field)")}`}
                                 />
                         </Item>
                         

@@ -108,4 +108,17 @@ export default {
         "Voluntary consent": "Добровольное согласие",
         "Rules of use": "Правила пользования",
         "Online payments": "Онлайн платежи",
+
+        "No account": "Нет аккаунта",
+        "The fastest way to consult with a teacher": "Самый быстрый способ проконсультироваться с преподавателем",
+        "Log in to your account": "Войдите в свой аккаунт",
+        "Invalid username or password": "Неверный логин или пароль",
+        "A user with the same data already exists": "Пользователь такими же данными уже существует",
+        "Enter your name": "Введите ваше имя",
+        "Invalid E-mail": "Не валидный E-mail",
+        "Please enter your E-mail": "Пожалуйста, введите свой E-mail",
+        "Enter the password": "Введите пароль",
+        Password: "Пароль",
+        "Your promo code (optional field)": "Ваш промокод (не обязательное поле)",
+        "Forgot your password": "Забыли пароль",
 } as Record<string, string>
