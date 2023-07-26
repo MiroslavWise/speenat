@@ -1,9 +1,8 @@
-import { useEffect } from "react"
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { shallow } from "zustand/shallow";
-import Plyr from "plyr";
 
 import Loader from "@loader-spin";
 
@@ -21,6 +20,7 @@ import styles from "./style.module.scss"
 
 export default function ArchiveCurrent() {
   const { query: { id } } = useRouter()
+  const {t} = useTranslation()
   useDocumentTitle("Архив")
 
   const { data, isLoading } = useQuery(['archive', id], () => conference(id))
@@ -54,9 +54,9 @@ export default function ArchiveCurrent() {
             className="avatar"
           />
           <ul>
-            <li><p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? data?.student_profile?.full_name : data?.speaker?.profile?.full_name}</span></p></li>
-            <li><p>Дата сессии: <span>{dayjs(data?.created_at).format("HH:mm DD.MM.YYYY")}</span></p></li>
-            <li><p>Статус: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p></li>
+            <li><p>{isSpeaker ? `${t("Student")}:` : `${t("Speaker")}: `} <span>{isSpeaker ? data?.student_profile?.full_name : data?.speaker?.profile?.full_name}</span></p></li>
+            <li><p>{t("Session date")}: <span>{dayjs(data?.created_at).format("HH:mm DD.MM.YYYY")}</span></p></li>
+            <li><p>{t("Status")}: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p></li>
           </ul>
         </section>
         {

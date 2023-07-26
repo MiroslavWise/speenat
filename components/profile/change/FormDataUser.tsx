@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import dayjs from "dayjs"
-import moment from "moment"
 import { Button, DatePicker, Form, Input, Select } from "antd"
+import { useTranslation } from "react-i18next"
 import { InputMask } from '@react-input/mask'
 
 import { useUser } from "store/use-user"
@@ -9,6 +9,7 @@ import { changeNumber } from "functions/change-number"
 import { updateDataUser, IValueDataUser } from "api/put-user"
 
 const FormDataUser: FC = () => {
+        const { t } = useTranslation()
         const [form] = Form.useForm()
         const [loading, setLoading] = useState(false)
 
@@ -39,7 +40,7 @@ const FormDataUser: FC = () => {
                         onFinish={onSubmit}
                 >
                         <div className="item-form">
-                                <p>Телефон</p>
+                                <p>{t("Telephone")}</p>
                                 <Form.Item
                                         name="phone"
                                         rules={[
@@ -49,7 +50,7 @@ const FormDataUser: FC = () => {
                                                 },
                                         ]}
                                 >
-                                        <InputMask 
+                                        <InputMask
                                                 className="form-input mask"
                                                 mask="+7 (___) ___-__-__"
                                                 replacement={{ _: /\d/ }}
@@ -57,13 +58,13 @@ const FormDataUser: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Адрес</p>
+                                <p>{t("Address")}</p>
                                 <Form.Item
                                         name="address"
                                         rules={[
                                                 {
                                                         required: true,
-                                                        message: 'Введите адрес!',
+                                                        message: `${t("Enter the address")}!`,
                                                 },
                                         ]}
                                 >
@@ -71,13 +72,13 @@ const FormDataUser: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Пол</p>
+                                <p>{t("gender")}</p>
                                 <Form.Item
                                         name="gender"
                                         rules={[
                                                 {
                                                         required: true,
-                                                        message: 'Выберите пол!',
+                                                        message: `${t("Choose a gender")}!`,
                                                 },
                                         ]}
                                 >
@@ -85,8 +86,8 @@ const FormDataUser: FC = () => {
                                                 className="form-input-select"
                                                 size="large"
                                         >
-                                                <Select.Option value="male">Мужской</Select.Option>
-                                                <Select.Option value="female">Женский</Select.Option>
+                                                <Select.Option value="male">{t("Male")}</Select.Option>
+                                                <Select.Option value="female">{t("Female")}</Select.Option>
                                         </Select>
                                 </Form.Item>
                         </div>
@@ -96,7 +97,7 @@ const FormDataUser: FC = () => {
                                         htmlType="submit"
                                         loading={loading}
                                 >
-                                        <p>Обновить</p>
+                                        <p>{t("Update")}</p>
                                 </Button>
                         </div>
                 </Form>

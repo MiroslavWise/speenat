@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { isMobile } from "react-device-detect"
 import LeftArrow from "./components/header/LeftArrow"
 import NameCategory from "./components/header/NameCategory"
@@ -12,11 +12,11 @@ import { updateStatus } from "api/api-status"
 
 
 
-const objectStatus: Record<TStatus, [string, string]> = {
-        online: ["В сети", "green"],
-        offline: ["Не в сети", "red"],
-        busy: ["Занят", "red"],
-}
+const objectStatus = (t: (value: string) => string): Record<TStatus, [string, string]> => ({
+        online: [t("Online"), "green"],
+        offline: [t("Offline"), "red"],
+        busy: [t("Busy"), "red"],
+})
 
 const Header: FC = () => {
         const { t } = useTranslation()
@@ -36,6 +36,10 @@ const Header: FC = () => {
                 }
         }, [isStatus])
 
+        useEffect(() => {
+                isStatus
+        }, [])
+
         return (
                 isMobile
                         ? (
@@ -45,15 +49,16 @@ const Header: FC = () => {
                                                         <div className="list-item status" style={{ background: 'transparent' }}>
                                                                 <p>{t("Status")}: </p>
                                                                 {
-                                                                        isStatus && objectStatus.hasOwnProperty(isStatus) ? (
-                                                                                <p style={{ color: objectStatus[isStatus][1] }}>{objectStatus[isStatus][0]}</p>
+                                                                        isStatus && objectStatus(t).hasOwnProperty(isStatus) ? (
+                                                                                <p style={{ color: objectStatus(t)[isStatus][1] }}>{objectStatus(t)[isStatus][0]}</p>
                                                                         ) : null
                                                                 }
                                                                 {
-                                                                        isStatus && objectStatus.hasOwnProperty(isStatus) ? (
+                                                                        isStatus && objectStatus(t).hasOwnProperty(isStatus) ? (
                                                                                 <Switch
                                                                                         onChange={useStatus}
-                                                                                        defaultChecked={isStatus === "online" ? true : false} />
+                                                                                        checked={isStatus === "online"}
+                                                                                />
                                                                         ) : null
                                                                 }
                                                         </div>

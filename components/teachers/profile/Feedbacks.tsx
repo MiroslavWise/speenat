@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import moment from "moment";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 import { Rate } from "antd";
 
@@ -13,6 +14,7 @@ import loadImage from "functions/load-image";
 import { replaceHttps } from "functions/replace-https";
 
 const Feedbacks: FC<{}> = ({ }) => {
+        const { t } = useTranslation()
         const { query: { id } } = useRouter()
         const [page, setPage] = useState(1)
 
@@ -22,7 +24,7 @@ const Feedbacks: FC<{}> = ({ }) => {
 
         return (
                 <div className="container-feedback">
-                        <p className="title">Отзывы о спикере</p>
+                        <p className="title">{t("Speaker Reviews")}</p>
                         <div className="list-feedback">
                                 {
                                         data && data?.results?.length > 0

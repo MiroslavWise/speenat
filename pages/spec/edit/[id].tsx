@@ -9,7 +9,7 @@ import AttachmentsSpec from "components/spec-edit/AttachmentsSpec";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 
 const EditSpec: NextPage = () => {
-        useDocumentTitle("Редактирование специализации")
+        useDocumentTitle("Editing a specialization")
 
         return (
                 <div className="content-archive">

@@ -2,6 +2,7 @@ import { FC, useState } from "react"
 import { useRouter } from "next/router"
 import { useForm } from 'react-hook-form'
 import { useQuery } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "antd"
 
@@ -10,6 +11,7 @@ import { specializations } from "api/api-user"
 
 
 const AttachmentsSpec: FC = () => {
+        const { t } = useTranslation()
         const { query: { id } } = useRouter()
         const { refetch } = useQuery(["specializations"], () => specializations())
         const { register, getValues, handleSubmit, formState: { errors } } = useForm({
@@ -64,8 +66,8 @@ const AttachmentsSpec: FC = () => {
                         <br />
                         {/* {errors.name && <span style={{color: 'red', fontSize: 13}}>Это поле обязательно</span>} */}
                         <div className="item-form">
-                                <p>Добавить документ ( jpeg, jpg, pdf ):</p>
-                                <div className="form-input" style={{position: "relative", width: "calc(100% - 20px)"}}>
+                                <p>{t("Add a document")} ( jpeg, jpg, pdf ):</p>
+                                <div className="form-input" style={{ position: "relative", width: "calc(100% - 20px)" }}>
                                         <input
                                                 className="form-control"
                                                 style={{
@@ -78,22 +80,21 @@ const AttachmentsSpec: FC = () => {
                                                 id="diploma"
                                                 type="file"
                                                 {...register('file', {
-                                                        required: 'Приложите файл',
+                                                        required: `${t('Attach the file')}`,
                                                         validate: {
-                                                        // eslint-disable-next-line arrow-body-style
+                                                                // eslint-disable-next-line arrow-body-style
                                                                 typeFile: (value) => {
                                                                         console.log("value: ", value)
-                                                        return (value[0]?.type === 'image/jpeg'
-                                                        || value[0]?.type === 'image/jpg'
-                                                                || value[0]?.type === 'image/png'
-                                                                        || value[0]?.type === "png" )
-                                                        }
+                                                                        return (value[0]?.type === 'image/jpeg'
+                                                                                || value[0]?.type === 'image/jpg'
+                                                                                || value[0]?.type === 'image/png'
+                                                                                || value[0]?.type === "png")
+                                                                }
                                                         }
                                                 })}
                                         />
-                                        Выберите файл
+                                        {t("Select a file")}
                                 </div>
-
                                 {/* {errors.file && errors.file.type === 'typeFile' && <span style={{color: 'red', fontSize: 13}}>Файл должен быть типа - jpeg, jpg, pdf</span> } */}
                         </div>
                         <br />
@@ -103,7 +104,7 @@ const AttachmentsSpec: FC = () => {
                                         htmlType="submit"
                                         loading={isFileLoading}
                                 >
-                                        <p>Загрузить</p>
+                                        <p>{t("Download")}</p>
                                 </Button>
                         </div>
                 </form>

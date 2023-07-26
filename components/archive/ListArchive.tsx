@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 import { Pagination } from "antd";
 
@@ -17,8 +18,9 @@ import { statusCallConf } from "functions/status-conf";
 import { replaceHttps } from "functions/replace-https";
 
 const ListArchive: FC = () => {
-        const [page, setPage] = useState(1)
+        const { t } = useTranslation()
         const { push } = useRouter()
+        const [page, setPage] = useState(1)
         const userId = useUser(state => state.user?.profile?.profile_id)
         const loading = useUser(state => state.loading)
         const isSpeaker = useUser(state => state.is_speaker)
@@ -58,10 +60,10 @@ const ListArchive: FC = () => {
                                                                 className="avatar"
                                                         />
                                                         <div className="descriptions">
-                                                                <p>{isSpeaker ? "Студент: " : "Спикер: "} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
-                                                                <p>Про-сть сессии: <span>{item?.conference_time?.sessions_time?.replace("min", " мин")}</span></p>
-                                                                <p>Дата сессии: <span>{dayjs(item?.created_at).format("HH:mm DD.MM.YYYY")}</span></p>
-                                                                <p>Статус: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
+                                                                <p>{isSpeaker ? `${t("Student")}: ` : `${t("Speaker")}: `} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
+                                                                <p>{t("Session length")}: <span>{item?.conference_time?.sessions_time?.replace("min", ` ${t("mines")}`)}</span></p>
+                                                                <p>{t("Session date")}: <span>{dayjs(item?.created_at).format("HH:mm DD.MM.YYYY")}</span></p>
+                                                                <p>{t("Status")}: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
                                                         </div>
                                                 </MotionLI>
                                         ))

@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { FC, useContext, Dispatch, useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 
 import type { ISpeakerData, ISpec, IUserCurrent } from "types/store/user"
 
@@ -14,7 +15,7 @@ import { useWeb } from "context/WebSocketContext"
 import PhoneOff from "components/icons/phone-off"
 
 const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: ISpeakerData }> = ({ data, online, speaker }) => {
-
+        const { t } = useTranslation()
         const user = useUser(state => state.user)
         const contextJanus = useContext(CreateJanusContext)
         const registerUsername = contextJanus?.registerUsername
@@ -120,16 +121,16 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                         </div>
                                                 </div>
                                                 <div className="content">
-                                                        <p className="name">Опыт работы и образование:</p>
-                                                        {item?.university ? <p className="sub-name"><b>ВУЗ: </b>{item?.university}</p> : null}
-                                                        <p className="sub-name"><b>Стаж: </b>{work_experience(item?.work_experience)}</p>
+                                                        <p className="name">{ t("Work experience and education")}:</p>
+                                                        {item?.university ? <p className="sub-name"><b>{ t("UNIVERSITY")}: </b>{item?.university}</p> : null}
+                                                        <p className="sub-name"><b>{ t("Work experience")}: </b>{work_experience(item?.work_experience)}</p>
                                                         {
                                                                 item?.region_living
-                                                                        ? <p className="sub-name"><b>Регион проживания: </b>{item?.region_living}</p> : null
+                                                                        ? <p className="sub-name"><b>{ t("Region of residence")}: </b>{item?.region_living}</p> : null
                                                         }
                                                         {
                                                                 item?.additional_info
-                                                                        ? <p className="sub-name"><b>Дополнительные сведения: </b>{item?.additional_info}</p> : null
+                                                                        ? <p className="sub-name"><b>{ t("Additional information")}: </b>{item?.additional_info}</p> : null
                                                         }
                                                 </div>
                                                 <div className="consultation-time-list">
@@ -143,7 +144,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                                                                         className="but-bell"
                                                                                                         onClick={() => handleBell(time?.id, item?.specialization_id, item, time,)}
                                                                                                 >
-                                                                                                        <p>Позвонить</p>
+                                                                                                        <p>{t("To call")}</p>
                                                                                                 </Button>
                                                                                         ) : null
                                                                                 }

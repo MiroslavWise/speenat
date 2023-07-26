@@ -2,16 +2,18 @@ import { FC, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import Image from "next/image"
+import { useTranslation } from "react-i18next"
+import { Button, Row } from "antd"
 
 import Loader from "@loader-spin"
 
 import { specializations } from "api/api-user"
 import loadImage from "functions/load-image"
 import { replaceHttps } from "functions/replace-https"
-import { Button, Row } from "antd"
 import { speakerSpecAttachmentDelete } from "api/api-spec"
 
-const ListAttachments: FC<{edit: boolean}> = ({edit}) => {
+const ListAttachments: FC<{ edit: boolean }> = ({ edit }) => {
+        const { t } = useTranslation()
         const { query: { id } } = useRouter()
         const [loading, setLoading] = useState(false)
         const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
@@ -34,7 +36,7 @@ const ListAttachments: FC<{edit: boolean}> = ({edit}) => {
                         })
         }
 
-        if(isLoading) return <Loader />
+        if (isLoading) return <Loader />
 
         return (
                 <div className="attachments">
@@ -61,10 +63,9 @@ const ListAttachments: FC<{edit: boolean}> = ({edit}) => {
                                                                 onClick={() => { handleDelete(item?.id) }}
                                                                 disabled={loading}
                                                         >
-                                                                <p>Удалить</p>
+                                                                <p>{t("Remove")}</p>
                                                         </Button>
                                                 }
-
                                         </div>
                                 ))
                         }

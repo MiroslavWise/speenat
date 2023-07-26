@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { FC, useState } from "react"
 
 import { Button, Form, Input } from "antd"
@@ -6,6 +7,7 @@ import { useUser } from "store/use-user"
 import { updateUser } from "api/put-user"
 
 const FormName: FC = () => {
+        const { t } = useTranslation()
         const [form] = Form.useForm()
         const [loading, setLoading]= useState(false)
 
@@ -38,7 +40,7 @@ const FormName: FC = () => {
                                         rules={[
                                                 {
                                                         required: true,
-                                                        message: 'Введите имя!',
+                                                        message: `${t("Enter your Email")}!`,
                                                 },
                                         ]}
                                 >
@@ -46,13 +48,13 @@ const FormName: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Как к Вам обращаться (ФИО)</p>
+                                <p>{t("How to contact you (full name)")}</p>
                                 <Form.Item
                                         name="name"
                                         rules={[
                                                 {
                                                         required: true,
-                                                        message: 'Введите имя!',
+                                                        message: `${t("Enter a name")}!`,
                                                 },
                                         ]}
                                 >
@@ -65,7 +67,7 @@ const FormName: FC = () => {
                                         htmlType="submit"
                                         loading={loading}
                                 >
-                                        <p>Обновить</p>
+                                        <p>{t("Update")}</p>
                                 </Button>
                         </div>
                 </Form>

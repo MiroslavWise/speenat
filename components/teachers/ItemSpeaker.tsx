@@ -7,8 +7,10 @@ import { MotionLI } from "components/motion/MotionLI";
 import loadImage from "functions/load-image";
 
 import { IProfile } from "types/store/profiles";
+import { useTranslation } from "react-i18next";
 
-const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_url, status}, specialization, consultation_time}) => {
+const ItemSpeaker: FC<IProfile> = ({ id, speaker_id, profile: { full_name, avatar_url, status }, specialization, consultation_time }) => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         
         return (
@@ -32,7 +34,7 @@ const ItemSpeaker: FC<IProfile> = ({id, speaker_id, profile:{full_name, avatar_u
                                 <p className="teacher-specialization">{specialization?.name}</p>
                                 <ul className="teacher-prices">
                                         {consultation_time.map((price) => (
-                                                <li key={`${price.sessions_time}_${price.price}`}>{price.sessions_time?.replace("min", " мин")}: {price.price}₸</li>
+                                                <li key={`${price.sessions_time}_${price.price}`}>{price.sessions_time?.replace("min", ` ${t("mines")}`)}: {price.price}₸</li>
                                         ))}
                                 </ul>
                         </div>

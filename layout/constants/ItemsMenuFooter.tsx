@@ -11,7 +11,7 @@ interface IItemMenuFooter {
 
 export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
         {
-                title: isSpeaker ? 'Специаль...' : 'Архив',
+                title: isSpeaker ? 'Specialization' : 'Archive',
                 value: isSpeaker ? 'spec' : 'archive',
                 icon: {
                         fill: isSpeaker ? '/svg/nav-bar/file-fill.svg' : '/svg/nav-bar/backpack-fill.svg',
@@ -19,7 +19,7 @@ export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
                 },
         },
         {
-                title: 'Баланс',
+                title: 'Balance',
                 value: 'pay-data',
                 icon: {
                         fill: '/svg/nav-bar/creadit-fill.svg',
@@ -30,7 +30,7 @@ export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
 
 export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => [
         {
-                title: 'Чат',
+                title: 'Chat',
                 value: 'chat',
                 icon: {
                         fill: '/svg/nav-bar/message-chat-fill.svg',
@@ -38,7 +38,7 @@ export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => [
                 }
         },
         {
-                title: 'Профиль',
+                title: 'Profile',
                 value: 'profile',
                 icon: {
                         fill: '/svg/nav-bar/user-star-fill.svg',
@@ -50,7 +50,7 @@ export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => [
 export const CENTRAL_ITEM = (isSpeaker: boolean): IItemMenuFooter => (
         isSpeaker ? (
                 {
-                        title: 'Архив',
+                        title: 'Archive',
                         value: 'archive',
                         icon: {
                                 fill: '/svg/nav-bar/backpack-white.svg',
@@ -59,7 +59,7 @@ export const CENTRAL_ITEM = (isSpeaker: boolean): IItemMenuFooter => (
                 }
         ) : (
                 {
-                        title: 'Поиск',
+                        title: 'Search',
                         value: 'teachers',
                         icon: {
                                 fill: '/svg/nav-bar/graduation-white.svg',

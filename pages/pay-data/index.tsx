@@ -1,19 +1,21 @@
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, InputNumber } from "antd";
 import { NextPage } from "next";
+import { useTranslation } from "react-i18next";
 
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 
 const PayData: NextPage = () => {
+        const { t } = useTranslation()
         const isSpeaker = useUser(state => state.is_speaker)
-        useDocumentTitle("Финансы")
+        useDocumentTitle("Online_payments")
 
         const onOutMoney = (values: { 'money-out': any }) => {
 
         }
 
         const onInMoney = (values: { 'money-incom': any }) => {
-                
+
         }
 
         const checkPrice50 = (_: any, value: { number: number }) => {
@@ -44,9 +46,9 @@ const PayData: NextPage = () => {
                                         }}
                                 >
                                         <div className="item-money">
-                                                <p className="title">Вывод денег</p>
+                                                <p className="title">{t("Withdrawal of money")}</p>
                                                 <div className="item-form">
-                                                        <p>Укажите сумму пополнения (минимальная сумма пополнения - 50₸)</p>
+                                                                <p>{t("Specify the deposit amount (the minimum deposit amount is 50₸)")}</p>
                                                         <Form.Item
                                                                 name="money-incom"
                                                                 rules={[
@@ -71,7 +73,7 @@ const PayData: NextPage = () => {
                                                                 className="login-submit"
                                                                 htmlType="submit"
                                                         >
-                                                                <p>Пополнить баланс</p>
+                                                                        <p>{ t("Top up your balance")}</p>
                                                         </Button>
                                                 </div>
                                         </div>
@@ -85,9 +87,9 @@ const PayData: NextPage = () => {
                                 }}
                         >
                                 <div className="item-money">
-                                        <p className="title">Вывод денег</p>
+                                        <p className="title">{ t("Withdrawal of money")}</p>
                                         <div className="item-form">
-                                                <p>Укажите сумму вывода (минимальная сумма вывода - 250₸)</p>
+                                                <p>{t("Specify the withdrawal amount (the minimum withdrawal amount is 250₸)")}</p>
                                                 <Form.Item
                                                         name="money-out"
                                                         rules={[
@@ -110,7 +112,7 @@ const PayData: NextPage = () => {
                                                         className="login-submit"
                                                         htmlType="submit"
                                                 >
-                                                        <p>Вывести деньги</p>
+                                                        <p>{t("Withdraw money")}</p>
                                                 </Button>
                                         </div>
                                 </div>

@@ -11,6 +11,7 @@ import { useWeb } from "context/WebSocketContext";
 import { CreateJanusContext } from "context/ContextJanus";
 
 import { platform } from "functions/platform";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
         propsCall: ICallData | null
@@ -18,6 +19,7 @@ interface IProps {
 }
 
 export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
+        const { t } = useTranslation()
         const [visible, setVisible] = useState(false)
 
         const { wsChannel } = useWeb()
@@ -104,7 +106,7 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                                                         }}
                                                 >
                                                         <PhoneIncoming fill="#fff" />
-                                                        <p className="">Принять</p>
+                                                        <p className="">{ t("To accept")}</p>
                                                 </div>
                                         </Button>
                                         <Button
@@ -123,22 +125,22 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                                                         }}
                                                 >
                                                         <PhoneOff />
-                                                        <p className="">Отклонить</p>
+                                                        <p className="">{ t("Reject")}</p>
                                                 </div>
                                         </Button>
                                 </Row>
                         ]}
                 >
                         <Row justify="center" gutter={10}>
-                                <h5>Входящий вызов от: {propsCall?.user_info?.full_name}</h5>
+                                <h5>{ t("Incoming call from")}: {propsCall?.user_info?.full_name}</h5>
                         </Row>
                         <Row justify="start">
-                                <h6>Специальность: {propsCall?.call_info?.specialization} (Сеанс: {propsCall?.call_info?.sessions_time.replace('min', ' мин')})</h6>
+                                <h6>{ t("Specialization")}: {propsCall?.call_info?.specialization} (Сеанс: {propsCall?.call_info?.sessions_time.replace('min', ' мин')})</h6>
                         </Row>
                         <Divider />
                         <Row justify="center" className="w-100">
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{ color: 'black', textAlign: 'center' }}>Качество разговора со студентом зависит от вашего интернет-соединения</p>
+                                        <p style={{ color: 'black', textAlign: 'center' }}>{ t("The quality of the conversation with the student depends on your internet connection")}</p>
                                 </Row>
                         </Row>
                         <br />

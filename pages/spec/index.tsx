@@ -1,5 +1,7 @@
 import { NextPage } from "next";
 import { useQuery } from "react-query";
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "antd";
 
@@ -8,12 +10,12 @@ import Loader from "@loader-spin";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { specializations, specializationDelete } from "api/api-user";
 import { work_experience } from "functions/work-exp";
-import { useRouter } from "next/router";
 
 const Spec: NextPage = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
-        useDocumentTitle("Мои специализации")
+        useDocumentTitle("Specialization")
 
         const onDeleteSpec = (value: number) => {
                 specializationDelete(value)
@@ -39,12 +41,12 @@ const Spec: NextPage = () => {
                                                                 }}
                                                         >
                                                                 <div className="descriptions">
-                                                                        <p style={{textAlign: "center"}}>{item?.specialization?.name}</p>
-                                                                        <p>ВУЗ: <span>{item?.university || <i>ВУЗ не заполнен</i>}</span></p>
-                                                                        <p>Опыт работы: <span>{work_experience(item?.work_experience)}</span></p>
-                                                                        <p>Продолжительность консультации: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
-                                                                        <p>Регион проживания: <span>{item?.region_living || <i>Регион проживания не заполнен</i>}</span></p>
-                                                                        <p>Дополнительные сведения: <span>{item?.additional_info || <i>Дополнительные сведения не заполнены</i>}</span></p>
+                                                                        <p style={{ textAlign: "center" }}>{item?.specialization?.name}</p>
+                                                                        <p>{t("UNIVERSITY")}: <span>{item?.university || <i>{t("The university is not filled")}</i>}</span></p>
+                                                                        <p>{t("Work experience")}: <span>{work_experience(item?.work_experience)}</span></p>
+                                                                        <p>{t("Duration of the consultation")}: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
+                                                                        <p>{t("Region of residence")}: <span>{item?.region_living || <i>{t("The region of residence is not filled in")}</i>}</span></p>
+                                                                        <p>{t("Additional information")}: <span>{item?.additional_info || <i>{t("Additional information is not filled in")}</i>}</span></p>
                                                                         <br />
                                                                         <div className="buttons">
                                                                                 <Button
@@ -55,7 +57,7 @@ const Spec: NextPage = () => {
                                                                                                 push(`/spec/edit/${item?.id}`)
                                                                                         }}
                                                                                 >
-                                                                                        <p>Изменить</p>
+                                                                                        <p>{t("To change")}</p>
                                                                                 </Button>
                                                                                 <Button
                                                                                         className="state-revers"
@@ -65,18 +67,18 @@ const Spec: NextPage = () => {
                                                                                                 onDeleteSpec(item?.id)
                                                                                         }}
                                                                                 >
-                                                                                        <p>Удалить</p>
+                                                                                        <p>{t("Remove")}</p>
                                                                                 </Button>
                                                                         </div>
                                                                 </div>
                                                         </div>
-                                        )) : null
+                                                )) : null
                                 }
                                 <Button
                                         className="login-submit"
                                         onClick={() => push(`/spec/edit/`)}
                                 >
-                                        <p>Добавить</p>
+                                        <p>{t("Add")}</p>
                                 </Button>
                         </div>
 

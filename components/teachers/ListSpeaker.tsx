@@ -1,5 +1,6 @@
 import { DispatchWithoutAction, FC, useEffect } from "react";
 import { useQuery } from "react-query";
+import { useTranslation } from "react-i18next";
 
 import ItemSpeaker from "./ItemSpeaker";
 
@@ -9,7 +10,8 @@ import { useWeb } from "context/WebSocketContext";
 import { useProfiles } from "store/use-profiles";
 import { speakers } from "api/api-user"
 
-const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
+const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({ handleOpen }) => {
+        const { t } = useTranslation()
         const filters = useProfiles(state => state.filters)
         const { wsChannel } = useWeb()
 
@@ -37,7 +39,7 @@ const ListSpeaker: FC<{handleOpen: DispatchWithoutAction}> = ({handleOpen}) => {
                                 && (
                                         <div className="descriptions">
                                                 <p>
-                                                Извините, но преподавателей по данному запросу нет. Вы можете открыть весь список и записаться на определённое время <span style={{color: 'var(--secondary-color)'}} onClick={handleOpen}>открыть</span>
+                                                        {t("Sorry, but there are no teachers for this request. You can open the entire list and make an appointment for a certain time")} <span style={{ color: 'var(--secondary-color)' }} onClick={handleOpen}>{t("open")}</span>
                                                 </p>
                                         </div>
                                 )

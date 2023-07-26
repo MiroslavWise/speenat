@@ -9,13 +9,15 @@ import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 import { replaceHttps } from "functions/replace-https";
 import loadImage from "functions/load-image";
+import { useTranslation } from "react-i18next";
 
 
 const Profile: FC = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
-        useDocumentTitle("Мой профиль")
+        useDocumentTitle("Profile")
 
         if(loading) return <Loader />
         
@@ -27,7 +29,7 @@ const Profile: FC = () => {
                                 <div className="profile-info-other">
                                         <ItemsData />
                                 </div>
-                                <a onClick={() => push(`/terms`, undefined, { shallow: true })}>Условия пользовательских соглашений и другая документация</a>
+                                <a onClick={() => push(`/terms`, undefined, { shallow: true })}>{t("Terms of user agreements and other documentation")}</a>
                         </div>
                         <div className="profile-avatar-div">
                                 <Image

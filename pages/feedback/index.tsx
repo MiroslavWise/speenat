@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { useContext, useState, useEffect } from "react"
 import { shallow } from "zustand/shallow"
 
@@ -10,6 +11,7 @@ import { useRouter } from "next/router"
 import { Button, Input, Rate, Row, Space } from "antd"
 
 const Feedback = () => {
+  const { t } = useTranslation()
   const { push } = useRouter()
   const [text, setText] = useState("")
   const [rate, setRate] = useState(0)
@@ -97,8 +99,8 @@ const Feedback = () => {
       <div className="profile-content">
         {
           isSpeaker
-            ? <h3>Рекомендации студенту {propsCall?.user_info?.full_name}</h3>
-            : <h3>Оцените преподавателя {propsCall?.speaker_info?.full_name}</h3>
+            ? <h3>{t("Recommendations to the student")} {propsCall?.user_info?.full_name}</h3>
+            : <h3>{t("Rate the teacher")} {propsCall?.speaker_info?.full_name}</h3>
         }
         {
           !isSpeaker
@@ -121,7 +123,7 @@ const Feedback = () => {
             className="w-100"
             rows={4}
             minLength={10}
-            placeholder={isSpeaker ? `Напишите рекомендацию студенту ${propsCall?.user_info?.full_name}` : "Отзыв"}
+            placeholder={isSpeaker ? `${t("Write a recommendation to the student")} ${propsCall?.user_info?.full_name}` : t("feedback")!}
             onChange={(value) => { setText(value?.target?.value) }}
             value={text}
           />
@@ -143,11 +145,11 @@ const Feedback = () => {
             onClick={sendReview}
             disabled={text.length < 5}
           >
-            <p>Отправить</p>
+            <p>{t("Send")}</p>
           </Button>
         </div>
         <div className="item-form w-100">
-          <Button onClick={btnCancel} className="state-revers w-100"><p>Отменить</p></Button>
+          <Button onClick={btnCancel} className="state-revers w-100"><p>{ t("Cancel")}</p></Button>
         </div>
       </div>
     </div>

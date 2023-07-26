@@ -10,27 +10,27 @@ export interface IDataTerms{
 
 export const TERMS: IDataTerms[] = [
         {
-                label: "Условия использования",
+                label: "Terms of use",
                 path: "/terms/general",
                 icon: null,
         },
         {
-                label: "Публичная оферта",
+                label: "Public offer",
                 path: "/terms/offer",
                 icon: null,
         },
         {
-                label: "Добровольное согласие",
+                label: "Voluntary consent",
                 path: "/terms/voluntary",
                 icon: null,
         },
         {
-                label: "Правила пользования",
+                label: "Rules of use",
                 path: "/terms/service-rule",
                 icon: null,
         },
         {
-                label: "Онлайн платежи",
+                label: "Online payments",
                 path: "/terms/safe-pay",
                 icon: null,
         },

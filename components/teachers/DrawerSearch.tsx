@@ -1,4 +1,5 @@
 import { Dispatch, FC, SetStateAction, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import { Button, Divider, Drawer, Rate, InputNumber, Row, Space } from "antd"
 
@@ -9,13 +10,14 @@ import { useProfiles } from "store/use-profiles"
 import { DURATION, STATUS_ONLINE, VERIFIED } from "./constants"
 import { TStatus } from "types/store/user"
 
-interface IProps{
+interface IProps {
         open: boolean
 
         setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
+        const { t } = useTranslation()
         const handleClose = () => setOpen(false)
         const filters = useProfiles(state => state.filters)
         const getFilters = useProfiles(state => state.getFilter)
@@ -55,7 +57,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                 >
                         <div className="wrapper-search">
                                 <div className="block-search">
-                                        <p>Цена сессии</p>
+                                        <p>{t("Session price")}</p>
                                         <div className="inputs">
                                                 <InputNumber
                                                         className="input"
@@ -83,16 +85,15 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 </div>
                                 <Divider />
                                 <div className="block-search">
-                                        <p>Рейтинг Преподавателя</p>
+                                        <p>{t("Teacher Rating")}</p>
                                         <Rate
                                                 defaultValue={rate_ || undefined}
                                                 onChange={(value) => setRate_(value)}
-                                                
                                         />
                                 </div>
                                 <Divider />
                                 <div className="block-search">
-                                        <p>Статус онлайн</p>
+                                        <p>{t("Online Status")}</p>
                                         <div className="buttons">
                                                 {
                                                         STATUS_ONLINE.map(item => (
@@ -101,7 +102,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                                                         className={`button-duration ${item.value === statusOnline_ && 'active'}`}
                                                                         onClick={() => { setStatusOnline_(item.value) }}
                                                                 >
-                                                                        <p>{ item.label }</p>
+                                                                        <p>{t(item.label)}</p>
                                                                 </Button>
                                                         ))
                                                 }
@@ -109,7 +110,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 </div>
                                 <Divider />
                                 <div className="block-search">
-                                        <p>Проверен</p>
+                                        <p>{t("Verified")}</p>
                                         <div className="buttons">
                                                 {
                                                         VERIFIED.map(item => (
@@ -118,7 +119,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                                                         className={`button-duration ${item.value === verified_ && 'active'}`}
                                                                         onClick={() => { setVerified_(item.value) }}
                                                                 >
-                                                                        <p>{ item.label }</p>
+                                                                        <p>{t(item.label)}</p>
                                                                 </Button>
                                                         ))
                                                 }
@@ -131,13 +132,13 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                                         className="cancel-button"
                                                         onClick={handleClose}
                                                 >
-                                                        <p>Отмена</p>
+                                                        <p>{t("Cancel")}</p>
                                                 </Button>
                                                 <Button
                                                         className="search-button"
                                                         onClick={onSearch}
                                                 >
-                                                        <p>Найти</p>
+                                                        <p>{t("To find")}</p>
                                                 </Button>
                                         </Space>
                                 </Row>

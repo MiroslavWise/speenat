@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 
 import Loader from "@loader-spin";
@@ -15,11 +16,12 @@ import { chatsAll } from "api/api-chat";
 import loadImage from "functions/load-image";
 
 const Chats: NextPage = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const { data, isLoading } = useQuery(["chats"], () => chatsAll())
         const loadingUser = useUser(state => state.loading)
         const isSpeaker = useUser(state => state.is_speaker)
-        useDocumentTitle("Чат")
+        useDocumentTitle(t("Chat"))
 
         if(isLoading || loadingUser) return <Loader />
 

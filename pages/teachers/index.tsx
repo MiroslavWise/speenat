@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "antd"
 
@@ -12,10 +13,11 @@ import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
 
 const Teachers: NextPage = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const [open, setOpen] = useState(false)
         const handleOpen = () => setOpen(true)
-        useDocumentTitle("Преподаватели")
+        useDocumentTitle("Teachers")
 
         const isSpeaker = useUser(state => state.is_speaker)
         const loadingUser = useUser(state => state.loading)
@@ -31,7 +33,7 @@ const Teachers: NextPage = () => {
         return (
                 <div className="wrapper teachers">
                         <Button className="button-search" onClick={handleOpen}>
-                                <p>Параметры поиска</p>
+                                <p>{t("Search Parameters")}</p>
                         </Button>
                         <ListSpeaker
                                 handleOpen={handleOpen}

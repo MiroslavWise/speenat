@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { useRouter } from "next/router"
 import moment from "moment"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "antd"
 
@@ -17,6 +18,7 @@ import { useAuth } from "context/Authorization"
 import { changeNumber } from "functions/change-number"
 
 const ItemsData: FC = () => {
+        const { t } = useTranslation()
         const { push } = useRouter()
         const { signOut } = useAuth()
         const user = useUser(state => state.user)
@@ -84,13 +86,13 @@ const ItemsData: FC = () => {
                                         className="login-submit"
                                         onClick={handleChange}
                                 >
-                                        <p>Редактировать</p>
+                                        <p>{t("Edit")}</p>
                                 </Button>
                                 <Button
                                         className="state-revers"
                                         onClick={signOut}
                                 >
-                                        <p>Выйти</p>
+                                        <p>{t("Exit")}</p>
                                 </Button>
                         </div>
                 </>

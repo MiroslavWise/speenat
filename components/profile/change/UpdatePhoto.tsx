@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FC, useEffect, useState } from "react";
 
 import Image from "next/image";
@@ -13,6 +14,7 @@ import { replaceHttps } from "functions/replace-https";
 import loadImage from "functions/load-image";
 
 const UpdatePhoto: FC = () => {
+        const { t } = useTranslation()
         const [loading, setLoading] = useState(false)
         const [fileList, setFileList] = useState<any[]>([]);
 
@@ -65,7 +67,7 @@ const UpdatePhoto: FC = () => {
                         className="form"
                 >
                         <div className="item-form">
-                                <p>Выберите фото</p>
+                                <p>{ t("Select a photo")}</p>
                                 <div
                                         className="photo-item"
                                 >
@@ -73,7 +75,7 @@ const UpdatePhoto: FC = () => {
                                                 {...props}
                                                 accept=".jpg, .png, .jpeg, image/png, image/jpg, image/jpeg"
                                         >
-                                                <p className="ant-upload-text p-2">Нажмите чтобы загрузить</p>
+                                                <p className="ant-upload-text p-2">{t("Click to download")}</p>
                                                 <p className="ant-upload-hint">
                                                         (.png, .jpeg, .jpg)
                                                 </p>

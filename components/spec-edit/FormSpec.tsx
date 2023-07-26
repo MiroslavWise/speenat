@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { FC, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
@@ -45,6 +46,7 @@ interface IValuesSpecUpdateData {
 }
 
 const FormSpec: FC = () => {
+        const { t } = useTranslation()
         const [form] = Form.useForm()
         const { query: { id }, back, push } = useRouter()
         const [loading, setLoading] = useState(false)
@@ -140,10 +142,10 @@ const FormSpec: FC = () => {
                         }}
                 >
                         <div className="item-form">
-                                <p>Выберите специализацию</p>
+                                <p>{t("Choose a specialization")}</p>
                                 <Form.Item
                                         name="specialization_id"
-                                        rules={[{ required: true, message: 'Выберите специализацию!', },]}
+                                        rules={[{ required: true, message: `${t("Choose a specialization")}!`, },]}
                                 >
                                         <Select
                                                 className="form-input-select"
@@ -162,16 +164,16 @@ const FormSpec: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Какой ВУЗ окончили</p>
+                                <p>{t("Which university did you graduate from")}</p>
                                 <Form.Item
                                         name="university"
-                                        // rules={[{ required: true, message: 'Введите название ВУЗа!', },]}
+                                // rules={[{ required: true, message: 'Введите название ВУЗа!', },]}
                                 >
                                         <Input maxLength={50} className="form-input" />
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Научная степень</p>
+                                <p>{t("Scientific degree")}</p>
                                 <Form.Item
                                         name="scientific_degree"
                                         rules={[{ required: false, message: 'Введите!', }]}
@@ -183,7 +185,7 @@ const FormSpec: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Опыт работы</p>
+                                <p>{t("Work experience")}</p>
                                 <Form.Item
                                         name="work_experience"
                                 // rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
@@ -192,7 +194,7 @@ const FormSpec: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Цена за сеанс(ы)</p>
+                                <p>{t("Price per session(s)")}</p>
                                 <Form.Item
                                         name="consultation_time"
                                         style={{ margin: 0, padding: 0 }}
@@ -207,7 +209,7 @@ const FormSpec: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Регион проживания</p>
+                                <p>{t("Region of residence")}</p>
                                 <Form.Item
                                         name="region_living"
                                 >
@@ -215,7 +217,7 @@ const FormSpec: FC = () => {
                                 </Form.Item>
                         </div>
                         <div className="item-form">
-                                <p>Дополнительные сведения</p>
+                                <p>{t("Additional information")}</p>
                                 <Form.Item
                                         name="additional_info"
                                 >
@@ -229,7 +231,7 @@ const FormSpec: FC = () => {
                                         htmlType="submit"
                                         loading={loading}
                                 >
-                                        <p>Сохранить</p>
+                                        <p>{t("Save")}</p>
                                 </Button>
                         </div>
                         <div className="item-form">
@@ -238,7 +240,7 @@ const FormSpec: FC = () => {
                                         onClick={() => { back() }}
                                         loading={loading}
                                 >
-                                        <p>Отмена</p>
+                                        <p>{t("Cancel")}</p>
                                 </Button>
                         </div>
                 </Form>

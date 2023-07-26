@@ -1,21 +1,18 @@
 import { NextPage } from "next";
+import { useTranslation } from "react-i18next";
 
 import { Typography } from "antd";
 
 import ListInvited from "components/invited/ListInvited";
-import { Divider } from "antd";
-import { useUser } from "store/use-user";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 
-
-
 const Invited: NextPage = () => {
-        useDocumentTitle("Приглашение")
-        
+        const { t } = useTranslation()
+        useDocumentTitle("Invitation")
         return (
                 <div className="wrapper invited">
                         <div className="link-invited">
-                                <p>Ваша ссылка для приглашения: </p>
+                                <p>{t("Your invitation link")}: </p>
                                 <Typography.Paragraph copyable className="link">{ "" }</Typography.Paragraph>
                         </div>
                         

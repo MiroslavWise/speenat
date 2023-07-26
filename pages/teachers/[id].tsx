@@ -16,7 +16,7 @@ import { replaceHttps } from "functions/replace-https";
 
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
-        useDocumentTitle("Преподаватель")
+        useDocumentTitle("Teacher")
         
         const { data, isLoading, refetch } = useQuery(["speaker", id], () => speakerId(id))
 
