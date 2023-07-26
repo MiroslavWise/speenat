@@ -121,4 +121,15 @@ export default {
         Password: "Пароль",
         "Your promo code (optional field)": "Ваш промокод (не обязательное поле)",
         "Forgot your password": "Забыли пароль",
+        Enter: "Войти",
+
+        Completed: "Завершено",
+        "Completed ahead of schedule": "Досрочно завершено",
+        All: "Все",
+        Yes: "Да",
+        "Enter the name of the document": "Введите название документа",
+        "Work experience more than": "Опыт работы более",
+        year: "год",
+        years: "года",
+        лет: "лет",
 } as Record<string, string>

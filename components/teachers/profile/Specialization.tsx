@@ -123,7 +123,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                 <div className="content">
                                                         <p className="name">{ t("Work experience and education")}:</p>
                                                         {item?.university ? <p className="sub-name"><b>{ t("UNIVERSITY")}: </b>{item?.university}</p> : null}
-                                                        <p className="sub-name"><b>{ t("Work experience")}: </b>{work_experience(item?.work_experience)}</p>
+                                                        <p className="sub-name"><b>{ t("Work experience")}: </b>{work_experience(item?.work_experience, t)}</p>
                                                         {
                                                                 item?.region_living
                                                                         ? <p className="sub-name"><b>{ t("Region of residence")}: </b>{item?.region_living}</p> : null

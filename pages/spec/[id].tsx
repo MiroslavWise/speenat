@@ -73,7 +73,7 @@ const CurrentSpec: NextPage = () => {
                                                 ? (
                                                         <div className="item-form">
                                                                 <p>{t("Work experience")}:</p>
-                                                                <i>{work_experience(currentSpec?.work_experience || 0)}</i>
+                                                                <i>{work_experience(currentSpec?.work_experience || 0, t)}</i>
                                                         </div>
                                                 ) : null
                                 }

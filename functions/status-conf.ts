@@ -3,11 +3,11 @@ import { TStatusCall } from "types/store/user"
 export const statusCallConf = (value: TStatusCall) => {
         const object: Record<TStatusCall, { title: string, color: string }> = {
                 CALL_END: {
-                        title: "Завершено",
+                        title: "Completed",
                         color: "green",
                 },
                 COMPLETED_AHEAD: {
-                        title: "Досрочно завершено",
+                        title: "Completed ahead of schedule",
                         color: "red"
                 }
         }

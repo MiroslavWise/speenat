@@ -63,7 +63,7 @@ const ListArchive: FC = () => {
                                                                 <p>{isSpeaker ? `${t("Student")}: ` : `${t("Speaker")}: `} <span>{isSpeaker ? item?.student_profile?.full_name : item?.speaker?.profile?.full_name}</span></p>
                                                                 <p>{t("Session length")}: <span>{item?.conference_time?.sessions_time?.replace("min", ` ${t("mines")}`)}</span></p>
                                                                 <p>{t("Session date")}: <span>{dayjs(item?.created_at).format("HH:mm DD.MM.YYYY")}</span></p>
-                                                                <p>{t("Status")}: <span style={{ color: statusCallConf(item?.status)?.color }}>{statusCallConf(item?.status).title}</span></p>
+                                                                <p>{t("Status")}: <span style={{ color: statusCallConf(item?.status)?.color }}>{t(statusCallConf(item?.status).title)}</span></p>
                                                         </div>
                                                 </MotionLI>
                                         ))

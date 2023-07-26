@@ -121,4 +121,15 @@ export default {
         Password: "Password",
         "Your promo code (optional field)": "Your promo code (optional field)",
         "Forgot your password": "Forgot your password",
+        Enter: "Enter",
+
+        Completed: "Completed",
+        "Completed ahead of schedule": "Completed ahead of schedule",
+        All: "All",
+        Yes: "Yes",
+        "Enter the name of the document": "Enter the name of the document",
+        "Work experience more than": "Work experience more than",
+        year: "year",
+        years: "years",
+        лет: "years",
 } as Record<string, string>

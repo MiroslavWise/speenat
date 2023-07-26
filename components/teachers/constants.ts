@@ -13,7 +13,7 @@ interface IVerified{
 const STATUS_ONLINE: IStatus[] = [
         {
                 value: "",
-                label: "Все", 
+                label: "All", 
         },
         {
                 value: "online",
@@ -32,11 +32,11 @@ const DURATION: TDuration[] = [20, 40, 60]
 const VERIFIED: IVerified[] = [
         {
                 value: "",
-                label: "Все",
+                label: "All",
         },
         {
                 value: true,
-                label: "Да",
+                label: "Yes",
         },
         {
                 value: false,

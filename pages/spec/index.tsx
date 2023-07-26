@@ -43,7 +43,7 @@ const Spec: NextPage = () => {
                                                                 <div className="descriptions">
                                                                         <p style={{ textAlign: "center" }}>{item?.specialization?.name}</p>
                                                                         <p>{t("UNIVERSITY")}: <span>{item?.university || <i>{t("The university is not filled")}</i>}</span></p>
-                                                                        <p>{t("Work experience")}: <span>{work_experience(item?.work_experience)}</span></p>
+                                                                        <p>{t("Work experience")}: <span>{work_experience(item?.work_experience, t)}</span></p>
                                                                         <p>{t("Duration of the consultation")}: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>
                                                                         <p>{t("Region of residence")}: <span>{item?.region_living || <i>{t("The region of residence is not filled in")}</i>}</span></p>
                                                                         <p>{t("Additional information")}: <span>{item?.additional_info || <i>{t("Additional information is not filled in")}</i>}</span></p>

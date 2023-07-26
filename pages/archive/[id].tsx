@@ -56,7 +56,7 @@ export default function ArchiveCurrent() {
           <ul>
             <li><p>{isSpeaker ? `${t("Student")}:` : `${t("Speaker")}: `} <span>{isSpeaker ? data?.student_profile?.full_name : data?.speaker?.profile?.full_name}</span></p></li>
             <li><p>{t("Session date")}: <span>{dayjs(data?.created_at).format("HH:mm DD.MM.YYYY")}</span></p></li>
-            <li><p>{t("Status")}: <span style={{ color: statusCallConf(data?.status)?.color }}>{statusCallConf(data?.status).title}</span></p></li>
+            <li><p>{t("Status")}: <span style={{ color: statusCallConf(data?.status)?.color }}>{t(statusCallConf(data?.status).title)}</span></p></li>
           </ul>
         </section>
         {

@@ -49,7 +49,7 @@ const AttachmentsSpec: FC = () => {
                         className="form w-100"
                 >
                         <div className="item-form">
-                                <p>Введите название документа</p>
+                                <p>{t("Enter the name of the document")}</p>
                                 <input
                                         style={{
                                                 padding: 5,
