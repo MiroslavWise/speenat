@@ -11,8 +11,11 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config: any) => {
         const newConfig = { ...config }
+
+        const Authorization = userData.JWT ? { 'Authorization': `Bearer ${userData.JWT}` } : {}
+
         newConfig.headers = {
-                'Authorization' : `Bearer ${userData.JWT}`
+                ...Authorization,
         }
 
         return newConfig

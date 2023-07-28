@@ -1,8 +1,8 @@
 import { axiosInstance } from "./api-general"
-import type{ IArchive, IFeedback, ISpeakerData, ISpec, ISpecItems, IUser, IUserCurrent, IDataSpecEdit } from "types/store/user"
+import type { IArchive, IFeedback, ISpeakerData, ISpec, ISpecItems, IUser, IUserCurrent, IDataSpecEdit } from "types/store/user"
 import type { IDataProfile, IFilterProfiles } from "types/store/profiles"
 
-export const  profileMy = async (): Promise<IUser> => {
+export const profileMy = async (): Promise<IUser> => {
 
         return axiosInstance.get('/profile/').then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 }
@@ -14,7 +14,7 @@ export const profileId = async (id: any): Promise<IUserCurrent> => {
 
 export const speakers = async ({ page, verified, spec_rating, price_gte, price_lte, speaker__status }: IFilterProfiles): Promise<IDataProfile> => {
 
-        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${spec_rating ? `&spec_rating=${spec_rating}` : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker__profile__status=${speaker__status}`: ""}`)
+        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${spec_rating ? `&spec_rating=${spec_rating}` : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker__profile__status=${speaker__status}` : ""}`)
                 .then(response => response.data)
                 .catch(e => { console.error("USER DATA: ", e) })
 }
@@ -55,3 +55,5 @@ export const conferenceAll = async (): Promise<{ count: number }> => axiosInstan
 export const speakersAll = async (): Promise<{ count: number }> => axiosInstance.get(`/speaker-filter/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 
 export const companyAllOperations = async (): Promise<{ count: number }> => axiosInstance.get(`/company-operations/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+
+export const languages = async (): Promise<{ results: { id: number, name: string }[] }> => axiosInstance.get(`/language-list/`).then(response => response.data).catch(e => { console.error("ERROR LANGUAGES: ", e) })

@@ -39,7 +39,7 @@ const LanguageButtons: FC = () => {
                         {
                                 FLAGS_LANGUAGE.map(item => (
                                         <div
-                                                className={`item-flag ${i18n.language === item.value && "active"}`}
+                                                className={`item-flag ${i18n.language === item.value && "active"}`} 
                                                 key={`${item?.value}_flag`}
                                                 onClick={() => handleLanguage(item.value)}
                                         >

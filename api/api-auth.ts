@@ -17,6 +17,7 @@ export interface IRegister{
                 accept_politics: boolean
                 accept_public_offer: boolean
         }
+        language_id: number | string
 }
 
 export const login = async (values: ILogin): Promise<any> => {

@@ -49,7 +49,7 @@ const ContainerSingAndRegister: FC = () => {
         }, [form])
 
         const onRegister = (values: IRegister) => {
-                const { email, password, password2, is_speaker, referral_code, full_name } = values
+                const { email, password, password2, is_speaker, referral_code, full_name, language_id } = values
                 registerUser({
                         email: email,
                         password: password,
@@ -60,7 +60,8 @@ const ContainerSingAndRegister: FC = () => {
                         profile: {
                                 accept_politics: true,
                                 accept_public_offer: true
-                        }
+                        },
+                        language_id: language_id || 1,
                 })
                         .then(response => {
                                 if (response?.email === email) {

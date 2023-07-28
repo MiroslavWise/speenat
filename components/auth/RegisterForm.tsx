@@ -1,11 +1,16 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Input, Radio, Space } from "antd";
+import { Form, Input, Radio, Select, Space } from "antd";
+
+import { languages } from "api/api-user";
+import { useQuery } from "react-query";
 
 const { Item } = Form
 
 const RegisterForm: FC = () => {
         const { t } = useTranslation()
+
+        const { data, isLoading } = useQuery(["languages"], () => languages())
 
         return (
                 <>
@@ -13,12 +18,27 @@ const RegisterForm: FC = () => {
                                 name="is_speaker"
                                 className="user-box"
                         >
-                                <Radio.Group>
+                                <Radio.Group defaultValue={false}>
                                         <Space direction="horizontal">
-                                                <Radio value={false}><p>{ t("Student")}</p></Radio>
-                                                <Radio value={true}><p>{ t("Speaker")}</p></Radio>
+                                                <Radio value={false}><p>{t("Student")}</p></Radio>
+                                                <Radio value={true}><p>{t("Speaker")}</p></Radio>
                                         </Space>
                                 </Radio.Group>
+                        </Item>
+                        <Item
+                                name="language_id"
+                                className="user-box"
+                        >
+                                <Select
+                                        loading={isLoading}
+                                        options={
+                                                data ? data?.results?.map(item => ({
+                                                        value: item?.id,
+                                                        label: item.name,
+                                                })) : []
+                                        }
+                                        placeholder={`Выберите предпочитаемый язык`}
+                                />
                         </Item>
                         <Item
                                 name="full_name"
@@ -110,7 +130,7 @@ const RegisterForm: FC = () => {
                                         placeholder={`${t("Your promo code (optional field)")}`}
                                 />
                         </Item>
-                        
+
                 </>
         )
 }

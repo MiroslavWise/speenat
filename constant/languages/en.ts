@@ -122,6 +122,7 @@ export default {
         "Your promo code (optional field)": "Your promo code (optional field)",
         "Forgot your password": "Forgot your password",
         Enter: "Enter",
+        Registration: "Registration",
 
         Completed: "Completed",
         "Completed ahead of schedule": "Completed ahead of schedule",

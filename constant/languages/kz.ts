@@ -122,6 +122,7 @@ export default {
         "Your promo code (optional field)": "Сіздің жарнамалық кодыңыз (міндетті өріс емес)",
         "Forgot your password": "Құпия сөзді ұмыттыңыз ба",
         Enter: "Кіру",
+        Registration: "Тіркеу",
 
         Completed: "Аяқталды",
         "Completed ahead of schedule": "Мерзімінен бұрын аяқталды",

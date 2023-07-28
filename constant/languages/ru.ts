@@ -122,6 +122,7 @@ export default {
         "Your promo code (optional field)": "Ваш промокод (не обязательное поле)",
         "Forgot your password": "Забыли пароль",
         Enter: "Войти",
+        Registration: "Регистрация",
 
         Completed: "Завершено",
         "Completed ahead of schedule": "Досрочно завершено",

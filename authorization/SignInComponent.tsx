@@ -2,6 +2,7 @@ import { FC } from "react";
 import Image from "next/image";
 
 import ContainerSingAndRegister from "components/auth/ContainerSingAndRegister";
+import { LanguagesOpenButton } from "components/auth/components/LanguagesOpenButton";
 
 const SignInComponent: FC = () => {
         
@@ -16,6 +17,7 @@ const SignInComponent: FC = () => {
                                 />
                         </header>
                         <ContainerSingAndRegister />
+                        <LanguagesOpenButton />
                 </div>
         )
 }
