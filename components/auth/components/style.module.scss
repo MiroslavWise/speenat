@@ -1,5 +1,5 @@
 .containerArrow {
-  position: absolute;
+  position: fixed;
   bottom: 15px;
   right: 15px;
   width: 48px;
@@ -21,7 +21,7 @@
 
 
 .containerLanguages {
-  position: absolute;
+  position: fixed;
   bottom: 15px;
   right: -150px;
   transition: all 0.4s ease-in-out 0.05s;
