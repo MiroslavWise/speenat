@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { motion } from "framer-motion"
 
 import { FLAGS_LANGUAGE } from "./constants"
 
@@ -19,20 +20,50 @@ export const LanguagesOpenButton = () => {
 
   const handleLanguage = (value: "ru" | "en" | "kz") => {
     changeLanguage(value, i18n, setLang)
-    setVisible(false)
+    // setVisible(false)
   }
 
   return (
     <>
-      <div className={cx(styles.containerArrow, visible && styles.active)} onClick={() => { setVisible(prev => !prev) }}>
-        <Image
-          src="/svg/chevron-selector-horizontal.svg"
-          width={20}
-          height={20}
-          alt="left"
-        />
-      </div>
-      <ul className={cx(styles.containerLanguages, visible && styles.active)}>
+      <motion.ul
+        className={cx(styles.containerArrow, visible && styles.active)}
+        onClick={() => { setVisible(prev => !prev) }}
+        layout
+        data-isOpen={visible}
+        initial={{ borderRadius: 50 }}
+      >
+        {
+          visible
+            ? (
+              FLAGS_LANGUAGE.map(item => (
+                <li
+                  key={`${item.value}_${item.icon}`}
+                  onClick={() => handleLanguage(item.value)}
+                  className={cx(i18n.language === item.value && styles.active)}
+                >
+                  <Image
+                    src={item?.icon}
+                    alt="fl"
+                    height={50}
+                    width={50}
+                    className={styles["img-flag"]}
+                  />
+                </li>
+              ))
+            ) : (
+              FLAGS_LANGUAGE.find(item => item?.value === i18n.language)
+                ? (
+                  <Image
+                    src={FLAGS_LANGUAGE.find(item => item?.value === i18n.language)?.icon!}
+                    width={50}
+                    height={50}
+                    alt="left"
+                  />
+                ) : null
+            )
+        }
+      </motion.ul>
+      {/* <ul className={cx(styles.containerLanguages, visible && styles.active)}>
         {
           FLAGS_LANGUAGE.map(item => (
             <li
@@ -50,7 +81,7 @@ export const LanguagesOpenButton = () => {
             </li>
           ))
         }
-      </ul>
+      </ul> */}
     </>
   )
 }

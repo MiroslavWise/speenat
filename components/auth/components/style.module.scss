@@ -1,10 +1,10 @@
 .containerArrow {
   position: fixed;
-  bottom: 15px;
+  top: 15px;
   right: 15px;
   width: 48px;
   height: 48px;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   border-radius: 100px;
@@ -12,17 +12,54 @@
   background: #EEF0FE;
   box-shadow: 0px 11px 20px 0px rgba(100, 104, 115, 0.10);
   transition: all 0.4s ease-in-out 0.05s;
+  overflow: hidden;
+  z-index: 150;
+  gap: 5px;
+  margin: 0;
+  list-style: none;
 
-  &.active{
-    right: -150px;
+  img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    object-fit: cover;
   }
+
+  li {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-out 0.03s;
+    filter: grayscale(80%);
+
+    &.active {
+      border-color: var(--premium-color);
+      filter: grayscale(0%)
+    }
+
+    .img-flag {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  &[data-isOpen="true"] {
+    width: 136px;
+  }
+
+  // &.active{
+  //   right: -150px;
+  // }
 }
 
 
 
 .containerLanguages {
   position: fixed;
-  bottom: 15px;
+  top: 15px;
   right: -150px;
   transition: all 0.4s ease-in-out 0.05s;
   display: inline-flex;
@@ -37,6 +74,7 @@
   box-shadow: 0px 11px 20px 0px rgba(100, 104, 115, 0.10);
   background: #EEF0FE;
   border: 1px solid #D0D5DD;
+  z-index: 150;
 
 
   li {
