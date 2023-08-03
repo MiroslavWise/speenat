@@ -27,7 +27,6 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
                         .finally(() => {
                                 userData.delete()
                                 setAuthState("sign-in")
-                                push("/", undefined)
                         })
         }
 

@@ -421,7 +421,6 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                         Janus.attachMediaStream(document.getElementById(`peervideo${mid}`), stream)
                 }
                 if (!addButtons) return
-
         }
 
         function onDataOpenHandler() {

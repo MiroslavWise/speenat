@@ -64,11 +64,7 @@ $gray: #9b9b9b;
         height: fit-content;
         width: 450px;
         transition: all 0.4s ease-in-out;
-        animation: identifier-position 1.2s;
-
-        &.animate {
-                animation: scale-truth 450ms;
-        }
+        overflow: hidden;
 
         .content {
                 backdrop-filter: blur(6.5px);

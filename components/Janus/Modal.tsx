@@ -47,7 +47,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
         }, [toggleVideo])
 
         return (
-                <div className={`modal_janus ${visible && "visible_janus"}`}>
+                <div className={`modal_janus ${visible && "visible_janus"}`}> 
                         <div className={`container_video ${visible && "visible_janus"}`} id="videocall">
                                 <div className="panel-body" id="videoright" ref={refVideoRight} />
                                 <div className='partner_text'>
@@ -114,7 +114,6 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                                                                 :
                                                                 <VideoOff />
                                                 }
-
                                         </button>
                                 </div>
                         </div>

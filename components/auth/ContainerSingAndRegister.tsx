@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next"
-import { FC, useCallback, useState } from "react"
-import { Button, Form, Input, message } from "antd"
+import { FC, useCallback, useEffect, useState } from "react"
+import { Button, Form, message } from "antd"
+import { useRouter } from 'next/router'
 
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
 
-import userData from "helpers/user-data"
 import { useAuth } from "context/Authorization"
+import userData from "helpers/user-data"
 import { registerUser, IRegister } from "api/api-auth"
 
 interface IValues {
@@ -25,18 +26,26 @@ interface IReturnAccess {
 const ContainerSingAndRegister: FC = () => {
         const { t } = useTranslation()
         const { setAuthState } = useAuth()
-        const [isSign, setIsSign] = useState(false)
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
+        const { query } = useRouter()
+
+        const { referral_code } = query ?? {}
+
+        console.log("query: ", referral_code)
+
+        useEffect(() => {
+                if (referral_code) {
+                        setIsState(true)
+                        form.setFieldValue("referral_code", referral_code)
+                }
+        }, [referral_code])
 
         const onSubmit = useCallback((values: IValues) => {
                 userData.login({ email: values.email, password: values.password })
                         .then((response: IReturnAccess) => {
                                 if (response?.access === true && response.error === null) {
-                                        setIsSign(true)
-                                        setTimeout(() => {
-                                                setAuthState('main')
-                                        }, 380)
+                                        setAuthState('main')
                                 }
                                 if (response?.access === false) {
                                         if (response.error !== null && response.error.message === "No token supplied") {
@@ -68,10 +77,7 @@ const ContainerSingAndRegister: FC = () => {
                                         userData.login({ email: response?.email, password: password })
                                                 .then((response: IReturnAccess) => {
                                                         if (response?.access === true && response.error === null) {
-                                                                setIsSign(true)
-                                                                setTimeout(() => {
-                                                                        setAuthState('main')
-                                                                }, 380)
+                                                                setAuthState('main')
                                                         }
                                                         if (response?.access === false) {
                                                                 if (response.error !== null && response.error.message === "No token supplied") {
@@ -88,11 +94,12 @@ const ContainerSingAndRegister: FC = () => {
         }
 
         return (
-                <div className={`__container-sign__ ${isSign && 'animate'}`}>
+                <div className={`__container-sign__ `}>
                         <div className={`content `}>
                                 <h2 style={{ textAlign: "center" }}>{isState ? t("Registration") : t("Log in to your account")}</h2>
                                 <h4>{t("The fastest way to consult with a teacher")}</h4>
                                 <Form
+                                        form={form}
                                         className="fields"
                                         onFinish={isState ? onRegister : onSubmit}
                                         initialValues={
@@ -116,14 +123,14 @@ const ContainerSingAndRegister: FC = () => {
                                         </Button>
                                         <div className="register-component-button">
                                                 {
-                                                        !isState ? <p>{ t("No account")}? </p> : null
+                                                        !isState ? <p>{t("No account")}? </p> : null
                                                 }
                                                 {
                                                         !isState ? <a onClick={() => setIsState(state => !state)}>{t("Registration")}</a> : <a onClick={() => setIsState(state => !state)}>{t("Enter")}</a>
                                                 }
                                         </div>
                                 </Form>
-                                </div>
+                        </div>
                 </div>
         )
 }

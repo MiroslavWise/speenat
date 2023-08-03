@@ -16,7 +16,14 @@ const Invited: NextPage = () => {
                 <div className="wrapper invited">
                         <div className="link-invited">
                                 <p>{t("Your invitation link")}: </p>
-                                <Typography.Paragraph copyable className="link">{user?.profile?.referral_code}</Typography.Paragraph>
+                                <Typography.Paragraph
+                                        copyable={{
+                                                text: `https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code${user?.profile?.referral_code}`
+                                        }}
+                                        className="link"
+                                >
+                                        {user?.profile?.referral_code}
+                                </Typography.Paragraph>
                         </div>
                         <ListInvited />
                 </div>
