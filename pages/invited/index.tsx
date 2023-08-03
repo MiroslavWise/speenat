@@ -12,13 +12,14 @@ const Invited: NextPage = () => {
         const { t } = useTranslation()
         useDocumentTitle("Invitation")
         const user = useUser(state => state.user)
+
         return (
                 <div className="wrapper invited">
                         <div className="link-invited">
                                 <p>{t("Your invitation link")}: </p>
                                 <Typography.Paragraph
                                         copyable={{
-                                                text: `https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code${user?.profile?.referral_code}`
+                                                text: `https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code=${user?.profile?.referral_code}`
                                         }}
                                         className="link"
                                 >
