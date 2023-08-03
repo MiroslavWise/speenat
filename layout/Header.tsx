@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next"
 import { TStatus } from "types/store/user"
 import { updateStatus } from "api/api-status"
 
-
+import styles from "./styles/header.module.scss"
 
 const objectStatus = (t: (value: string) => string): Record<TStatus, [string, string]> => ({
         online: [t("Online"), "green"],
@@ -43,7 +43,7 @@ const Header: FC = () => {
         return (
                 isMobile
                         ? (
-                                <header className="header">
+                                <header className={styles.wrapperHeader}>
                                         {
                                                 isSpeaker ? (
                                                         <div className="list-item status" style={{ background: 'transparent' }}>

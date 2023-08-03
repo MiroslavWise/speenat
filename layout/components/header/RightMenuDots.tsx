@@ -1,9 +1,10 @@
-import DotsHorizontalRounded from "@icons-dots-horizontal-rounded";
 import { FC, MouseEvent } from "react";
 
+import DotsHorizontalRounded from "@icons-dots-horizontal-rounded";
 
 import { useModal } from "store/use-modal";
 
+import styles from "../../styles/left-arrow.module.scss"
 
 const MenuDots: FC = () => {
         const set = useModal(state => state.setActive)
@@ -15,8 +16,8 @@ const MenuDots: FC = () => {
         }
 
         return (
-                <div className="menu-dots" onClick={handleActive}>
-                        <DotsHorizontalRounded  fill="#33367c" size={31} />
+                <div className={styles.container} onClick={handleActive}>
+                        <DotsHorizontalRounded  fill="#33367c" size={14} />
                 </div>
         )
 }

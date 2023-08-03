@@ -5,17 +5,19 @@ import { Typography } from "antd";
 
 import ListInvited from "components/invited/ListInvited";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
+import { useUser } from "store/use-user";
+
 
 const Invited: NextPage = () => {
         const { t } = useTranslation()
         useDocumentTitle("Invitation")
+        const user = useUser(state => state.user)
         return (
                 <div className="wrapper invited">
                         <div className="link-invited">
                                 <p>{t("Your invitation link")}: </p>
-                                <Typography.Paragraph copyable className="link">{ "" }</Typography.Paragraph>
+                                <Typography.Paragraph copyable className="link">{user?.profile?.referral_code}</Typography.Paragraph>
                         </div>
-                        
                         <ListInvited />
                 </div>
         )
