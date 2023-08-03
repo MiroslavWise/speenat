@@ -4,5 +4,5 @@ services:
     container_name: speenad
     image: speenad:latest
     ports:
-      - 3000:3000
+      - 7700:7700
     restart: always
