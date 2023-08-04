@@ -18,7 +18,6 @@ const Invited: NextPage = () => {
         return (
                 <div className="wrapper invited">
                         <div className="link-invited">
-                                {/* <ButtonsSocial /> */}
                                 <p>{t("Your invitation link")}: </p>
                                 <Typography.Paragraph
                                         copyable={{ text: `${user?.profile?.user?.full_name} ${user?.profile?.gender === "female" ? t("invited you to the Spenat service -female") : t("invited you to the Spenat service -male")} https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code=${user?.profile?.referral_code}` }}
@@ -26,6 +25,7 @@ const Invited: NextPage = () => {
                                 >
                                         {user?.profile?.referral_code}
                                 </Typography.Paragraph>
+                                <ButtonsSocial />
                         </div>
                         {/* <ListInvited /> */}
                 </div>
