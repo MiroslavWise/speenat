@@ -12,11 +12,11 @@ export default {
                 try {
                         const data = isRefresh ? await refreshToken(curRefreshToken) : await ApiLogin({ email: email, password: password })
                         const { access, refresh } = data
-
+                        localStorage
                         const jwtData = jwt.decode(access, '', true)
-                        sessionStorage.setItem(`${prefix}.Token`, access)
-                        sessionStorage.setItem(`${prefix}.RefreshToken`, refresh)
-                        sessionStorage.setItem(`${prefix}.Expiration`, jwtData.exp)
+                        localStorage.setItem(`${prefix}.Token`, access)
+                        localStorage.setItem(`${prefix}.RefreshToken`, refresh)
+                        localStorage.setItem(`${prefix}.Expiration`, jwtData.exp)
 
                         return {
                                 access: true,
@@ -33,34 +33,34 @@ export default {
                 }
         },
         startLogin() {
-                sessionStorage.setItem(isLogging, 'true');
+                localStorage.setItem(isLogging, 'true');
         },
         finisLogin() {
-                sessionStorage.removeItem(isLogging);
+                localStorage.removeItem(isLogging);
         },
         get isLogging() {
-                return !!sessionStorage.getItem('isLogging');
+                return !!localStorage.getItem('isLogging');
         },
         delete() {
-                userObjMap.forEach(key => sessionStorage.removeItem(`${prefix}.${key}`));
+                userObjMap.forEach(key => localStorage.removeItem(`${prefix}.${key}`));
         },
         signOut() {
                 document.dispatchEvent(new Event('signOutEvent'));
         },
         get JWT() {
-                return sessionStorage.getItem(`${prefix}.Token`) || '';
+                return localStorage.getItem(`${prefix}.Token`) || '';
         },
         get refreshToken() {
-                return sessionStorage.getItem(`${prefix}.RefreshToken`) || '';
+                return localStorage.getItem(`${prefix}.RefreshToken`) || '';
         },
         get tokenExp() {
-                return sessionStorage.getItem(`${prefix}.Expiration`) || '';
+                return localStorage.getItem(`${prefix}.Expiration`) || '';
         },
         get jwtData() {
                 return this.JWT?.length ? jwt.decode(this.JWT, '', true) : {};
         },
         get isUserOk() {
-                return userObjMap.some(item => sessionStorage.getItem(`${prefix}.${item}`) !== null);
+                return userObjMap.some(item => localStorage.getItem(`${prefix}.${item}`) !== null);
         },
         async isTokenOk() {
                 try {

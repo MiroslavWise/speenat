@@ -9,7 +9,7 @@ const refreshLS = 'AuthJWT.refreshStarted'
 
 export default {
         async waitForRefreshToken(): Promise<boolean> {
-                if (!sessionStorage.getItem(refreshLS)) {
+                if (!localStorage.getItem(refreshLS)) {
                         if (userData.isUserOk) {
                                 return true;
                         }
@@ -19,7 +19,7 @@ export default {
                 return this.waitForRefreshToken();
         },
         async refresh() {
-                if (!sessionStorage.getItem(refreshLS)) {
+                if (!localStorage.getItem(refreshLS)) {
                         this.startRefresh();
                         try {
                                 await userData.login({ curRefreshToken: userData.refreshToken, isRefresh: true })
@@ -38,15 +38,15 @@ export default {
                 }
         },
         startRefresh() {
-                sessionStorage.setItem(refreshLS, 'true')
+                localStorage.setItem(refreshLS, 'true')
         },
         finishRefresh() {
-                sessionStorage.removeItem(refreshLS)
+                localStorage.removeItem(refreshLS)
         },
         get isNeedToRefresh() {
                 return moment(userData.tokenExp).isBefore(moment().toISOString())
         },
         get isRefreshing() {
-                return !!sessionStorage.getItem(refreshLS);
+                return !!localStorage.getItem(refreshLS);
         },
 } as IRefreshData
