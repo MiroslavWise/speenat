@@ -14,10 +14,13 @@ import { speakerId } from "api/api-user";
 import loadImage from "functions/load-image";
 import { replaceHttps } from "functions/replace-https";
 
+import styles from "./style.module.scss"
+import { cx } from "functions/cx";
+
 const ProfileTeacher: NextPage = () => {
         const { query: { id } } = useRouter()
         useDocumentTitle("Teacher")
-        
+
         const { data, isLoading, refetch } = useQuery(["speaker", id], () => speakerId(id))
 
         const { wsChannel } = useWeb()
@@ -41,9 +44,21 @@ const ProfileTeacher: NextPage = () => {
 
         return (
                 <div className="wrapper-profile">
-                        <div className="header-profile" />
+                        <div className={cx(styles.header)}>
+                                <div className={styles.avatar}>
+                                        <Image
+                                                loader={loadImage}
+                                                src={(data && data?.profile?.photo_url) ? replaceHttps(data?.profile?.photo_url) : "/images/default.png"}
+                                                alt="ad"
+                                                height={115}
+                                                width={115}
+                                        />
+                                </div>
+                                <div className={styles.nameInfo}>
+                                        <h3>{data?.profile?.full_name}</h3>
+                                </div>
+                        </div>
                         <div className="profile-content">
-                                <p className="profile-name">{data?.profile?.full_name}</p>
                                 <div className="profile-info-other">
                                         <Specialization
                                                 data={data?.get_all_specialization}
@@ -53,23 +68,6 @@ const ProfileTeacher: NextPage = () => {
                                         <Feedbacks />
                                 </div>
                         </div>
-                        <div className="profile-avatar-div">
-                                <Image
-                                        loader={loadImage}
-                                        src={(data &&  data?.profile?.photo_url) ? replaceHttps(data?.profile?.photo_url) : "/images/default.png"}
-                                        alt="ad"
-                                        height={115}
-                                        width={115}
-                                        style={{
-                                                objectFit: "cover",
-                                                borderRadius: '50%',
-                                                padding: 0,
-                                                margin: 0,
-                                        }}
-                                />
-                                <div className={`teacher-status-current ${data?.profile?.status === "online" ? "status-online" : data?.profile?.status === "busy" ? "status-busy":  "status-offline" }`}/>
-                        </div>
-                        
                 </div>
         )
 }

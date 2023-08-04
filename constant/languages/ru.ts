@@ -62,7 +62,7 @@ export default {
         "Scientific degree": "Научная степень",
         Be: "Есть",
         No: "Нет",
-        "Price per session(s)": "Цена за сеанс(ы)",
+        "Price per session(s)": "Цена за сессии",
         "Choose a specialization": "Выберите специализацию",
         "Which university did you graduate from": "Какой ВУЗ окончили",
         Save: "Сохранить",
@@ -133,4 +133,14 @@ export default {
         year: "год",
         years: "года",
         лет: "лет",
+
+        "invited you to the Spenat service -male": "пригласил Вас в сервис Spenat",
+        "invited you to the Spenat service -female": "пригласилаS Вас в сервис Spenat",
+
+        "Waiting for a response from": "Ожидание ответа от",
+        "Session": "Сессия",
+        "Connection is in progress": "Идёт соединение",
+        "Wait a bit - do not close the app and do not lock the phone": "Подождите немного - не закрывайте приложение и не блокируйте телефон",
+        "The speaker's response time depends on the quality of your internet connection": "Время ответа спикера зависит от качества вашего интернет-соединения",
+        
 } as Record<string, string>

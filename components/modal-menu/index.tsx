@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "context/Authorization";
 import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
-import { updateStatus } from "api/api-status";
 import LanguageButtons from "./Language";
 
 const ModalMenu: FC = () => {
@@ -31,6 +30,9 @@ const ModalMenu: FC = () => {
                 event.stopPropagation()
                 set(false)
                 signOut()
+                        .finally(() => {
+                                push('/')
+                        })
         }
 
         return (

@@ -6,5 +6,5 @@ export interface IAuthContext{
         authState: TAuthStateType
 
         setAuthState: Dispatch<SetStateAction<TAuthStateType>>
-        signOut(): void
+        signOut(): Promise<any>
 }

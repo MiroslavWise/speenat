@@ -133,4 +133,13 @@ export default {
         year: "жыл",
         years: "жыл",
         лет: "жылдар",
+
+        "invited you to the Spenat service -male": "сізді Spenat қызметіне шақырды",
+        "invited you to the Spenat service -female": "сізді Spenat қызметіне шақырды",
+        
+        "Waiting for a response from": "Жауабын күту",
+        "Session": "Сессия",
+        "Connection is in progress": "Байланыс бар",
+        "Wait a bit - do not close the app and do not lock the phone": "Біраз күте тұрыңыз-қолданбаны жаппаңыз немесе телефонды құлыптамаңыз",
+        "The speaker's response time depends on the quality of your internet connection": "Спикердің жауап беру уақыты интернет байланысының сапасына байланысты",
 } as Record<string, string>

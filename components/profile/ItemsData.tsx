@@ -90,7 +90,10 @@ const ItemsData: FC = () => {
                                 </Button>
                                 <Button
                                         className="state-revers"
-                                        onClick={signOut}
+                                        onClick={() => {
+                                                signOut()
+                                                push(`/`)
+                                        }}
                                 >
                                         <p>{t("Exit")}</p>
                                 </Button>

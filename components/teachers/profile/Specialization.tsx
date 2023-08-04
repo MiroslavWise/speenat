@@ -61,7 +61,7 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                 spec: any,
                 time: any,
         ) => {
-                calling(spec, time, handleCancelCall, speaker, startEndTimer)
+                calling(spec, time, handleCancelCall, speaker, startEndTimer, t)
                 startEndTimer(true)
                 if (registerUsername) {
                         registerUsername()
@@ -121,16 +121,16 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                                                         </div>
                                                 </div>
                                                 <div className="content">
-                                                        <p className="name">{ t("Work experience and education")}:</p>
-                                                        {item?.university ? <p className="sub-name"><b>{ t("UNIVERSITY")}: </b>{item?.university}</p> : null}
-                                                        <p className="sub-name"><b>{ t("Work experience")}: </b>{work_experience(item?.work_experience, t)}</p>
+                                                        <p className="name">{t("Work experience and education")}:</p>
+                                                        {item?.university ? <p className="sub-name"><b>{t("UNIVERSITY")}: </b>{item?.university}</p> : null}
+                                                        <p className="sub-name"><b>{t("Work experience")}: </b>{work_experience(item?.work_experience, t)}</p>
                                                         {
                                                                 item?.region_living
-                                                                        ? <p className="sub-name"><b>{ t("Region of residence")}: </b>{item?.region_living}</p> : null
+                                                                        ? <p className="sub-name"><b>{t("Region of residence")}: </b>{item?.region_living}</p> : null
                                                         }
                                                         {
                                                                 item?.additional_info
-                                                                        ? <p className="sub-name"><b>{ t("Additional information")}: </b>{item?.additional_info}</p> : null
+                                                                        ? <p className="sub-name"><b>{t("Additional information")}: </b>{item?.additional_info}</p> : null
                                                         }
                                                 </div>
                                                 <div className="consultation-time-list">
@@ -174,7 +174,8 @@ const calling = (
         time: any,
         handleCancelCall: () => void,
         speaker: any,
-        startEndTimer: Dispatch<boolean>
+        startEndTimer: Dispatch<boolean>,
+        t: (value: string) => string
 ) => Modal.info({
         closable: false,
         width: 'max(500px)',
@@ -187,22 +188,22 @@ const calling = (
         content: (
                 <div className="w-100">
                         <Row justify="center" className="w-100">
-                                <h4><span> Ожидание ответа от&nbsp;</span><span>{speaker?.profile?.full_name}</span></h4>
+                                <h4><span> {t("Waiting for a response from")}&nbsp;</span><span>{speaker?.profile?.full_name}</span></h4>
                         </Row>
                         <Space direction="vertical">
-                                <p><b>Специальность</b>: {info?.specialization?.name}</p>
-                                <p><b>Сеанс</b>: {time?.sessions_time?.replace('min', ' минут')}</p>
+                                <p><b>{t("Specialization")}</b>: {info?.specialization?.name}</p>
+                                <p><b>{t("Session")}</b>: {time?.sessions_time?.replace('min', ' минут')}</p>
                         </Space>
                         <Divider />
                         <Row justify="center" className="w-100">
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <h3 style={{ color: 'red', textAlign: 'center' }}>Идёт соединение</h3>
+                                        <h3 style={{ color: 'red', textAlign: 'center' }}>{t("Connection is in progress")}</h3>
                                 </Row>
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{ color: 'red', textAlign: 'center' }}>Подождите немного - не закрывайте приложение и не блокируйте телефон</p>
+                                        <p style={{ color: 'red', textAlign: 'center' }}>{t("Wait a bit - do not close the app and do not lock the phone")}</p>
                                 </Row>
                                 <Row justify="center" style={{ maxWidth: 350 }}>
-                                        <p style={{ textAlign: 'center' }}>Время ответа спикера зависит от качества вашего интернет-соединения</p>
+                                        <p style={{ textAlign: 'center' }}>{t("The speaker's response time depends on the quality of your internet connection")}</p>
                                 </Row>
                         </Row>
                         <br />
@@ -220,7 +221,7 @@ const calling = (
                                                         alignItems: 'center',
                                                 }}
                                         >
-                                                <PhoneOff fill="var(--premium-color)" /><p>Отклонить</p>
+                                                <PhoneOff fill="var(--premium-color)" /><p>{t("Reject")}</p>
                                         </div>
                                 </Button>
                         </Row>

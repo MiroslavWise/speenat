@@ -1,0 +1,41 @@
+.header{
+  margin-top: calc(72px + 15px);
+  display: inline-flex;
+  gap: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  &.speaker{
+    margin-top: calc(108px + 15px);
+  }
+}
+
+.avatar{
+  border: 2px solid white;
+  border-radius: 18px;
+  height: 72px;
+  width: 72px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+
+  img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.nameInfo{
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  h3{
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+  }
+}

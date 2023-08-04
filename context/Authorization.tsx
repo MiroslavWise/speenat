@@ -22,8 +22,8 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
                 "main": children,
         }
 
-        function signOut() {
-                getReset()
+        async function signOut(): Promise<any> {
+                return getReset()
                         .finally(() => {
                                 userData.delete()
                                 setAuthState("sign-in")
