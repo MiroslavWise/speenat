@@ -27,10 +27,6 @@ type TProps = FC<{
 }>
 
 export const CreateJanusContext = createContext<IJanus | null>(null)
-// var localTracks: any = {}
-// var localVideos = 0
-// var remoteTracks: any = {}
-// var remoteVideos = 0
 var bitrateTimer: any = null;
 var simulcastStarted = false;
 var videocall: any = null;
@@ -47,7 +43,34 @@ var uuid_conf: any = null
 
 var doSimulcast = false;
 
-interface IValuesJanusState{
+var janus = null;
+var sfutest: any = null;
+var stream: any
+var myroom = 1234;	// Demo room
+if (getQueryStringValue("room") !== "")
+        myroom = parseInt(getQueryStringValue("room"));
+var myusername: any = null;
+var myid = null;
+var mystream: any = null;
+// We use this other ID just to map our subscriptions to us
+var mypvtid: any = null;
+
+var localTracks: any = {}, localVideos = 0;
+var feeds: any[] = [], feedStreams: any = {};
+var bitrateTimer: any
+
+var doSimulcast = (getQueryStringValue("simulcast") === "yes" || getQueryStringValue("simulcast") === "true")
+var doSvc = getQueryStringValue("svc")
+if (doSvc === "") {
+        doSvc = ""
+}
+var acodec = (getQueryStringValue("acodec") !== "" ? getQueryStringValue("acodec") : null)
+var vcodec = (getQueryStringValue("vcodec") !== "" ? getQueryStringValue("vcodec") : null)
+var doDtx = (getQueryStringValue("dtx") === "yes" || getQueryStringValue("dtx") === "true");
+var subscriber_mode = (getQueryStringValue("subscriber-mode") === "yes" || getQueryStringValue("subscriber-mode") === "true");
+var use_msid = (getQueryStringValue("msid") === "yes" || getQueryStringValue("msid") === "true");
+
+interface IValuesJanusState {
         localTracks: any
         localVideos: number
         remoteTracks: any
@@ -133,27 +156,223 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                         server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
                                         async success() {
                                                 janus.attach({
+                                                        // plugin: "janus.plugin.videoroom",
                                                         plugin: "janus.plugin.videocall",
                                                         opaqueId: uuid,
                                                         success(pluginHandle: any) {
                                                                 videocall = pluginHandle
+                                                                sfutest = pluginHandle
                                                         },
-                                                        onmessage: onMessageHandler,
+                                                        onmessage: onMessageHandler_,
                                                         onlocaltrack: onLocalTrackHandler,
                                                         onremotetrack: onRemoteTrackHandler,
                                                         ondataopen: onDataOpenHandler,
                                                         ondata: onDataHandler,
                                                         oncleanup: onCleanUpHandler,
+                                                        webrtcState: function (on: any) {
+                                                                if (!on) return
+                                                        }
                                                 })
                                         },
                                         error(error: any) { console.error(`---error init janus---`, error) },
-                                        destroyed() { console.log("---init destroy session videocall--- ") },
+                                        destroyed() {
+                                                console.log("---init destroy session videocall--- ")
+                                        },
                                 })
                         },
                 })
         }, [])
-
         function onMessageHandler(msg: any, jsep: any) {
+                let event = msg["videoroom"]
+                if (event) {
+                        if (event === "joined") {
+                                myid = msg["id"]
+                                mypvtid = msg["private_id"]
+                                if (subscriber_mode) {
+                                        if (msg["publishers"]) {
+                                                let list = msg["publishers"]
+                                                for (let f in list) {
+                                                        if (list[f]["dummy"])
+                                                                continue;
+                                                        let id = list[f]["id"];
+                                                        let streams = list[f]["streams"];
+                                                        let display = list[f]["display"];
+                                                        for (let i in streams) {
+                                                                let stream = streams[i];
+                                                                stream["id"] = id;
+                                                                stream["display"] = display;
+                                                        }
+                                                        feedStreams[id] = streams;
+                                                        newRemoteFeed(id, display, streams, uuid);
+                                                }
+                                        }
+                                } else if (event === "destroyed") {
+                                        window.location.reload()
+                                } else if (event === "event") {
+                                        if (msg["streams"]) {
+                                                let streams = msg["streams"]
+                                                for (let i in streams) {
+                                                        let stream = streams[i]
+                                                        stream["id"] = myid
+                                                        stream["display"] = myusername
+                                                }
+                                                feedStreams[myid] = streams;
+                                        } else if (msg["publishers"]) {
+                                                let list = msg["publishers"]
+                                                for (let f in list) {
+                                                        if (list[f]["dummy"])
+                                                                continue;
+                                                        let id = list[f]["id"]
+                                                        let display = list[f]["display"]
+                                                        let streams = list[f]["streams"]
+                                                        for (let i in streams) {
+                                                                let stream = streams[i]
+                                                                stream["id"] = id
+                                                                stream["display"] = display
+                                                        }
+                                                        feedStreams[id] = streams;
+                                                        newRemoteFeed(id, display, streams, uuid)
+                                                }
+                                        } else if (msg["leaving"]) {
+                                                let leaving = msg["leaving"]
+                                                let remoteFeed = null
+                                                for (let i = 1; i < 6; i++) {
+                                                        if (feeds[i] && feeds[i].rfid == leaving) {
+                                                                remoteFeed = feeds[i]
+                                                                break;
+                                                        }
+                                                }
+                                                if (remoteFeed) {
+                                                        // $('#remote' + remoteFeed.rfindex).empty().hide();
+                                                        // $('#videoremote' + remoteFeed.rfindex).empty();
+                                                        feeds[remoteFeed.rfindex] = null
+                                                        remoteFeed.detach()
+                                                }
+                                                delete feedStreams[leaving];
+                                        } else if (msg["unpublished"]) {
+                                                let unpublished = msg["unpublished"]
+                                                if (unpublished === 'ok') {
+                                                        sfutest.hangup()
+                                                        return;
+                                                }
+                                                let remoteFeed = null
+                                                for (let i = 1; i < 6; i++) {
+                                                        if (feeds[i] && feeds[i].rfid == unpublished) {
+                                                                remoteFeed = feeds[i]
+                                                                break;
+                                                        }
+                                                }
+                                                if (remoteFeed) {
+                                                        // $('#remote' + remoteFeed.rfindex).empty().hide();
+                                                        // $('#videoremote' + remoteFeed.rfindex).empty();
+                                                        feeds[remoteFeed.rfindex] = null;
+                                                        remoteFeed.detach();
+                                                }
+                                                delete feedStreams[unpublished];
+                                        } else if (msg["error"]) {
+                                                if (msg["error_code"] === 426) {
+                                                        console.log("---ERROR msg[error] 426 ---", msg["error"])
+                                                } else {
+                                                        console.log("---ERROR msg[error] ---", msg["error"])
+                                                }
+                                        }
+                                }
+                        }
+                }
+
+                if (jsep) {
+                        sfutest.handleRemoteJsep({ jsep: jsep });
+                        let audio = msg["audio_codec"];
+                        if (mystream && mystream.getAudioTracks() && mystream.getAudioTracks().length > 0 && !audio) {
+                                // Audio has been rejected
+                                // toastr.warning("Our audio stream has been rejected, viewers won't hear us");
+                        }
+                        let video = msg["video_codec"];
+                        if (mystream && mystream.getVideoTracks() && mystream.getVideoTracks().length > 0 && !video) {
+                                // toastr.warning("Our video stream has been rejected, viewers won't see us")
+                                // Hide the webcam video
+                                // $('#myvideo').hide();
+                                // $('#videolocal').append(
+                                //         '<div class="no-video-container">' +
+                                //                 '<i class="fa fa-video-camera fa-5 no-video-icon" style="height: 100%;"></i>' +
+                                //                 '<span class="no-video-text" style="font-size: 16px;">Video rejected, no webcam</span>' +
+                                //         '</div>');
+                        }
+                }
+        }
+
+        // function onLocalTrackHandler(track: any, on: any) {
+        //         let trackId = track.id.replace(/[{}]/g, "");
+        //         if (!on) {
+        //                 let stream = localTracks[trackId];
+        //                 if (stream) {
+        //                         try {
+        //                                 let tracks = stream.getTracks();
+        //                                 for (let i in tracks) {
+        //                                         let mst = tracks[i];
+        //                                         if (mst !== null && mst !== undefined)
+        //                                                 mst.stop();
+        //                                 }
+        //                         } catch (e) { }
+        //                 }
+        //                 if (track.kind === "video") {
+        //                         // $('#myvideo' + trackId).remove()
+        //                         localVideos--
+        //                         if (localVideos === 0) {
+        //                                 // if ($('#videolocal .no-video-container').length === 0) {
+        //                                 //         $('#videolocal').append(
+        //                                 //                 '<div class="no-video-container">' +
+        //                                 //                 '<i class="fa fa-video-camera fa-5 no-video-icon"></i>' +
+        //                                 //                 '<span class="no-video-text">No webcam available</span>' +
+        //                                 //                 '</div>');
+        //                                 // }
+        //                         }
+        //                 }
+        //                 delete localTracks[trackId]
+        //                 return;
+        //         }
+        //         let stream = localTracks[trackId];
+        //         if (stream) {
+        //                 return;
+        //         }
+        //         // $('#videos').removeClass('hide').show()
+        //         // if ($('#mute').length === 0) {
+        //         //         $('#videolocal').append('<button class="btn btn-warning btn-xs" id="mute" style="position: absolute; bottom: 0px; left: 0px; margin: 15px;">Mute</button>')
+        //         //         $('#mute').click(toggleMute)
+        //         //         $('#videolocal').append('<button class="btn btn-warning btn-xs" id="unpublish" style="position: absolute; bottom: 0px; right: 0px; margin: 15px;">Unpublish</button>')
+        //         //         $('#unpublish').click(unpublishOwnFeed)
+        //         // }
+        //         if (track.kind === "audio") {
+        //                 if (localVideos === 0) {
+        //                         // if ($('#videolocal .no-video-container').length === 0) {
+        //                         //         $('#videolocal').append(
+        //                         //                 '<div class="no-video-container">' +
+        //                         //                 '<i class="fa fa-video-camera fa-5 no-video-icon"></i>' +
+        //                         //                 '<span class="no-video-text">No webcam available</span>' +
+        //                         //                 '</div>');
+        //                         // }
+        //                 }
+        //         } else {
+        //                 localVideos++;
+        //                 // $('#videolocal .no-video-container').remove()
+        //                 stream = new MediaStream([track])
+        //                 localTracks[trackId] = stream
+        //                 // $('#videolocal').append('<video class="rounded centered" id="myvideo' + trackId + '" width=100% autoplay playsinline muted="muted"/>');
+        //         }
+        //         if (sfutest.webrtcStuff.pc.iceConnectionState !== "completed" &&
+        //                 sfutest.webrtcStuff.pc.iceConnectionState !== "connected") {
+        //                 // $("#videolocal").parent().parent().block({
+        //                 //         message: '<b>Publishing...</b>',
+        //                 //         css: {
+        //                 //                 border: 'none',
+        //                 //                 backgroundColor: 'transparent',
+        //                 //                 color: 'white'
+        //                 //         }
+        //                 // });
+        //         }
+        // }
+
+        function onMessageHandler_(msg: any, jsep: any) {
                 jsep = jsep
                 var result = msg["result"]
                 var username: any = msg?.result?.username
@@ -288,11 +507,11 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                         }
                                 }
                         } else {
-                                        console.log("event else")
-                                        setVisible(false)
-                                        videocall.hangup()
-                                        if (bitrateTimer) clearInterval(bitrateTimer);
-                                        bitrateTimer = null
+                                console.log("event else")
+                                setVisible(false)
+                                videocall.hangup()
+                                if (bitrateTimer) clearInterval(bitrateTimer);
+                                bitrateTimer = null
                         }
                 }
         }
@@ -541,4 +760,188 @@ export const ProviderJanusContext: TProps = ({ children }) => {
 
 function escapeXmlTags(value: any) {
         return value
+}
+
+function getQueryStringValue(name: string) {
+        return name
+}
+
+function newRemoteFeed(id: any, display: any, streams: any, opaqueId: any) {
+        let remoteFeed: any = null;
+        if (!streams)
+                streams = feedStreams[id];
+        janus.attach(
+                {
+                        plugin: "janus.plugin.videoroom",
+                        opaqueId: opaqueId,
+                        success: function (pluginHandle: any) {
+                                remoteFeed = pluginHandle;
+                                remoteFeed.remoteTracks = {};
+                                remoteFeed.remoteVideos = 0;
+                                remoteFeed.simulcastStarted = false;
+                                remoteFeed.svcStarted = false;
+                                let subscription = [];
+                                for (let i in streams) {
+                                        let stream = streams[i];
+                                        // If the publisher is VP8/VP9 and this is an older Safari, let's avoid video
+                                        //@ts-ignore
+                                        if (stream.type === "video" && Janus.webRTCAdapter.browserDetails.browser === "safari" &&
+                                                //@ts-ignore
+                                                ((stream.codec === "vp9" && !Janus.safariVp9) || (stream.codec === "vp8" && !Janus.safariVp8))) {
+                                                //@ts-ignore
+                                                toastr.warning("Publisher is using " + stream.codec.toUpperCase +
+                                                        ", but Safari doesn't support it: disabling video stream #" + stream.mindex);
+                                                continue;
+                                        }
+                                        subscription.push({
+                                                feed: stream.id,	// This is mandatory
+                                                mid: stream.mid		// This is optional (all streams, if missing)
+                                        });
+                                        // FIXME Right now, this is always the same feed: in the future, it won't
+                                        remoteFeed.rfid = stream.id;
+                                        remoteFeed.rfdisplay = escapeXmlTags(stream.display);
+                                }
+                                // We wait for the plugin to send us an offer
+                                let subscribe = {
+                                        request: "join",
+                                        room: myroom,
+                                        ptype: "subscriber",
+                                        streams: subscription,
+                                        use_msid: use_msid,
+                                        private_id: mypvtid
+                                };
+                                remoteFeed.send({ message: subscribe });
+                        },
+                        error: function (error: any) {
+                                console.error("ERROR JANUS FUNCTION: ", error)
+                        },
+                        iceState: function (state: any) {
+                        },
+                        webrtcState: function (on: any) {
+                        },
+                        slowLink: function (uplink: any, lost: any, mid: any) {
+                        },
+                        onmessage: function (msg: any, jsep: any) {
+                                let event = msg["videoroom"]
+                                if (msg["error"]) {
+                                        console.error("---ERROR msg[error]---", msg["error"])
+                                } else if (event) {
+                                        if (event === "attached") {
+                                                // Subscriber created and attached
+                                                for (let i = 1; i < 6; i++) {
+                                                        if (!feeds[i]) {
+                                                                feeds[i] = remoteFeed;
+                                                                remoteFeed.rfindex = i;
+                                                                break;
+                                                        }
+                                                }
+                                                if (!remoteFeed.spinner) {
+                                                } else {
+                                                        remoteFeed.spinner.spin();
+                                                }
+                                        } else if (event === "event") {
+                                                let substream = msg["substream"];
+                                                let temporal = msg["temporal"];
+                                                if ((substream !== null && substream !== undefined) || (temporal !== null && temporal !== undefined)) {
+                                                        if (!remoteFeed.simulcastStarted) {
+                                                                remoteFeed.simulcastStarted = true;
+                                                        }
+                                                }
+                                                // Or maybe SVC?
+                                                let spatial = msg["spatial_layer"];
+                                                temporal = msg["temporal_layer"];
+                                                if ((spatial !== null && spatial !== undefined) || (temporal !== null && temporal !== undefined)) {
+                                                        if (!remoteFeed.svcStarted) {
+                                                                remoteFeed.svcStarted = true
+                                                        }
+                                                }
+                                        } else {
+                                        }
+                                }
+                                if (jsep) {
+                                        let stereo = (jsep.sdp.indexOf("stereo=1") !== -1)
+                                        remoteFeed.createAnswer(
+                                                {
+                                                        jsep: jsep,
+                                                        tracks: [
+                                                                { type: 'data' }
+                                                        ],
+                                                        customizeSdp: function (jsep: any) {
+                                                                if (stereo && jsep.sdp.indexOf("stereo=1") == -1) {
+                                                                        jsep.sdp = jsep.sdp.replace("useinbandfec=1", "useinbandfec=1;stereo=1");
+                                                                }
+                                                        },
+                                                        success: function (jsep: any) {
+                                                                let body = { request: "start", room: myroom };
+                                                                remoteFeed.send({ message: body, jsep: jsep });
+                                                        },
+                                                        error: function (error: any) {
+                                                                console.error("---ERROR FUNCTION STEREO---", error)
+                                                        }
+                                                });
+                                }
+                        },
+                        onlocaltrack: function (track: any, on: any) {
+                        },
+                        onremotetrack: function (track: any, mid: any, on: any, metadata: any) {
+                                if (!on) {
+                                        if (track.kind === "video") {
+                                                remoteFeed.remoteVideos--;
+                                                if (remoteFeed.remoteVideos === 0) {
+                                                }
+                                        }
+                                        delete remoteFeed.remoteTracks[mid];
+                                        return;
+                                }
+                                if (remoteFeed.spinner) {
+                                        remoteFeed.spinner.stop();
+                                        remoteFeed.spinner = null;
+                                }
+                                // if ($('#remotevideo' + remoteFeed.rfindex + '-' + mid).length > 0)
+                                //         return;
+                                if (track.kind === "audio") {
+                                        let stream = new MediaStream([track]);
+                                        remoteFeed.remoteTracks[mid] = stream;
+                                        // $('#videoremote' + remoteFeed.rfindex).append('<audio class="hide" id="remotevideo' + remoteFeed.rfindex + '-' + mid + '" autoplay playsinline/>');
+                                        // Janus.attachMediaStream($('#remotevideo' + remoteFeed.rfindex + '-' + mid).get(0), stream);
+                                        if (remoteFeed.remoteVideos === 0) {
+                                                // if ($('#videoremote' + remoteFeed.rfindex + ' .no-video-container').length === 0) {
+                                                //         $('#videoremote' + remoteFeed.rfindex).append(
+                                                //                 '<div class="no-video-container">' +
+                                                //                 '<i class="fa fa-video-camera fa-5 no-video-icon"></i>' +
+                                                //                 '<span class="no-video-text">No remote video available</span>' +
+                                                //                 '</div>');
+                                                // }
+                                        }
+                                } else {
+                                        // New video track: create a stream out of it
+                                        remoteFeed.remoteVideos++;
+                                        // $('#videoremote' + remoteFeed.rfindex + ' .no-video-container').remove();
+                                        let stream = new MediaStream([track])
+                                        remoteFeed.remoteTracks[mid] = stream
+                                        // $('#videoremote' + remoteFeed.rfindex).append('<video class="rounded centered" id="remotevideo' + remoteFeed.rfindex + '-' + mid + '" width=100% autoplay playsinline/>');
+                                        // $('#videoremote' + remoteFeed.rfindex).append(
+                                        //         '<span class="label label-primary hide" id="curres' + remoteFeed.rfindex + '" style="position: absolute; bottom: 0px; left: 0px; margin: 15px;"></span>' +
+                                        //         '<span class="label label-info hide" id="curbitrate' + remoteFeed.rfindex + '" style="position: absolute; bottom: 0px; right: 0px; margin: 15px;"></span>');
+                                        // Janus.attachMediaStream($('#remotevideo' + remoteFeed.rfindex + '-' + mid).get(0), stream)
+                                        // Note: we'll need this for additional videos too
+                                }
+                        },
+                        oncleanup: function () {
+                                if (remoteFeed.spinner)
+                                        remoteFeed.spinner.stop();
+                                remoteFeed.spinner = null;
+                                // $('#remotevideo' + remoteFeed.rfindex).remove();
+                                // $('#waitingvideo' + remoteFeed.rfindex).remove();
+                                // $('#novideo' + remoteFeed.rfindex).remove();
+                                // $('#curres' + remoteFeed.rfindex).remove();
+                                if (bitrateTimer[remoteFeed.rfindex])
+                                        clearInterval(bitrateTimer[remoteFeed.rfindex]);
+                                bitrateTimer[remoteFeed.rfindex] = null;
+                                remoteFeed.simulcastStarted = false;
+                                // $('#simulcast' + remoteFeed.rfindex).remove();
+                                remoteFeed.remoteTracks = {};
+                                remoteFeed.remoteVideos = 0;
+                        }
+                });
 }

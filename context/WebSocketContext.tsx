@@ -9,42 +9,44 @@ export const ContextWebSocket = createContext<{
 } | undefined>(undefined)
 
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
-        const [wsChannel, setWsChannel] = useState<WebSocket | undefined>(undefined)
+        const [webSocket, setWebSocket] = useState<WebSocket | undefined>(undefined)
+
+        const connectWebSocket = () => {
+                const ws = new WebSocket(URL_SOCKET(userData.JWT))
+
+                ws.addEventListener('open', () => {
+                        console.log('WebSocket connected')
+                        setWebSocket(ws)
+                });
+
+                ws.addEventListener('close', () => {
+                        console.log('WebSocket disconnected')
+                        setWebSocket(undefined)
+                        reconnectWebSocket()
+                });
+
+                return ws
+        }
+
+        const reconnectWebSocket = () => {
+                console.log('Reconnecting WebSocket in 1 second...')
+                setTimeout(() => {
+                        connectWebSocket()
+                }, 1000)
+        }
 
         useEffect(() => {
-                let ws: WebSocket;
-                const closeWsConnect = () => {
-                        setTimeout(createChannel, 5000);
-                };
-                function createChannel() {
-                        ws?.removeEventListener("close", closeWsConnect);
-                        ws?.close();
-                        if (userData.JWT) {
-                                ws = new WebSocket(URL_SOCKET(userData.JWT));
-                                ws.onopen = (e) => {
-                                        console.log("on open");
-                                };
-                                ws.onclose = () => {
-                                        closeWsConnect();
-                                        console.log('on close: ')
-                                };
-                                setWsChannel(ws);
-                        }
-                }
-                if (userData.isUserOk) {
-                        if (userData.JWT) {
-                                createChannel();
-                        }
-                }
+                const ws = connectWebSocket()
+
                 return () => {
-                        ws?.removeEventListener("close", closeWsConnect);
-                        ws?.close();
-                        setWsChannel(undefined)
-                };
+                        if (ws) {
+                                ws.close()
+                        }
+                }
         }, [userData.JWT])
 
         return (
-                <ContextWebSocket.Provider value={{ wsChannel, setWsChannel }}>
+                <ContextWebSocket.Provider value={{ wsChannel: webSocket, setWsChannel: setWebSocket }}>
                         {children}
                 </ContextWebSocket.Provider>
         )
@@ -56,6 +58,6 @@ export const useWeb = () => {
         if (context === undefined) {
                 throw new Error('useWebSocket must be used within a WebSocket Provider')
         }
-        
+
         return context
 }

@@ -95,8 +95,7 @@ const Feedback = () => {
 
   return (
     <div className="wrapper-profile show-animate">
-      <div className="header-archive" />
-      <div className="profile-content">
+      <div className="profile-content" style={{marginTop: isSpeaker ? 120 : 88}}>
         {
           isSpeaker
             ? <h3>{t("Recommendations to the student")} {propsCall?.user_info?.full_name}</h3>
@@ -137,7 +136,6 @@ const Feedback = () => {
             gap: 10,
           }}
         >
-
         </div>
         <div className="item-form w-100">
           <Button
@@ -149,7 +147,7 @@ const Feedback = () => {
           </Button>
         </div>
         <div className="item-form w-100">
-          <Button onClick={btnCancel} className="state-revers w-100"><p>{ t("Cancel")}</p></Button>
+          <Button onClick={btnCancel} className="state-revers w-100"><p>{t("Cancel")}</p></Button>
         </div>
       </div>
     </div>

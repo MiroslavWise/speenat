@@ -32,8 +32,6 @@ const ContainerSingAndRegister: FC = () => {
 
         const { referral_code } = query ?? {}
 
-        console.log("query: ", referral_code)
-
         useEffect(() => {
                 if (referral_code) {
                         setIsState(true)
