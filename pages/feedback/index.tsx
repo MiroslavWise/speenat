@@ -40,15 +40,9 @@ const Feedback = () => {
           push('/archive')
           //@ts-ignore
           setPropsCall(null)
-          setTimeout(() => {
-            location.reload()
-          }, 250)
         })
     } else {
       push("/teachers")
-      setTimeout(() => {
-        location.reload()
-      }, 250)
     }
   }
 
@@ -67,9 +61,6 @@ const Feedback = () => {
               push('/archive')
               //@ts-ignore
               setPropsCall(null)
-              setTimeout(() => {
-                location.reload()
-              }, 250)
             })
         })
     } else {
@@ -85,17 +76,21 @@ const Feedback = () => {
           push('/teachers')
           //@ts-ignore
           setPropsCall(null)
-          setTimeout(() => {
-            location.reload()
-          }, 250)
         })
     }
-
   }
+
+  useEffect(() => {
+    return () => {
+      setTimeout(() => {
+        location.reload()
+      }, 250)
+    }
+  }, [])
 
   return (
     <div className="wrapper-profile show-animate">
-      <div className="profile-content" style={{marginTop: isSpeaker ? 120 : 88}}>
+      <div className="profile-content" style={{ marginTop: isSpeaker ? 120 : 88 }}>
         {
           isSpeaker
             ? <h3>{t("Recommendations to the student")} {propsCall?.user_info?.full_name}</h3>

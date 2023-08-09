@@ -1,8 +1,8 @@
-import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useContext, useState, useMemo, useLayoutEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useState, useMemo, useRef } from "react"
+import { useRouter } from "next/router"
 const { v4: uuidv4 } = require('uuid')
 
-import { message, Modal } from "antd";
+import { message, Modal } from "antd"
 
 import type { ICallData } from 'types/call'
 
@@ -49,14 +49,14 @@ var stream: any
 var myroom = 1234;	// Demo room
 if (getQueryStringValue("room") !== "")
         myroom = parseInt(getQueryStringValue("room"));
-var myusername: any = null;
-var myid = null;
-var mystream: any = null;
+var myusername: any = null
+var myid = null
+var mystream: any = null
 // We use this other ID just to map our subscriptions to us
-var mypvtid: any = null;
+var mypvtid: any = null
 
-var localTracks: any = {}, localVideos = 0;
-var feeds: any[] = [], feedStreams: any = {};
+var localTracks: any = {}, localVideos = 0
+var feeds: any[] = [], feedStreams: any = {}
 var bitrateTimer: any
 
 var doSimulcast = (getQueryStringValue("simulcast") === "yes" || getQueryStringValue("simulcast") === "true")
@@ -66,9 +66,9 @@ if (doSvc === "") {
 }
 var acodec = (getQueryStringValue("acodec") !== "" ? getQueryStringValue("acodec") : null)
 var vcodec = (getQueryStringValue("vcodec") !== "" ? getQueryStringValue("vcodec") : null)
-var doDtx = (getQueryStringValue("dtx") === "yes" || getQueryStringValue("dtx") === "true");
-var subscriber_mode = (getQueryStringValue("subscriber-mode") === "yes" || getQueryStringValue("subscriber-mode") === "true");
-var use_msid = (getQueryStringValue("msid") === "yes" || getQueryStringValue("msid") === "true");
+var doDtx = (getQueryStringValue("dtx") === "yes" || getQueryStringValue("dtx") === "true")
+var subscriber_mode = (getQueryStringValue("subscriber-mode") === "yes" || getQueryStringValue("subscriber-mode") === "true")
+var use_msid = (getQueryStringValue("msid") === "yes" || getQueryStringValue("msid") === "true")
 
 interface IValuesJanusState {
         localTracks: any
@@ -129,7 +129,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
 
         const context = useWeb()
 
-        const wsChannel = context?.wsChannel || undefined
+        const wsChannel = context?.wsChannel
 
         useEffect(() => {
                 const listenerCall = (event: any) => {
@@ -151,7 +151,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                 Janus.init({
                         debug: false,
                         dependencies: Janus.useDefaultDependencies(),
-                        callback: () => {
+                        callback() {
                                 janus = new Janus({
                                         server: process.env.NEXT_PUBLIC_URL_WEBSOCKET_JANUS,
                                         async success() {
@@ -175,9 +175,7 @@ export const ProviderJanusContext: TProps = ({ children }) => {
                                                 })
                                         },
                                         error(error: any) { console.error(`---error init janus---`, error) },
-                                        destroyed() {
-                                                console.log("---init destroy session videocall--- ")
-                                        },
+                                        destroyed() { console.log("---init destroy session videocall--- ") },
                                 })
                         },
                 })

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react";
 
 import { Modal, Button, Row, Divider } from "antd";
 
@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 
 interface IProps {
         propsCall: ICallData | null
-        setPropsCall: (args: ICallData | null) => void
+        setPropsCall: Dispatch<SetStateAction<ICallData | null>>
 }
 
 export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
