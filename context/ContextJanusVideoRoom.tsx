@@ -113,6 +113,14 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           joinAndVisible(notification.call_info.conf_id!)
         }
       }
+      console.log("---notification: --- ", notification)
+      console.log("---notification event: --- ", event)
+      if (notification?.type === "closing_videoroom") {
+        console.log("closing_videoroom: ", notification)
+        setVisible(false)
+        onAddVideoroomStorage({ isAdd: false })
+        push("/feedback")
+      }
     }
     if (wsChannel) {
       wsChannel?.addEventListener('message', listenerCall)
@@ -430,6 +438,15 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }
 
   function doHangup() {
+    wsChannel?.send(JSON.stringify({
+      data: {
+        type: "closing_videoroom",
+        id_room: myRoomId,
+        id_interviewee: is_speaker ? propsCall?.user_info?.profile_id : propsCall?.speaker_id,
+        student_id: propsCall?.user_info?.profile_id,
+        speaker_id: propsCall?.speaker_id,
+      }
+    }))
     onAddVideoroomStorage({ isAdd: false })
     unpublishOwnFeed()
   }
@@ -576,7 +593,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
             refVideoRight.current?.appendChild(newAudioElement)
             Janus.attachMediaStream(document.getElementById(`remotevideo${remoteFeed.rfindex}-${mid}`), stream)
             if (remoteFeed.remoteVideos === 0) {
-  
+
             }
           } else {
             remoteFeed.remoteVideos++
