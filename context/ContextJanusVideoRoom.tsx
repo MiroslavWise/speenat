@@ -119,7 +119,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         console.log("closing_videoroom: ", notification)
         setVisible(false)
         onAddVideoroomStorage({ isAdd: false })
-        push("/feedback")
+        closeVideoCallTalk()
       }
     }
     if (wsChannel) {
@@ -349,6 +349,8 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           });
       }
     });
+
+    return () => janus?.destroy()
   }, [])
 
   const createRoom = async (idRoom: number) => {
@@ -387,6 +389,29 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       })
   }
 
+  async function closeVideoCallTalk() {
+    return await axiosInstance.post(
+      `/conference/done/`,
+      {
+        conf_uuid: uuid_conf,
+        status: "CALL_END",
+        completed: isTimer || true
+      },
+    )
+      .then((data) => {
+        console.log("Success Call End:  ", data)
+        return data
+      })
+      .catch((e) => {
+        console.error("Error Call End: ", e)
+      })
+      .finally(() => {
+        console.log("-----Finally Call End-----");
+        push(`/feedback`, undefined, { shallow: true })
+        close = false
+      })
+  }
+
   function publishOwnFeed(useAudio: boolean) {
     console.log("---publishOwnFeed--- ")
     let tracks = []
@@ -416,7 +441,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           request: "configure",
           audio: useAudio,
           video: true,
-          room: Number(propsCall?.call_info?.conf_id!)
+          room: Number(propsCall?.call_info?.conf_id!),
+          record: true,
+          filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : profile_id}-${uuid_conf}`,
         }
         if (acodec) {
           publish["audiocodec"] = acodec
@@ -442,9 +469,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       data: {
         type: "closing_videoroom",
         id_room: myRoomId,
-        id_interviewee: is_speaker ? propsCall?.user_info?.profile_id : propsCall?.speaker_id,
-        student_id: propsCall?.user_info?.profile_id,
-        speaker_id: propsCall?.speaker_id,
+        id_interviewee: !is_speaker ? speaker_id : profile_id,
+        student_id: profile_id,
+        speaker_id: speaker_id,
       }
     }))
     onAddVideoroomStorage({ isAdd: false })
