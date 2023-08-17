@@ -11,8 +11,8 @@ import ModalMenu from "components/modal-menu";
 
 import { useUser } from "store/use-user";
 import { ProviderWebSocket, useWeb } from "context/WebSocketContext";
-import { ProviderJanusContext, CreateJanusContext } from "context/ContextJanus";
-// import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom";
+// import { ProviderJanusContext, CreateJanusContext } from "context/ContextJanus";
+import { ContextJanusVideoRoom, CreateJanusContext } from "context/ContextJanusVideoRoom";
 import { ModalCall } from 'components/modal-call'
 
 const inter = Inter({
@@ -68,11 +68,11 @@ const WebSocket: FC<{ children: ReactNode }> = ({ children }) => {
 
         return (
                 <ProviderWebSocket>
-                        <ProviderJanusContext>
+                        <ContextJanusVideoRoom>
                                 <Layout>
                                         {children}
                                 </Layout>
-                        </ProviderJanusContext>
+                        </ContextJanusVideoRoom>
                 </ProviderWebSocket>
         )
 }

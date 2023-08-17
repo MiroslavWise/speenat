@@ -6,7 +6,8 @@
     "dev": "next dev -p 7700",
     "build": "next build",
     "start": "next start -p 7700",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prod": "next build && next start -p 7700"
   },
   "dependencies": {
     "@next/font": "^13.3.0",

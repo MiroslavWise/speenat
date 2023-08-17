@@ -53,6 +53,12 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                 Modal.destroyAll()
         }
 
+        useEffect(() => {
+                if (wsChannel) {
+                        wsChannel.addEventListener("message", eventMessage)
+                }
+                return () => wsChannel?.removeEventListener("message", eventMessage)
+        }, [wsChannel])
 
 
         const handleBell = (
@@ -73,7 +79,8 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
                         device_type: platform,
                         speaker_profile_id: speaker?.profile?.profile_id,
                         profile_id: user?.profile?.profile_id,
-                        note_id: false
+                        note_id: false,
+
                 }
                 wsChannel?.send(JSON.stringify({ data: data }))
         }
@@ -296,3 +303,10 @@ const timeDetected = () => Modal.info({
                 </div>
         )
 })
+
+function eventMessage(event: any) {
+        const data = JSON.parse(event.data).data
+        if (data?.type === "call_accept_ok") {
+                Modal.destroyAll()
+        }
+}

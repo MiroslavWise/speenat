@@ -30,21 +30,21 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                 isSpeaker: state.is_speaker,
         }), shallow)
 
-        useEffect(() => {
-                if (visible) {
-                        videocall.send({
-                                message: { request: "set", audio: toggleAudio },
-                        });
-                }
-        }, [toggleAudio])
+        // useEffect(() => {
+        //         if (visible) {
+        //                 videocall.send({
+        //                         message: { request: "set", audio: toggleAudio },
+        //                 });
+        //         }
+        // }, [toggleAudio])
 
-        useEffect(() => {
-                if (visible) {
-                        videocall.send({
-                                message: { request: "set", video: toggleVideo },
-                        });
-                }
-        }, [toggleVideo])
+        // useEffect(() => {
+        //         if (visible) {
+        //                 videocall.send({
+        //                         message: { request: "set", video: toggleVideo },
+        //                 });
+        //         }
+        // }, [toggleVideo])
 
         return (
                 <div className={`modal_janus ${visible && "visible_janus"}`}> 
@@ -70,7 +70,14 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                                                         padding: '6px 16px',
                                                         color: "#fff",
                                                 }}
-                                                onClick={() => { setToggleAudio(!toggleAudio) }}
+                                                onClick={() => {
+                                                        if (toggleAudio) {
+                                                                videocall?.muteAudio()
+                                                        } else {
+                                                                videocall?.unmuteAudio()
+                                                        }
+                                                        setToggleAudio(!toggleAudio)
+                                                }}
                                         >
                                                 {
                                                         toggleAudio
