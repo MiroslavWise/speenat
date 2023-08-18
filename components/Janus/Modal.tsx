@@ -9,56 +9,48 @@ import Microphone from 'components/icons/microphone'
 import MicrophoneOff from 'components/icons/microphone-off'
 import VideoOff from 'components/icons/video-off'
 import { TimerSession } from './timer-session'
+import { useCallJanus, usePropsCallingJanus } from 'store/use-call-janus'
 
 import { useUser } from 'store/use-user'
 
 interface IProps {
         visible: boolean
         videocall: any
-        propsCall: ICallData | null
         doHangup: DispatchWithoutAction
         refVideoLeft: MutableRefObject<HTMLDivElement | null>
         refVideoRight: MutableRefObject<HTMLDivElement | null>
 }
 
-export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, doHangup, refVideoLeft, refVideoRight }) => {
+export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, refVideoLeft, refVideoRight }) => {
         const [toggleAudio, setToggleAudio] = useState<boolean>(true)
         const [toggleVideo, setToggleVideo] = useState<boolean>(true)
-        const [time, setTime] = useState<any>(20 * 60)
+        const { speaker_info, user_info, } = usePropsCallingJanus(state => ({
+                call_info: state.call_info,
+                speaker_info: state.speaker_info,
+                user_info: state.user_info,
+        }), shallow)
 
         const { isSpeaker } = useUser(state => ({
                 isSpeaker: state.is_speaker,
         }), shallow)
 
-        // useEffect(() => {
-        //         if (visible) {
-        //                 videocall.send({
-        //                         message: { request: "set", audio: toggleAudio },
-        //                 });
-        //         }
-        // }, [toggleAudio])
-
-        // useEffect(() => {
-        //         if (visible) {
-        //                 videocall.send({
-        //                         message: { request: "set", video: toggleVideo },
-        //                 });
-        //         }
-        // }, [toggleVideo])
+        const { currentTime } = useCallJanus(state => ({
+                currentTime: state.currentTime,
+        }), shallow)
 
         return (
-                <div className={`modal_janus ${visible && "visible_janus"}`}> 
+                <div className={`modal_janus ${visible && "visible_janus"}`}>
                         <div className={`container_video ${visible && "visible_janus"}`} id="videocall">
                                 <div className="panel-body" id="videoright" ref={refVideoRight} />
                                 <div className='partner_text'>
                                         {
                                                 isSpeaker
                                                         ?
-                                                        propsCall?.user_info?.full_name
+                                                        user_info?.full_name
                                                         :
-                                                        propsCall?.speaker_info?.full_name
+                                                        speaker_info?.full_name
                                         }
-                                        &nbsp;&nbsp;<TimerSession {...{ visible, doHangup, time, setTime, isSpeaker }} />
+                                        &nbsp;&nbsp;<TimerSession {...{ visible, doHangup, isSpeaker }} />
                                 </div>
                                 <div className="panel-body" id="videoleft" ref={refVideoLeft} />
                                 <div className="btn-group btn-group-xs pull-right hide btn_group">
@@ -88,7 +80,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, propsCall, d
                                                 }
                                         </button>
                                         {
-                                                (isSpeaker || time >= 59 * 20)
+                                                (isSpeaker || currentTime! >= 59 * 20)
                                                 &&
                                                 <button
                                                         className="btn btn__"

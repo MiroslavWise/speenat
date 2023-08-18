@@ -1,10 +1,7 @@
 import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, type SetStateAction, createContext, useEffect, useState, useMemo, useRef } from "react"
 import { useRouter } from "next/router"
 const { v4: uuidv4 } = require('uuid')
-
-import { message, Modal } from "antd"
-
-import type { ICallData } from 'types/call'
+import { shallow } from "zustand/shallow"
 
 import { Janus } from 'scripts/janus'
 import { useUser } from "store/use-user"
@@ -13,12 +10,11 @@ import { axiosInstance } from "api/api-general"
 import { updateStatus } from "api/api-status"
 import { ModalCallingJanus } from "components/Janus"
 import { onAddVideoroomStorage, isVideoroomStorage } from "functions/on-add-videoroom-storage"
+import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
 
 interface IJanus {
   visible: boolean
   videocall: any
-  propsCall: ICallData | null
-  setPropsCall: Dispatch<SetStateAction<ICallData | null>>
   createRoom: (value: number) => Promise<any>
   joinAndVisible: Dispatch<number>
   publishOwnFeed: (value: boolean) => void
@@ -33,9 +29,8 @@ var janus: any = null
 var jsep: any
 var trackId: any = null
 var tracks: any = null
-var info_id_profile: any = null
 var speaker_id: any = null
-var profile_id: any = null
+var student_id: any = null
 var uuid_conf: any = null
 var doSimulcast = false
 var janus = null
@@ -60,27 +55,47 @@ var remoteFeed: any
 export const ContextJanusVideoRoom: TProps = ({ children }) => {
   const { push } = useRouter()
   const { wsChannel } = useWeb() ?? {}
-  const [propsCall, setPropsCall] = useState<ICallData | null>(null)
   const [visible, setVisible] = useState<boolean>(false)
   const [isJanus, setIsJanus] = useState(false)
   const { user, is_speaker } = useUser() ?? {}
   const refVideoLeft = useRef<HTMLDivElement>()
   const refVideoRight = useRef<HTMLDivElement>()
   const [doSvc, setDoSvc] = useState("")
+  const { deleteTime, setTime } = useCallJanus(state => ({
+    setTime: state.setTime,
+    deleteTime: state.deleteTime,
+  }), shallow)
+  const {
+    call_info,
+    speaker_info,
+    user_info,
+    setCallInfo,
+    setSpeakerInfo,
+    setUserInfo,
+  } = usePropsCallingJanus(state => ({
+    call_info: state.call_info,
+    speaker_info: state.speaker_info,
+    user_info: state.user_info,
+    setCallInfo: state.setCallInfo,
+    setSpeakerInfo: state.setSpeakerInfo,
+    setUserInfo: state.setUserInfo,
+  }), shallow)
+
+  useEffect(() => { setDoSvc(getQueryStringValue("svc")) }, [])
 
   useEffect(() => {
-    setDoSvc(getQueryStringValue("svc"))
-  }, [])
-
-  useEffect(() => {
-    if (propsCall) {
-      myRoomId = Number(propsCall?.call_info?.conf_id)
-      info_id_profile = propsCall?.user_info?.profile_id
-      speaker_id = propsCall?.speaker_info?.profile_id
-      profile_id = propsCall?.user_info?.profile_id
-      uuid_conf = propsCall?.call_info?.uuid
+    if (call_info) {
+      uuid_conf = call_info?.uuid
+      myRoomId = Number(call_info?.conf_id)
     }
-  }, [propsCall])
+    if (speaker_info) {
+      speaker_id = speaker_info?.speaker_id
+    }
+    if (user_info) {
+      student_id = user_info?.profile_id
+    }
+  }, [call_info, speaker_info, user_info])
+
   const uuid = useMemo(() => uuidv4(), [])
   let close: boolean = false
   let isTimer: boolean = false
@@ -105,21 +120,26 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
 
   useEffect(() => {
     const listenerCall = (event: any) => {
-      const notification: ICallData = JSON.parse(event.data).data
+      const notification = JSON.parse(event.data).data
       if (notification?.type === "call_accept_ok") {
-        setPropsCall({ ...notification })
-        console.log("---useEffect joinInVideoRoom is_speaker---", is_speaker)
+        setCallInfo(notification.call_info)
+        setSpeakerInfo(notification.speaker_info)
+        setUserInfo(notification.user_info)
+        setTime()
         if (!is_speaker) {
           joinAndVisible(notification.call_info.conf_id!)
         }
       }
-      console.log("---notification: --- ", notification)
-      console.log("---notification event: --- ", event)
-      if (notification?.type === "closing_videoroom") {
-        console.log("closing_videoroom: ", notification)
+      if (notification?.data?.type === "closing_videoroom") {
         setVisible(false)
-        onAddVideoroomStorage({ isAdd: false })
         closeVideoCallTalk()
+        unpublishOwnFeed()
+        onAddVideoroomStorage({ isAdd: false })
+        deleteTime()
+        if (is_speaker) {
+          updateStatus("online")
+        }
+        push(`/feedback`)
       }
     }
     if (wsChannel) {
@@ -190,7 +210,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                         }
                       } else if (event === "destroyed") {
                       } else if (event === "event") {
-                        // Any info on our streams or a new feed to attach to?
                         if (msg["streams"]) {
                           let streams = msg["streams"];
                           for (let i in streams) {
@@ -237,14 +256,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                         } else if (msg["unpublished"]) {
                           let unpublished = msg["unpublished"];
                           console.log("---unpublished---", unpublished)
+                          onAddVideoroomStorage({ isAdd: false })
                           if (unpublished === "ok") {
-                            onAddVideoroomStorage({ isAdd: false })
-                            setVisible(false)
-                            sfutest.hangup()
-                            if (is_speaker) {
-                              updateStatus("online")
-                            }
-                            push(`/feedback`)
+                            // sfutest.hangup()
                           }
                           let remoteFeed = null;
                           for (let i = 1; i < 6; i++) {
@@ -254,7 +268,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                             }
                           }
                           if (remoteFeed) {
-                            console.log("---remoteFeed---", remoteFeed)
                             //------------------------------------------------------------------
                             // $('#remote'+remoteFeed.rfindex).empty().hide();
                             // $('#videoremote'+remoteFeed.rfindex).empty();
@@ -407,7 +420,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       })
       .finally(() => {
         console.log("-----Finally Call End-----");
-        push(`/feedback`, undefined, { shallow: true })
         close = false
       })
   }
@@ -441,9 +453,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           request: "configure",
           audio: useAudio,
           video: true,
-          room: Number(propsCall?.call_info?.conf_id!),
+          room: Number(call_info?.conf_id!),
           record: true,
-          filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : profile_id}-${uuid_conf}`,
+          filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : student_id}-${uuid_conf}`,
         }
         if (acodec) {
           publish["audiocodec"] = acodec
@@ -469,13 +481,11 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       data: {
         type: "closing_videoroom",
         id_room: myRoomId,
-        id_interviewee: !is_speaker ? speaker_id : profile_id,
-        student_id: profile_id,
+        id_interviewee: !is_speaker ? speaker_id : student_id,
+        student_id: student_id,
         speaker_id: speaker_id,
       }
     }))
-    onAddVideoroomStorage({ isAdd: false })
-    unpublishOwnFeed()
   }
 
   function newRemoteFeed(id: any, display: any, streams: any, opaqueId: any, idRoom: number) {
@@ -655,8 +665,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       value={{
         visible: visible,
         videocall: videocall,
-        propsCall: propsCall,
-        setPropsCall: setPropsCall,
         createRoom: createRoom,
         joinAndVisible: joinAndVisible,
         publishOwnFeed: publishOwnFeed,
@@ -666,7 +674,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       <ModalCallingJanus
         visible={visible}
         videocall={videocall}
-        propsCall={propsCall}
         doHangup={doHangup}
         //@ts-ignore
         refVideoLeft={refVideoLeft!}

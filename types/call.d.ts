@@ -40,10 +40,9 @@ export interface ICallData{
                 profile_id: number
         }
         speaker_info?: {
-                profile_id?: number | string,
-                full_name?: string,
-                avatar_url?: string | null,
-                speaker_id?: number | string
+                profile_id: number,
+                full_name: string,
+                avatar_url: string,
+                speaker_id: number
         },
-        
 }

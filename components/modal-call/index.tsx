@@ -1,4 +1,6 @@
 import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { shallow } from "zustand/shallow";
 
 import { Modal, Button, Row, Divider } from "antd";
 
@@ -9,34 +11,57 @@ import PhoneIncoming from "components/icons/phone-incoming";
 
 import { useWeb } from "context/WebSocketContext";
 import { CreateJanusContext } from "context/ContextJanusVideoRoom";
+import { usePropsCallingJanus } from "store/use-call-janus";
 
 import { platform } from "functions/platform";
-import { useTranslation } from "react-i18next";
+import { useUser } from "store/use-user";
 
-interface IProps {
-        propsCall: ICallData | null
-        setPropsCall: Dispatch<SetStateAction<ICallData | null>>
-}
-
-export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
+export const ModalCall: FC = () => {
         const { t } = useTranslation()
         const [visible, setVisible] = useState(false)
 
         const { wsChannel } = useWeb()
         const context = useContext(CreateJanusContext)
         const { joinAndVisible, createRoom } = context ?? {}
+        const user = useUser(state => state.user)
+        const {
+                call_info,
+                speaker_info,
+                user_info,
+                setCallInfo,
+                setSpeakerInfo,
+                setUserInfo,
+                deleteAll,
+        } = usePropsCallingJanus(state => ({
+                call_info: state.call_info,
+                speaker_info: state.speaker_info,
+                user_info: state.user_info,
+                setCallInfo: state.setCallInfo,
+                setSpeakerInfo: state.setSpeakerInfo,
+                setUserInfo: state.setUserInfo,
+                deleteAll: state.deleteAll,
+        }), shallow)
 
         useEffect(() => {
                 const listenerCall = (event: any) => {
-                        const notification: ICallData = JSON.parse(event.data).data
+                        const notification: any = JSON.parse(event.data).data
+
+                        console.log("notification: ", notification)
 
                         if (notification?.type === "incall") {
                                 // play()
-                                setPropsCall({ ...notification })
+                                setCallInfo(notification.call_info)
+                                setSpeakerInfo({
+                                        avatar_url: "",
+                                        full_name: user?.user?.full_name!,
+                                        profile_id: notification?.speaker_profile_id,
+                                        speaker_id: notification?.speaker_id,
+                                })
+                                setUserInfo(notification.user_info)
                                 setVisible(true)
                         }
                         if (["call_cancel_from_user", "call_accept_cancel"]?.includes(notification?.type)) {
-                                setPropsCall(null)
+                                deleteAll()
                                 setVisible(false)
                                 stop()
                         }
@@ -52,19 +77,19 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                 if (answer) {
                         // registerUsername()
                         if (joinAndVisible && createRoom) {
-                                createRoom(propsCall?.call_info?.conf_id!)
+                                createRoom(call_info?.conf_id!)
                                         .finally(() => {
-                                                joinAndVisible(Number(propsCall?.call_info?.conf_id!))
+                                                joinAndVisible(Number(call_info?.conf_id!))
                                         })
                         }
                         wsChannel?.send(
                                 JSON.stringify({
                                         data: {
                                                 type: "call_accept_ok",
-                                                speaker_id: propsCall?.speaker_id,
-                                                conf_id: propsCall?.call_info?.conf_id,
+                                                speaker_id: speaker_info?.speaker_id,
+                                                conf_id: call_info?.conf_id,
                                                 device_type: platform,
-                                                student_id: propsCall?.user_info?.profile_id,
+                                                student_id: user_info?.profile_id,
                                                 status: true
                                         }
                                 })
@@ -76,9 +101,9 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                                 JSON.stringify({
                                         data: {
                                                 type: "call_accept_cancel",
-                                                speaker_id: propsCall?.speaker_id,
-                                                conf_id: propsCall?.call_info?.conf_id,
-                                                student_id: propsCall?.user_info?.profile_id,
+                                                speaker_id: speaker_info?.speaker_id,
+                                                conf_id: call_info?.conf_id,
+                                                student_id: user_info?.profile_id,
                                                 status: false,
                                         }
                                 })
@@ -137,10 +162,10 @@ export const ModalCall: FC<IProps> = ({ propsCall, setPropsCall }) => {
                         ]}
                 >
                         <Row justify="center" gutter={10}>
-                                <h5>{t("Incoming call from")}: {propsCall?.user_info?.full_name}</h5>
+                                <h5>{t("Incoming call from")}: {user_info?.full_name}</h5>
                         </Row>
                         <Row justify="start">
-                                <h6>{t("Specialization")}: {propsCall?.call_info?.specialization} (Сеанс: {propsCall?.call_info?.sessions_time.replace('min', ' мин')})</h6>
+                                <h6>{t("Specialization")}: {call_info?.specialization} (Сеанс: {call_info?.sessions_time.replace('min', ' мин')})</h6>
                         </Row>
                         <Divider />
                         <Row justify="center" className="w-100">

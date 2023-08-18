@@ -1,25 +1,30 @@
 import { type FC, useEffect } from 'react'
+import { shallow } from 'zustand/shallow'
+import { useCallJanus } from 'store/use-call-janus'
 
 interface IProps {
         visible?: boolean,
         doHangup: () => void,
         isSpeaker?: boolean,
-        time: any,
-        setTime: any
 }
 
-export const TimerSession: FC<IProps> = ({ visible, doHangup, time, setTime, isSpeaker }) => {
-        let minute = (Math.floor(time / 60)).toString().padStart(2, "0")
-        let second = (+time - +minute * 60).toString().padStart(2, "0")
+export const TimerSession: FC<IProps> = ({ visible, doHangup, isSpeaker }) => {
+        const { currentTime, getTimerCurrent } = useCallJanus(state => ({
+                currentTime: state.currentTime,
+                getTimerCurrent: state.getTimerCurrent,
+        }), shallow)
+
+        let minute = (Math.floor(currentTime! / 60)).toString().padStart(2, "0")
+        let second = (+currentTime! - +minute * 60).toString().padStart(2, "0")
         useEffect(() => {
-                if (time < 1) {
+                if (currentTime! < 1) {
                         doHangup()
                 }
-        }, [time])
+        }, [currentTime])
 
         useEffect(() => {
                 const interval = () => setInterval(() => {
-                        setTime((time: number) => time - 1)
+                        getTimerCurrent()
                 }, 1000)
 
                 if (visible) interval()
@@ -30,11 +35,11 @@ export const TimerSession: FC<IProps> = ({ visible, doHangup, time, setTime, isS
         return (
                 <>
                         {
-                                time < 20 * 60 - 5 && time > 20 * 59 && !isSpeaker
+                                currentTime! < 20 * 60 - 5 && currentTime! > 20 * 59 && !isSpeaker
                                 &&
-                                <p className={`${time - 20 * 59 < 3 && 'red_timer'}`}>Если вас устраивает качество связи, то через {time - 20 * 59} секунд начнётся списание денег</p>
+                                <p className={`${currentTime! - 20 * 59 < 3 && 'red_timer'}`}>Если вас устраивает качество связи, то через {currentTime! - 20 * 59} секунд начнётся списание денег</p>
                         }
-                        <span className={`${time < 60 && 'red_timer'}`} style={{ alignSelf: 'center' }}>
+                        <span className={`${currentTime! < 60 && 'red_timer'}`} style={{ alignSelf: 'center' }}>
                                 {minute}:{second}
                         </span>
                 </>

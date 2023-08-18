@@ -9,13 +9,19 @@ import { apiSpeakerReview, apiToSpeakerFeedback } from "api/api-review"
 import { updateStatus } from "api/api-status"
 import { useRouter } from "next/router"
 import { Button, Input, Rate, Row, Space } from "antd"
+import { usePropsCallingJanus } from "store/use-call-janus"
 
 const Feedback = () => {
   const { t } = useTranslation()
   const { push } = useRouter()
   const [text, setText] = useState("")
   const [rate, setRate] = useState(0)
-  const { propsCall, setPropsCall } = useContext(CreateJanusContext) ?? {}
+  const { deleteAll, call_info, speaker_info, user_info } = usePropsCallingJanus(state => ({
+    call_info: state.call_info,
+    speaker_info: state.speaker_info,
+    user_info: state.user_info,
+    deleteAll: state.deleteAll,
+  }), shallow)
 
   const { user, isSpeaker } = useUser(state => ({
     isSpeaker: state.is_speaker,
@@ -23,7 +29,7 @@ const Feedback = () => {
   }), shallow)
 
   useEffect(() => {
-    if (!propsCall) {
+    if (!call_info) {
       if (isSpeaker) {
         push('/archive')
       } else {
@@ -39,7 +45,7 @@ const Feedback = () => {
         .finally(() => {
           push('/archive')
           //@ts-ignore
-          setPropsCall(null)
+          deleteAll()
         })
     } else {
       push("/teachers")
@@ -50,8 +56,8 @@ const Feedback = () => {
     if (isSpeaker) {
       const data = {
         speaker: user?.profile?.profile_id,
-        student: propsCall?.user_info?.profile_id,
-        conference: propsCall?.call_info?.conf_id,
+        student: user_info?.profile_id,
+        conference: call_info?.conf_id,
         text: text
       }
       apiSpeakerReview(data)
@@ -60,14 +66,14 @@ const Feedback = () => {
             .finally(() => {
               push('/archive')
               //@ts-ignore
-              setPropsCall(null)
+              deleteAll()
             })
         })
     } else {
       const data = {
-        speaker: propsCall?.speaker_info?.profile_id,
+        speaker: speaker_info?.profile_id,
         author: user?.profile?.profile_id,
-        conference: propsCall?.call_info?.conf_id,
+        conference: call_info?.conf_id,
         rating: rate,
         text: text,
       }
@@ -75,13 +81,14 @@ const Feedback = () => {
         .finally(() => {
           push('/teachers')
           //@ts-ignore
-          setPropsCall(null)
+          deleteAll()
         })
     }
   }
 
   useEffect(() => {
     return () => {
+      deleteAll()
       setTimeout(() => {
         location.reload()
       }, 250)
@@ -93,8 +100,8 @@ const Feedback = () => {
       <div className="profile-content" style={{ marginTop: isSpeaker ? 120 : 88 }}>
         {
           isSpeaker
-            ? <h3>{t("Recommendations to the student")} {propsCall?.user_info?.full_name}</h3>
-            : <h3>{t("Rate the teacher")} {propsCall?.speaker_info?.full_name}</h3>
+            ? <h3>{t("Recommendations to the student")} {user_info?.full_name}</h3>
+            : <h3>{t("Rate the teacher")} {speaker_info?.full_name}</h3>
         }
         {
           !isSpeaker
@@ -117,7 +124,7 @@ const Feedback = () => {
             className="w-100"
             rows={4}
             minLength={10}
-            placeholder={isSpeaker ? `${t("Write a recommendation to the student")} ${propsCall?.user_info?.full_name}` : t("feedback")!}
+            placeholder={isSpeaker ? `${t("Write a recommendation to the student")} ${user_info?.full_name}` : t("feedback")!}
             onChange={(value) => { setText(value?.target?.value) }}
             value={text}
           />

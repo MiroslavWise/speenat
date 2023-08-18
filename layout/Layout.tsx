@@ -10,7 +10,7 @@ import Loader from "@loader-spin";
 import ModalMenu from "components/modal-menu";
 
 import { useUser } from "store/use-user";
-import { ProviderWebSocket, useWeb } from "context/WebSocketContext";
+import { ProviderWebSocket } from "context/WebSocketContext";
 // import { ProviderJanusContext, CreateJanusContext } from "context/ContextJanus";
 import { ContextJanusVideoRoom, CreateJanusContext } from "context/ContextJanusVideoRoom";
 import { ModalCall } from 'components/modal-call'
@@ -22,7 +22,6 @@ const inter = Inter({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         const router = useRouter();
-        const { propsCall, setPropsCall } = useContext(CreateJanusContext) ?? {}
         const { getUser, loading } = useUser(state => ({
                 getUser: state.getUserData,
                 loading: state.loading,
@@ -56,10 +55,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         </motion.div>
                         <NavFooter />
                         <ModalMenu />
-                        <ModalCall
-                                propsCall={propsCall!}
-                                setPropsCall={setPropsCall!}
-                        />
+                        <ModalCall />
                 </main>
         )
 }
