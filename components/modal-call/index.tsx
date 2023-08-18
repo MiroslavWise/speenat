@@ -51,12 +51,7 @@ export const ModalCall: FC = () => {
                         if (notification?.type === "incall") {
                                 // play()
                                 setCallInfo(notification.call_info)
-                                setSpeakerInfo({
-                                        avatar_url: "",
-                                        full_name: user?.user?.full_name!,
-                                        profile_id: notification?.speaker_profile_id,
-                                        speaker_id: notification?.speaker_id,
-                                })
+                                setSpeakerInfo(notification.speaker_info)
                                 setUserInfo(notification.user_info)
                                 setVisible(true)
                         }
