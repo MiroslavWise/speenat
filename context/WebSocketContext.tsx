@@ -11,34 +11,37 @@ export const ContextWebSocket = createContext<{
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
         const [webSocket, setWebSocket] = useState<WebSocket | undefined>(undefined)
 
-        const eventOpen = (event: any) => {
-                console.log('WebSocket connected', event)
-        }
-
         const connectWebSocket = () => {
                 const ws = new WebSocket(URL_SOCKET(userData.JWT))
+
+                ws.addEventListener('open', () => {
+                        console.log('WebSocket connected')
+                        setWebSocket(ws)
+                });
+
+                ws.addEventListener('close', () => {
+                        console.log('WebSocket disconnected')
+                        setWebSocket(undefined)
+                        reconnectWebSocket()
+                });
+
                 return ws
         }
 
         const reconnectWebSocket = () => {
                 console.log('Reconnecting WebSocket in 1 second...')
-                if (userData.JWT) {
-                        setTimeout(() => {
-                                connectWebSocket()
-                        }, 1000)
-                }
+                setTimeout(() => {
+                        connectWebSocket()
+                }, 1000)
         }
 
         useEffect(() => {
-                setWebSocket(connectWebSocket())
-                webSocket?.addEventListener("open", eventOpen)
-                webSocket?.addEventListener("close", reconnectWebSocket)
+                const ws = connectWebSocket()
 
                 return () => {
-                        webSocket?.close()
-                        webSocket?.removeEventListener("close", reconnectWebSocket)
-                        webSocket?.removeEventListener("open", eventOpen)
-                        setWebSocket(undefined)
+                        if (ws) {
+                                ws.close()
+                        }
                 }
         }, [userData.JWT])
 

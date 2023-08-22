@@ -34,6 +34,22 @@ const GatesComponent: FC = () => {
         }
     }
 
+    // useEffect(() => {
+    //     const obj1 = { a: 1, b: 2, c: 3 };
+    //     const obj2 = { a: 3, b: 7, c: 3 };
+    //     const obj3 = { a: 3, b: 7, c: 4 };
+
+    //     const func = (_obj1: any, _obj2: any): boolean => {
+    //         for (const property in _obj1) {
+    //             if (_obj1[property] === _obj2[property]) return true
+    //         }
+    //         return false
+    //     }
+
+    //     console.log(func(obj1, obj2));
+    //     console.log(func(obj1, obj3));
+    // }, [])
+
     useEffect(() => {
         checkAuth();
     }, [])
