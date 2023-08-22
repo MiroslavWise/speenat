@@ -6,7 +6,6 @@ import dayjs from "dayjs"
 interface IUseCallJanus {
   time: undefined | number
   currentTime: undefined | number
-
   setTime: DispatchWithoutAction
   deleteTime: DispatchWithoutAction
   getTimerCurrent: DispatchWithoutAction
@@ -62,7 +61,11 @@ interface IUsePropsCallingJanus{
   call_info: ICallInfo | undefined
   speaker_info: ISpeakerInfo | undefined
   user_info: IUserInfo | undefined
-
+  idRoom: number | undefined
+  uuidRoom: string | undefined
+  
+  setUuidRoom: Dispatch<string | undefined>
+  setIdRoom: Dispatch<number | undefined>
   setCallInfo: Dispatch<ICallInfo | undefined>
   setSpeakerInfo: Dispatch<ISpeakerInfo | undefined>
   setUserInfo: Dispatch<IUserInfo | undefined>
@@ -75,7 +78,15 @@ export const usePropsCallingJanus = create(
       call_info: undefined,
       speaker_info: undefined,
       user_info: undefined,
+      idRoom: undefined,
+      uuidRoom: undefined,
 
+      setUuidRoom(value) {
+        set({ uuidRoom: value }) 
+      },
+      setIdRoom(value) {
+        set({ idRoom: value })
+      },
       setCallInfo(value) {
         set({
           call_info: value
@@ -96,6 +107,8 @@ export const usePropsCallingJanus = create(
           call_info: undefined,
           speaker_info: undefined,
           user_info: undefined,
+          idRoom: undefined,
+          uuidRoom: undefined,
         })
       },
     }), {

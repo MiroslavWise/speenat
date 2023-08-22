@@ -22,6 +22,7 @@ export default {
                 if (!localStorage.getItem(refreshLS)) {
                         this.startRefresh();
                         try {
+                                console.log(" login refresh : ", )
                                 await userData.login({ curRefreshToken: userData.refreshToken, isRefresh: true })
                                         .then(response => {
                                                 console.log('response: ', response)

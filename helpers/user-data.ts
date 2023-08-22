@@ -9,6 +9,9 @@ const userObjMap = ['RefreshToken', 'Token', 'Expiration', isLogging];
 
 export default {
         async login({ email = "", password = "", curRefreshToken = "", isRefresh = false }) {
+                console.log("---login ---", {
+                        email, password, curRefreshToken, isRefresh
+                })
                 try {
                         const data = isRefresh ? await refreshToken(curRefreshToken) : await ApiLogin({ email: email, password: password })
                         const { access, refresh } = data

@@ -21,6 +21,7 @@ export interface IRegister{
 }
 
 export const login = async (values: ILogin): Promise<any> => {
+        console.log("---login fetch ---", {values})
         const data = values
         try {
                 const response = await fetch(`${URL}/login/`, {

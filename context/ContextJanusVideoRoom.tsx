@@ -9,7 +9,6 @@ import { useWeb } from "./WebSocketContext"
 import { axiosInstance } from "api/api-general"
 import { updateStatus } from "api/api-status"
 import { ModalCallingJanus } from "components/Janus"
-import { onAddVideoroomStorage, isVideoroomStorage } from "functions/on-add-videoroom-storage"
 import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
 
 interface IJanus {
@@ -72,13 +71,23 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     setCallInfo,
     setSpeakerInfo,
     setUserInfo,
+    idRoomState,
+    setIdRoom,
+    setUuidRoom,
+    uuidRoom,
+    deleteAll,
   } = usePropsCallingJanus(state => ({
     call_info: state.call_info,
     speaker_info: state.speaker_info,
     user_info: state.user_info,
     setCallInfo: state.setCallInfo,
     setSpeakerInfo: state.setSpeakerInfo,
+    uuidRoom: state.uuidRoom,
     setUserInfo: state.setUserInfo,
+    idRoomState: state.idRoom,
+    setIdRoom: state.setIdRoom,
+    setUuidRoom: state.setUuidRoom,
+    deleteAll: state.deleteAll,
   }), shallow)
 
   useEffect(() => { setDoSvc(getQueryStringValue("svc")) }, [])
@@ -104,11 +113,11 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     if (user) {
       myusername = user?.profile?.profile_id
     }
-    if (user && !!isVideoroomStorage() && isJanus) {
+    if (user && idRoomState && isJanus) {
       if (!myRoomId) {
-        myRoomId = Number(isVideoroomStorage()?.idRoom)
+        myRoomId = idRoomState
       }
-      joinInVideoRoom(Number(isVideoroomStorage()?.idRoom))
+      joinInVideoRoom(idRoomState)
         .finally(() => {
           requestAnimationFrame(() => {
             publishOwnFeed(true)
@@ -116,7 +125,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           })
         })
     }
-  }, [user, isJanus])
+  }, [user, isJanus, idRoomState])
 
   useEffect(() => {
     const listenerCall = (event: any) => {
@@ -125,6 +134,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         setCallInfo(notification.call_info)
         setSpeakerInfo(notification.speaker_info)
         setUserInfo(notification.user_info)
+        setUuidRoom(notification.call_info.uuid)
         setTime()
         if (!is_speaker) {
           joinAndVisible(notification.call_info.conf_id!)
@@ -134,7 +144,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         setVisible(false)
         closeVideoCallTalk()
         unpublishOwnFeed()
-        onAddVideoroomStorage({ isAdd: false })
         deleteTime()
         if (is_speaker) {
           updateStatus("online")
@@ -256,7 +265,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                         } else if (msg["unpublished"]) {
                           let unpublished = msg["unpublished"];
                           console.log("---unpublished---", unpublished)
-                          onAddVideoroomStorage({ isAdd: false })
                           if (unpublished === "ok") {
                             // sfutest.hangup()
                           }
@@ -388,11 +396,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }
 
   function joinAndVisible(idRoom: number) {
-    onAddVideoroomStorage({
-      isAdd: true,
-      idRoom: idRoom.toString(),
-      username: myusername
-    })
+    setIdRoom(idRoom)
     joinInVideoRoom(idRoom)
       .finally(() => {
         requestAnimationFrame(() => {
@@ -406,7 +410,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     return await axiosInstance.post(
       `/conference/done/`,
       {
-        conf_uuid: uuid_conf,
+        conf_uuid: uuidRoom,
         status: "CALL_END",
         completed: isTimer || true
       },

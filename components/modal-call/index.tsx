@@ -32,6 +32,7 @@ export const ModalCall: FC = () => {
                 setSpeakerInfo,
                 setUserInfo,
                 deleteAll,
+                setUuidRoom,
         } = usePropsCallingJanus(state => ({
                 call_info: state.call_info,
                 speaker_info: state.speaker_info,
@@ -40,6 +41,7 @@ export const ModalCall: FC = () => {
                 setSpeakerInfo: state.setSpeakerInfo,
                 setUserInfo: state.setUserInfo,
                 deleteAll: state.deleteAll,
+                setUuidRoom: state.setUuidRoom,
         }), shallow)
 
         useEffect(() => {
@@ -53,6 +55,7 @@ export const ModalCall: FC = () => {
                                 setCallInfo(notification.call_info)
                                 setSpeakerInfo(notification.speaker_info)
                                 setUserInfo(notification.user_info)
+                                setUuidRoom(notification.call_info.uuid)
                                 setVisible(true)
                         }
                         if (["call_cancel_from_user", "call_accept_cancel"]?.includes(notification?.type)) {
