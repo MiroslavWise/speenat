@@ -10,6 +10,7 @@ import { axiosInstance } from "api/api-general"
 import { updateStatus } from "api/api-status"
 import { ModalCallingJanus } from "components/Janus"
 import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
+import { apiToConfInfo } from "api/api-review"
 
 interface IJanus {
   visible: boolean
@@ -51,6 +52,12 @@ var subscriber_mode = getQueryStringValue("subscriber-mode") === "yes" || getQue
 var use_msid = getQueryStringValue("msid") === "yes" || getQueryStringValue("msid") === "true"
 var remoteFeed: any
 
+interface IValuesResponseConfInfo {
+  status: "CALL_ONLINE"
+  id: number
+  uuid: number
+}
+
 export const ContextJanusVideoRoom: TProps = ({ children }) => {
   const { push } = useRouter()
   const { wsChannel } = useWeb() ?? {}
@@ -91,6 +98,26 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }), shallow)
 
   useEffect(() => { setDoSvc(getQueryStringValue("svc")) }, [])
+  useEffect(() => {
+    setTimeout(() => {
+      if (uuidRoom) {
+        apiToConfInfo(uuidRoom)
+          .then((response: IValuesResponseConfInfo) => {
+            if (response?.status === "CALL_ONLINE") {
+              joinInVideoRoom(response.id)
+                .finally(() => {
+                  requestAnimationFrame(() => {
+                    publishOwnFeed(true)
+                    setVisible(true)
+                  })
+                })
+            }
+          })
+      } else {
+        deleteAll()
+      }
+    }, 1500)
+  }, [])
 
   useEffect(() => {
     if (call_info) {
@@ -117,13 +144,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       if (!myRoomId) {
         myRoomId = idRoomState
       }
-      joinInVideoRoom(idRoomState)
-        .finally(() => {
-          requestAnimationFrame(() => {
-            publishOwnFeed(true)
-            setVisible(true)
-          })
-        })
     }
   }, [user, isJanus, idRoomState])
 

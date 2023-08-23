@@ -12,3 +12,9 @@ export const apiToSpeakerFeedback = async (data: any): Promise<any> => {
     .then(data => data?.data)
     .catch(e => console.error('ERROR TO DOCTOR FEEDBACK: ', e))
 }
+
+export const apiToConfInfo = async (value: string): Promise<any> => {
+  return axiosInstance.get(`/conference/${value}`)
+    .then(data => data?.data)
+    .catch(e => console.error('ERROR TO DOCTOR FEEDBACK: ', e))
+}
