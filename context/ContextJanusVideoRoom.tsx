@@ -30,6 +30,7 @@ var jsep: any
 var trackId: any = null
 var tracks: any = null
 var speaker_id: any = null
+var speaker_id_prof: any
 var student_id: any = null
 var uuid_conf: any = null
 var doSimulcast = false
@@ -128,6 +129,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     }
     if (speaker_info) {
       speaker_id = speaker_info?.speaker_id
+      speaker_id_prof = speaker_info?.profile_id
     }
     if (user_info) {
       student_id = user_info?.profile_id
@@ -453,6 +455,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
 
   function publishOwnFeed(useAudio: boolean) {
     console.log("---publishOwnFeed--- ")
+    console.log("---file--- ", `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : student_id}-${uuid_conf}`,)
     let tracks = []
     tracks.push({
       type: 'audio',

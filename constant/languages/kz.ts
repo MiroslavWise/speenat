@@ -142,4 +142,10 @@ export default {
         "Connection is in progress": "Байланыс бар",
         "Wait a bit - do not close the app and do not lock the phone": "Біраз күте тұрыңыз-қолданбаны жаппаңыз немесе телефонды құлыптамаңыз",
         "The speaker's response time depends on the quality of your internet connection": "Спикердің жауап беру уақыты интернет байланысының сапасына байланысты",
+
+        "Welcome to our family": "Біздің отбасымызға қош келдіңіз",
+        "Create your language path by choosing from a wide range of available languages, including": "Қол жетімді тілдердің кең ауқымын таңдау арқылы тілдік жолды жасаңыз, соның ішінде",
+        "Kazakh, English, Spanish, French, German": "қазақ, ағылшын, испан, француз, неміс",
+        "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.": "және басқалары. Біздің оқытушыларымыз-бай тәжірибесі мен әр тілдің бірегей ерекшеліктерін түсінетін нағыз сарапшылар.",
+        
 } as Record<string, string>

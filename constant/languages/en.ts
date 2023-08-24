@@ -142,4 +142,10 @@ export default {
         "Connection is in progress": "Connection is in progress",
         "Wait a bit - do not close the app and do not lock the phone": "Wait a bit - do not close the app and do not lock the phone",
         "The speaker's response time depends on the quality of your internet connection": "The speaker's response time depends on the quality of your internet connection",
+        
+        "Welcome to our family": "Welcome to our family",
+        "Create your language path by choosing from a wide range of available languages, including": "Create your language path by choosing from a wide range of available languages, including",
+        "Kazakh, English, Spanish, French, German": "Kazakh, English, Spanish, French, German",
+        "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.": "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.",
+        
 } as Record<string, string>

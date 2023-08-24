@@ -143,4 +143,10 @@ export default {
         "Wait a bit - do not close the app and do not lock the phone": "Подождите немного - не закрывайте приложение и не блокируйте телефон",
         "The speaker's response time depends on the quality of your internet connection": "Время ответа спикера зависит от качества вашего интернет-соединения",
         
+
+        "Welcome to our family": "Добро пожаловать в нашу семью",
+        "Create your language path by choosing from a wide range of available languages, including": "Создайте свой языковой путь, выбрав из широкого спектра доступных языков, включая",
+        "Kazakh, English, Spanish, French, German": "казахский, английский, испанский, французский, немецкий",
+        "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.": "и многие другие. Наши преподаватели - настоящие эксперты, обладающие богатым опытом и пониманием уникальных особенностей каждого языка.",
+        
 } as Record<string, string>
