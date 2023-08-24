@@ -90,6 +90,7 @@ const Feedback = () => {
     return () => {
       deleteAll()
       setTimeout(() => {
+        deleteAll()
         location.reload()
       }, 250)
     }
