@@ -81,8 +81,8 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     idRoomState,
     setIdRoom,
     setUuidRoom,
-    uuidRoom,
     deleteAll,
+    uuidRoom,
   } = usePropsCallingJanus(state => ({
     call_info: state.call_info,
     speaker_info: state.speaker_info,
@@ -97,11 +97,13 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     deleteAll: state.deleteAll,
   }), shallow)
 
+  console.log("call_info: ", uuidRoom)
+
   useEffect(() => { setDoSvc(getQueryStringValue("svc")) }, [])
   useEffect(() => {
     setTimeout(() => {
-      if (uuidRoom) {
-        apiToConfInfo(uuidRoom)
+      if (call_info?.uuid) {
+        apiToConfInfo(call_info.uuid)
           .then((response: IValuesResponseConfInfo) => {
             if (response?.status === "CALL_ONLINE") {
               joinInVideoRoom(response.id)
@@ -176,7 +178,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     }
 
     return () => wsChannel?.removeEventListener("message", listenerCall)
-  }, [wsChannel, is_speaker])
+  }, [wsChannel, is_speaker, uuidRoom])
 
   useEffect(() => {
     Janus.init({
@@ -427,10 +429,11 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }
 
   async function closeVideoCallTalk() {
+    console.log("uuidRoom: ", uuidRoom)
     return await axiosInstance.post(
       `/conference/done/`,
       {
-        conf_uuid: uuidRoom,
+        conf_uuid: call_info?.uuid,
         status: "CALL_END",
         completed: isTimer || true
       },

@@ -89,7 +89,8 @@ export const usePropsCallingJanus = create(
       },
       setCallInfo(value) {
         set({
-          call_info: value
+          call_info: value,
+          uuidRoom: value?.uuid,
         })
       },
       setSpeakerInfo(value) {

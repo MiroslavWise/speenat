@@ -51,6 +51,7 @@ export const ModalCall: FC = () => {
                         console.log("notification: ", notification)
 
                         if (notification?.type === "incall") {
+                                console.log("notification: ", notification)
                                 // play()
                                 setCallInfo(notification.call_info)
                                 setSpeakerInfo(notification.speaker_info)
