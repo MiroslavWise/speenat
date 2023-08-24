@@ -29,14 +29,14 @@ const Feedback = () => {
   }), shallow)
 
   useEffect(() => {
-    if (!call_info) {
+    if (!!deleteAll && !call_info) {
       if (isSpeaker) {
         push('/archive')
       } else {
         push("/teachers")
       }
     }
-  }, [])
+  }, [call_info, deleteAll])
 
   const btnCancel = () => {
 

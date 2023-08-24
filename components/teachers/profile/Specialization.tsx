@@ -9,7 +9,7 @@ import { Button, Divider, Modal, Row, Space } from "antd"
 import Time from "@icons-time"
 import Wallet from "@icons-wallet"
 import { platform } from "functions/platform"
-import { CreateJanusContext } from "context/ContextJanus"
+import { CreateJanusContext } from "context/ContextJanusVideoRoom"
 import { useUser } from "store/use-user"
 import { useWeb } from "context/WebSocketContext"
 import PhoneOff from "components/icons/phone-off"
@@ -18,15 +18,9 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
         const { t } = useTranslation()
         const user = useUser(state => state.user)
         const contextJanus = useContext(CreateJanusContext)
-        const registerUsername = contextJanus?.registerUsername
-        const [loading, setLoading] = useState(false)
-        const [id, setId] = useState<number | null>(null)
-        const [uuidRecord, setUuidRecord] = useState<string>('')
-        const [visible, setVisible] = useState<boolean>(false)
+        const { visible: janusVisible } = contextJanus ?? {}
 
-        const [paramSpec, setParamSpec] = useState<{ spec_id: number | null, time_id: number | null }>({ spec_id: null, time_id: null })
         const { wsChannel } = useWeb()
-        const janusVisible = contextJanus?.visible
 
         const startEndTimer = (value: boolean) => {
                 const onTimer = setTimeout(() => {
@@ -42,15 +36,17 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
         }
 
         const handleCancelCall = () => {
-                wsChannel?.send(JSON.stringify({
-                        data: {
-                                type: 'call_cancel_user',
-                                speaker_profile_id: speaker?.profile?.profile_id,
-                                student_id: user?.profile?.profile_id,
-                                status: false
-                        }
-                }))
-                Modal.destroyAll()
+                if (!janusVisible) {
+                        wsChannel?.send(JSON.stringify({
+                                data: {
+                                        type: 'call_cancel_user',
+                                        speaker_profile_id: speaker?.profile?.profile_id,
+                                        student_id: user?.profile?.profile_id,
+                                        status: false
+                                }
+                        }))
+                        Modal.destroyAll()
+                }
         }
 
         useEffect(() => {
@@ -69,9 +65,6 @@ const Specialization: FC<{ data: ISpec[] | undefined, online: boolean, speaker: 
         ) => {
                 calling(spec, time, handleCancelCall, speaker, startEndTimer, t)
                 startEndTimer(true)
-                if (registerUsername) {
-                        registerUsername()
-                }
                 const data = {
                         type: 'user_call',
                         time_id: time_id,
