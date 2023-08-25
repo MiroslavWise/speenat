@@ -11,12 +11,15 @@ const ModalMenu: FC = () => {
         const { t } = useTranslation()
         const { push } = useRouter()
         const { signOut } = useAuth()
+        const user = useUser(state => state.user)
         const active = useModal(state => state.active)
         const set = useModal(state => state.setActive)
-        const isStaff = useUser(state => state.is_staff)
+        const isStaff = useUser(state => state?.user?.profile?.is_accountant)
         const isStatus = useUser(state => state.user?.profile?.status)
         const isSpeaker = useUser(state => state.is_speaker)
         const reloadUser = useUser(state => state.getUserData)
+
+        console.log("user: ", user)
 
         const handleUnActive = (event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault()
@@ -48,11 +51,6 @@ const ModalMenu: FC = () => {
                                                 {
                                                         isStaff ? (
                                                                 <div className="list-item" onClick={() => { push('/analytics', undefined, { shallow: true }) }}><p>{t("Analytics")}</p></div>
-                                                        ) : null
-                                                }
-                                                {
-                                                        isStaff ? (
-                                                                <div className="list-item" onClick={() => { push('/accountant', undefined, { shallow: true }) }}><p>{t("Accountant_office")}</p></div>
                                                         ) : null
                                                 }
                                         </div>

@@ -29,7 +29,7 @@ export const LanguagesOpenButton = () => {
         className={cx(styles.containerArrow, visible && styles.active)}
         onClick={() => { setVisible(prev => !prev) }}
         layout
-        data-isOpen={visible}
+        data-is-open={visible}
         initial={{ borderRadius: 50 }}
       >
         {

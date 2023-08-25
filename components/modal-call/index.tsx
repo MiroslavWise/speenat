@@ -1,10 +1,9 @@
 import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { shallow } from "zustand/shallow";
+import useSound from "use-sound";
 
 import { Modal, Button, Row, Divider } from "antd";
-
-import { ICallData } from "types/call";
 
 import PhoneOff from "components/icons/phone-off";
 import PhoneIncoming from "components/icons/phone-incoming";
@@ -13,17 +12,21 @@ import { useWeb } from "context/WebSocketContext";
 import { CreateJanusContext } from "context/ContextJanusVideoRoom";
 import { usePropsCallingJanus } from "store/use-call-janus";
 
+
 import { platform } from "functions/platform";
-import { useUser } from "store/use-user";
+
+const sound = "../../public/sound/zvuk-skayp-skype-call-calling-23010.wav"
 
 export const ModalCall: FC = () => {
         const { t } = useTranslation()
         const [visible, setVisible] = useState(false)
+        const [play, { stop }] = useSound(sound, {
+                volume: 0.75
+        });
 
         const { wsChannel } = useWeb()
         const context = useContext(CreateJanusContext)
         const { joinAndVisible, createRoom } = context ?? {}
-        const user = useUser(state => state.user)
         const {
                 call_info,
                 speaker_info,
@@ -52,7 +55,9 @@ export const ModalCall: FC = () => {
 
                         if (notification?.type === "incall") {
                                 console.log("notification: ", notification)
-                                // play()
+                                requestAnimationFrame(() => {
+                                        play()
+                                })
                                 setCallInfo(notification.call_info)
                                 setSpeakerInfo(notification.speaker_info)
                                 setUserInfo(notification.user_info)
@@ -65,7 +70,6 @@ export const ModalCall: FC = () => {
                                 stop()
                         }
                         if (notification?.type === "call_accept_ok") {
-                                // stop()
                         }
                 }
                 wsChannel?.addEventListener('message', listenerCall)
@@ -94,7 +98,7 @@ export const ModalCall: FC = () => {
                                 })
                         )
                         setVisible(false)
-                        // stop()
+                        stop()
                 } else {
                         wsChannel?.send(
                                 JSON.stringify({
@@ -108,7 +112,7 @@ export const ModalCall: FC = () => {
                                 })
                         )
                         setVisible(false)
-                        // stop()
+                        stop()
                 }
         }
 

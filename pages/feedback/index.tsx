@@ -2,8 +2,6 @@ import { useTranslation } from "react-i18next"
 import { useContext, useState, useEffect } from "react"
 import { shallow } from "zustand/shallow"
 
-import { CreateJanusContext } from "context/ContextJanus"
-
 import { useUser } from "store/use-user"
 import { apiSpeakerReview, apiToSpeakerFeedback } from "api/api-review"
 import { updateStatus } from "api/api-status"
@@ -88,7 +86,6 @@ const Feedback = () => {
 
   useEffect(() => {
     return () => {
-      deleteAll()
       setTimeout(() => {
         deleteAll()
         location.reload()

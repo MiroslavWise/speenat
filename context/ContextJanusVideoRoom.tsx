@@ -694,7 +694,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     <CreateJanusContext.Provider
       value={{
         visible: visible,
-        videocall: videocall,
+        videocall: sfutest,
         createRoom: createRoom,
         joinAndVisible: joinAndVisible,
         publishOwnFeed: publishOwnFeed,
@@ -703,7 +703,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       {children}
       <ModalCallingJanus
         visible={visible}
-        videocall={videocall}
+        videocall={sfutest}
         doHangup={doHangup}
         //@ts-ignore
         refVideoLeft={refVideoLeft!}

@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { useTranslation } from "react-i18next";
 
-import { Table } from "antd";
+import { Divider, Table } from "antd";
 
 import Loader from "@loader-spin";
+import CompanyIncoming from "components/accountant/CompanyIncoming";
 
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
@@ -17,7 +18,7 @@ const columns = (t: (value: string) => string) => [
                 title: t("Title"),
                 dataIndex: 'name',
                 key: 'name',
-                width: '85%'
+                width: '70%'
         },
         {
                 title: t("Quantity"),
@@ -35,7 +36,7 @@ const Analytics: NextPage = () => {
 
         const { data, isLoading } = useQuery(["analytics"], () => Promise.all([usersAll(), conferenceAll(), speakersAll()]))
 
-        const dataSource =  useMemo(() => ([
+        const dataSource = useMemo(() => ([
                 {
                         key: 'users',
                         name: `${t("Number of registered users")}:`,
@@ -58,13 +59,15 @@ const Analytics: NextPage = () => {
 
         return (
                 <div className="wrapper">
-                                <Table
+                        <Table
                                 columns={columns(t)}
-                                        dataSource={dataSource}
-                                        showHeader={false}
-                                        size={'small'}
-                                        pagination={false}
-                                />
+                                dataSource={dataSource}
+                                showHeader={false}
+                                size={'small'}
+                                pagination={false}
+                        />
+                        <Divider />
+                        <CompanyIncoming />
                 </div>
         )
 }

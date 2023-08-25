@@ -1,0 +1,25 @@
+.btnGroup{
+  position: fixed;
+  transform: translateX(-50%);
+  left: 50%;
+  bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.toggleCircle{
+  border-radius: 100px;
+  border: 2px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-shadow: rgba(255, 252, 255, 0.74) 0px 3px 8px;
+}
+
+.callOff{
+  background: red;
+}

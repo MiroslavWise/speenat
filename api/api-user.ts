@@ -54,6 +54,20 @@ export const usersAll = async (): Promise<{ count: number }> => axiosInstance.ge
 export const conferenceAll = async (): Promise<{ count: number }> => axiosInstance.get(`/conferences/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 export const speakersAll = async (): Promise<{ count: number }> => axiosInstance.get(`/speaker-filter/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 
-export const companyAllOperations = async (): Promise<{ count: number }> => axiosInstance.get(`/company-operations/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
+export const companyAllOperations = async (): Promise<ICompanyData> => axiosInstance.get(`/company-operations/`).then(response => response.data).catch(e => { console.error("USER DATA: ", e) })
 
 export const languages = async (): Promise<{ results: { id: number, name: string }[] }> => axiosInstance.get(`/language-list/`).then(response => response.data).catch(e => { console.error("ERROR LANGUAGES: ", e) })
+
+interface ICompanyData{
+        count: number
+        results: {
+                data: any[]
+                statistic: {
+                        company_turnover: number
+                        conference_payment_avg: number
+                        referral_system_earning: number
+                        speaker_set_earning: number
+                        total_company_earning: number
+                }
+        }
+}

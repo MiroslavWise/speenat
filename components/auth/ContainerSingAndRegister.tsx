@@ -39,8 +39,8 @@ const ContainerSingAndRegister: FC = () => {
                 }
         }, [referral_code])
 
-        const onSubmit = useCallback((values: IValues) => {
-                userData.login({ email: values.email, password: values.password })
+        const onSubmit = (values: IValues) => {
+                userData.login({ email: values.email.toLowerCase(), password: values.password })
                         .then((response: IReturnAccess) => {
                                 if (response?.access === true && response.error === null) {
                                         setAuthState('main')
@@ -53,12 +53,12 @@ const ContainerSingAndRegister: FC = () => {
                                         }
                                 }
                         })
-        }, [form])
+        }
 
         const onRegister = (values: IRegister) => {
                 const { email, password, password2, is_speaker, referral_code, full_name, language_id } = values
                 registerUser({
-                        email: email,
+                        email: email.toLowerCase(),
                         password: password,
                         password2: password2,
                         is_speaker: is_speaker || false,
@@ -72,7 +72,7 @@ const ContainerSingAndRegister: FC = () => {
                 })
                         .then(response => {
                                 if (response?.email === email) {
-                                        userData.login({ email: response?.email, password: password })
+                                        userData.login({ email: email?.toLowerCase(), password: password })
                                                 .then((response: IReturnAccess) => {
                                                         if (response?.access === true && response.error === null) {
                                                                 setAuthState('main')

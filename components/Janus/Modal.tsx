@@ -1,17 +1,14 @@
 import { type FC, type DispatchWithoutAction, useState, useEffect, useContext, MutableRefObject } from 'react'
 import { shallow } from 'zustand/shallow'
 
-import type { ICallData } from 'types/call'
-
-import Video from 'components/icons/video'
-import PhoneOff from 'components/icons/phone-off'
-import Microphone from 'components/icons/microphone'
-import MicrophoneOff from 'components/icons/microphone-off'
-import VideoOff from 'components/icons/video-off'
 import { TimerSession } from './timer-session'
 import { useCallJanus, usePropsCallingJanus } from 'store/use-call-janus'
 
 import { useUser } from 'store/use-user'
+
+import styles from "./style.module.scss"
+import { cx } from 'functions/cx'
+import Image from 'next/image'
 
 interface IProps {
         visible: boolean
@@ -30,12 +27,10 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                 user_info: state.user_info,
         }), shallow)
 
+        console.log("videocall ModalCallingJanus: ", videocall)
+
         const { isSpeaker } = useUser(state => ({
                 isSpeaker: state.is_speaker,
-        }), shallow)
-
-        const { currentTime } = useCallJanus(state => ({
-                currentTime: state.currentTime,
         }), shallow)
 
         return (
@@ -53,67 +48,70 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                         &nbsp;&nbsp;<TimerSession {...{ visible, doHangup, isSpeaker }} />
                                 </div>
                                 <div className="panel-body" id="videoleft" ref={refVideoLeft} />
-                                <div className="btn-group btn-group-xs pull-right hide btn_group">
-                                        <button
-                                                className={`btn btn__`}
-                                                id="toggleaudio"
-                                                style={{
-                                                        borderRadius: 50,
-                                                        padding: '6px 16px',
-                                                        color: "#fff",
-                                                }}
+                                <div className={styles.btnGroup}>
+                                        <div
+                                                id='toggleaudio'
+                                                className={cx(styles.toggleCircle)}
                                                 onClick={() => {
                                                         if (toggleAudio) {
-                                                                videocall?.muteAudio()
+                                                                videocall.send({
+                                                                        "request": "pause"
+                                                                })
                                                         } else {
-                                                                videocall?.unmuteAudio()
+                                                                videocall.send({
+                                                                        "request": "start"
+                                                                })
                                                         }
-                                                        setToggleAudio(!toggleAudio)
+                                                        setToggleAudio(prev => !prev)
                                                 }}
                                         >
-                                                {
-                                                        toggleAudio
-                                                                ?
-                                                                <Microphone />
-                                                                :
-                                                                <MicrophoneOff />
-                                                }
-                                        </button>
-                                        {
-                                                (isSpeaker || currentTime! >= 59 * 20)
-                                                &&
-                                                <button
-                                                        className="btn btn__"
-                                                        id="calloff"
-                                                        onClick={doHangup}
-                                                        style={{
-                                                                borderRadius: 50,
-                                                                padding: '6px 16px',
-                                                                color: "#fff",
-                                                                backgroundColor: "#CA0B00"
-                                                        }}
-                                                >
-                                                        <PhoneOff fill='#fff' />
-                                                </button>
-                                        }
-                                        <button
-                                                className={`btn  btn__`}
-                                                id="togglevideo"
-                                                style={{
-                                                        borderRadius: 50,
-                                                        padding: '6px 16px',
-                                                        color: "#fff",
-                                                }}
-                                                onClick={() => { setToggleVideo(!toggleVideo) }}
+                                                <Image
+                                                        src={toggleAudio ? "/call-svg/microphone-on.svg" : "/call-svg/microphone-off.svg"}
+                                                        alt="micro-on"
+                                                        width={24}
+                                                        height={24}
+                                                />
+                                        </div>
+                                        <div
+                                                id='calloff'
+                                                className={cx(styles.toggleCircle, styles.callOff)}
+                                                onClick={doHangup}
                                         >
-                                                {
-                                                        toggleVideo
-                                                                ?
-                                                                <Video />
-                                                                :
-                                                                <VideoOff />
-                                                }
-                                        </button>
+                                                <Image
+                                                        src="/call-svg/phone-hang-up.svg"
+                                                        alt="micro-on"
+                                                        width={24}
+                                                        height={24}
+                                                />
+                                        </div>
+                                        <div
+                                                id='togglevideo'
+                                                className={cx(styles.toggleCircle)}
+                                                onClick={() => {
+                                                        if (toggleVideo) {
+                                                                // videocall.send({
+                                                                //         message: {
+                                                                //                 "request" : "unpublish"
+                                                                //         }
+
+                                                                // })
+                                                        } else {
+                                                                // videocall.send({
+                                                                //         message: {
+                                                                //                 "request" : "publish"
+                                                                //         }
+                                                                // })
+                                                        }
+                                                        setToggleVideo(prev => !prev)
+                                                }}
+                                        >
+                                                <Image
+                                                        src={toggleVideo ? "/call-svg/video-recorder-on.svg" : "/call-svg/video-recorder-off.svg"}
+                                                        alt="micro-on"
+                                                        width={24}
+                                                        height={24}
+                                                />
+                                        </div>
                                 </div>
                         </div>
                 </div>
