@@ -51,7 +51,7 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                 <div className={styles.btnGroup}>
                                         <div
                                                 id='toggleaudio'
-                                                className={cx(styles.toggleCircle)}
+                                                className={cx(styles.toggleCircle, !toggleAudio && styles.active)}
                                                 onClick={() => {
                                                         if (toggleAudio) {
                                                                 videocall.send({
@@ -68,8 +68,8 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                                 <Image
                                                         src={toggleAudio ? "/call-svg/microphone-on.svg" : "/call-svg/microphone-off.svg"}
                                                         alt="micro-on"
-                                                        width={24}
-                                                        height={24}
+                                                        width={31}
+                                                        height={31}
                                                 />
                                         </div>
                                         <div
@@ -80,13 +80,13 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                                 <Image
                                                         src="/call-svg/phone-hang-up.svg"
                                                         alt="micro-on"
-                                                        width={24}
-                                                        height={24}
+                                                        width={31}
+                                                        height={31}
                                                 />
                                         </div>
                                         <div
                                                 id='togglevideo'
-                                                className={cx(styles.toggleCircle)}
+                                                className={cx(styles.toggleCircle, !toggleVideo && styles.active)}
                                                 onClick={() => {
                                                         if (toggleVideo) {
                                                                 // videocall.send({
@@ -108,8 +108,8 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                                 <Image
                                                         src={toggleVideo ? "/call-svg/video-recorder-on.svg" : "/call-svg/video-recorder-off.svg"}
                                                         alt="micro-on"
-                                                        width={24}
-                                                        height={24}
+                                                        width={31}
+                                                        height={31}
                                                 />
                                         </div>
                                 </div>

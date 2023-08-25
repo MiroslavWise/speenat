@@ -13,6 +13,9 @@ import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 import { conferenceAll, usersAll, speakersAll } from "api/api-user";
 
+import styles from "./style.module.scss"
+import { cx } from "functions/cx";
+
 const columns = (t: (value: string) => string) => [
         {
                 title: t("Title"),
@@ -30,7 +33,8 @@ const columns = (t: (value: string) => string) => [
 
 const Analytics: NextPage = () => {
         const { t } = useTranslation()
-        const isStaff = useUser(state => state.is_staff)
+        const isStaff = useUser(state => state?.user?.profile?.is_accountant)
+        const isSpeaker = useUser(state => state.is_speaker)
         const loading = useUser(state => state.loading)
         useDocumentTitle("Analytics")
 
@@ -58,7 +62,8 @@ const Analytics: NextPage = () => {
         if (loading || isLoading) return <Loader />
 
         return (
-                <div className="wrapper">
+                <div className={cx("wrapper", !isSpeaker && styles.pTopWrapper)}>
+                        <h2 className={styles.h2}>Количественная статистика</h2>
                         <Table
                                 columns={columns(t)}
                                 dataSource={dataSource}
@@ -66,7 +71,7 @@ const Analytics: NextPage = () => {
                                 size={'small'}
                                 pagination={false}
                         />
-                        <Divider />
+                        <h2 className={styles.h2}>Финансовая статистика</h2>
                         <CompanyIncoming />
                 </div>
         )

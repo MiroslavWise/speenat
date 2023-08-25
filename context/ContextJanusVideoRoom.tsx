@@ -98,8 +98,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     deleteAll: state.deleteAll,
   }), shallow)
 
-  console.log("call_info: ", uuidRoom)
-
   useEffect(() => { setDoSvc(getQueryStringValue("svc")) }, [])
   useEffect(() => {
     setTimeout(() => {
@@ -195,7 +193,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                   plugin: "janus.plugin.videoroom",
                   opaqueId: uuid,
                   success: function (pluginHandle: any) {
-                    console.log("---pluginHandle success--- ", pluginHandle)
                     sfutest = pluginHandle;
                     videocall = pluginHandle
                     setIsJanus(true)
@@ -211,14 +208,12 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                   iceState: function (state: any) {
                   },
                   mediaState: function (medium: any, on: any, mid: any) {
-                    console.log("---medium---", medium, "---on---", on, "---mid---", mid)
                   },
                   webrtcState: function (on: any) {
                   },
                   slowLink: function (uplink: any, lost: any, mid: any) {
                   },
                   onmessage: function (msg: any, jsep: any) {
-                    console.log("---onmessage msg--- ", msg)
                     let event = msg["videoroom"];
                     if (event) {
                       if (event === "joined") {
@@ -277,7 +272,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                             }
                           }
                           if (remoteFeed) {
-                            console.log("---remoteFeed---", remoteFeed)
                             //---------------------------------------------------------------
                             // $('#remote'+remoteFeed.rfindex).empty().hide();
                             // $('#videoremote'+remoteFeed.rfindex).empty();
@@ -288,7 +282,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                           delete feedStreams[leaving];
                         } else if (msg["unpublished"]) {
                           let unpublished = msg["unpublished"];
-                          console.log("---unpublished---", unpublished)
                           if (unpublished === "ok") {
                             // sfutest.hangup()
                           }
@@ -314,7 +307,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                       }
                     }
                     if (jsep) {
-                      console.log("--- Handling SDP as well jsep ---", jsep)
                       sfutest.handleRemoteJsep({ jsep: jsep });
                       let audio = msg["audio_codec"];
                       if (mystream && mystream.getAudioTracks() && mystream.getAudioTracks().length > 0 && !audio) {
@@ -326,7 +318,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                     }
                   },
                   onlocaltrack: function (track: any, on: any) {
-                    console.log("---onlocaltrack track--- ", track, "---onlocaltrack on---", on)
                     let trackId = track.id.replace(/[{}]/g, "");
                     if (!on) {
                       let stream = localTracks[trackId];
@@ -375,7 +366,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                     }
                   },
                   onremotetrack: function (track: any, mid: any, on: any) {
-                    console.log("on remote track: ", track)
                   },
                   oncleanup: function () {
                     mystream = null
@@ -454,8 +444,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }
 
   function publishOwnFeed(useAudio: boolean) {
-    console.log("---publishOwnFeed--- ")
-    console.log("---file--- ", `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : student_id}-${uuid_conf}`,)
     let tracks = []
     tracks.push({
       type: 'audio',
@@ -469,8 +457,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       simulcast: doSimulcast,
       svc: ((vcodec === 'vp9' || vcodec === 'av1') && doSvc) ? doSvc : null
     })
-
-    console.log("---publishOwnFeed tracks--- ", tracks)
     sfutest.createOffer({
       tracks: tracks,
       customizeSdp(jsep: any) {
@@ -519,7 +505,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
   }
 
   function newRemoteFeed(id: any, display: any, streams: any, opaqueId: any, idRoom: number) {
-    console.log("---newRemoteFeed--- ", id, display, streams, idRoom)
     let remoteFeed: any = null
     if (!streams)
       streams = feedStreams[id];
@@ -533,9 +518,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           remoteFeed.remoteVideos = 0
           remoteFeed.simulcastStarted = false
           remoteFeed.svcStarted = false
-          console.log("---remoteFeed---", remoteFeed)
           let subscription = [];
-          console.log("---remoteFeed streams---", streams)
           for (let i in streams) {
             let stream = streams[i];
             subscription.push({
@@ -545,7 +528,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
             remoteFeed.rfid = stream.id
             remoteFeed.rfdisplay = escapeXmlTags(stream.display)
           }
-          console.log("---remoteFeed subscribe idRoom---", idRoom)
           let subscribe = {
             request: "join",
             room: idRoom,
@@ -559,16 +541,12 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           console.log("---ERROR newRemoteFeed---", error)
         },
         iceState: function (state: any) {
-          console.log("---state---", state)
         },
         webrtcState: function (on: any) {
-          console.log("---webrtcState---", on)
         },
         slowLink: function (uplink: any, lost: any, mid: any) {
-          console.log("---slowLink---", uplink, lost, mid)
         },
         onmessage: function (msg: any, jsep: any) {
-          console.log("---newRemoteFeed onmessage msg---", msg)
           let event = msg["videoroom"];
           if (msg["error"]) {
           } else if (event) {
@@ -585,7 +563,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
               } else {
                 remoteFeed.spinner.spin();
               }
-              console.log("---remoteFeed.rfindex---", remoteFeed.rfindex)
               //------------------------------------------------------------------------------------------------------
               // $('#remote' + remoteFeed.rfindex).removeClass('hide').html(remoteFeed.rfdisplay).show();
               //------------------------------------------------------------------------------------------------------
@@ -634,7 +611,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         onlocaltrack: function (track: any, on: any) {
         },
         onremotetrack: function (track: any, mid: any, on: any, metadata: any) {
-          console.log("---newRemoteFeed onremotetrack---", track)
           if (!on) {
             if (track.kind === "video") {
               remoteFeed.remoteVideos--;
@@ -652,7 +628,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
           if (track.kind === "audio") {
             let stream = new MediaStream([track]);
             remoteFeed.remoteTracks[mid] = stream;
-            console.log("---Created remote audio stream:---", stream)
             const newAudioElement = document.createElement("audio")
             newAudioElement.className = "hide"
             newAudioElement.id = `remotevideo${remoteFeed.rfindex}-${mid}`
@@ -666,7 +641,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
             remoteFeed.remoteVideos++
             let stream = new MediaStream([track]);
             remoteFeed.remoteTracks[mid] = stream;
-            console.log("---Created remote video stream:---", stream)
             const newElementVideo = document.createElement("video")
             newElementVideo.className = "rounded centered peervideo"
             newElementVideo.id = `remotevideo${remoteFeed.rfindex}-${mid}`
