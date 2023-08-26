@@ -71,7 +71,7 @@ const ContainerSingAndRegister: FC = () => {
                         language_id: language_id || 1,
                 })
                         .then(response => {
-                                if (response?.email === email) {
+                                if (response?.email === email.toLowerCase()) {
                                         userData.login({ email: email?.toLowerCase(), password: password })
                                                 .then((response: IReturnAccess) => {
                                                         if (response?.access === true && response.error === null) {
