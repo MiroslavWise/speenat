@@ -27,6 +27,3 @@ const SignInComponent: FC = () => {
 }
 
 export default SignInComponent
-
-{/* <h1>Добро пожаловать в нашу семью <span>SPENAT</span></h1>
-<p>Станьте лучшей версией себя</p> */}

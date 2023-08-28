@@ -6,9 +6,8 @@ import { useRouter } from 'next/router'
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
 
-import { useAuth } from "context/Authorization"
-import userData from "helpers/user-data"
 import { registerUser, IRegister } from "api/api-auth"
+import { useAuth } from "store/use-auth"
 
 interface IValues {
         email: string
@@ -25,7 +24,7 @@ interface IReturnAccess {
 
 const ContainerSingAndRegister: FC = () => {
         const { t } = useTranslation()
-        const { setAuthState } = useAuth()
+        const { login } = useAuth()
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
         const { query } = useRouter()
@@ -40,19 +39,7 @@ const ContainerSingAndRegister: FC = () => {
         }, [referral_code])
 
         const onSubmit = (values: IValues) => {
-                userData.login({ email: values.email.toLowerCase(), password: values.password })
-                        .then((response: IReturnAccess) => {
-                                if (response?.access === true && response.error === null) {
-                                        setAuthState('main')
-                                }
-                                if (response?.access === false) {
-                                        if (response.error !== null && response.error.message === "No token supplied") {
-                                                message.error(`${t("Invalid username or password")}!`)
-                                        } else {
-                                                message.error(response.error?.message)
-                                        }
-                                }
-                        })
+                if (login) login({ email: values.email.toLowerCase(), password: values.password })
         }
 
         const onRegister = (values: IRegister) => {
@@ -71,20 +58,8 @@ const ContainerSingAndRegister: FC = () => {
                         language_id: language_id || 1,
                 })
                         .then(response => {
-                                if (response?.email === email) {
-                                        userData.login({ email: email?.toLowerCase(), password: password })
-                                                .then((response: IReturnAccess) => {
-                                                        if (response?.access === true && response.error === null) {
-                                                                setAuthState('main')
-                                                        }
-                                                        if (response?.access === false) {
-                                                                if (response.error !== null && response.error.message === "No token supplied") {
-                                                                        message.error(`${t("Invalid username or password")}!`)
-                                                                } else {
-                                                                        message.error(response.error?.message)
-                                                                }
-                                                        }
-                                                })
+                                if (response?.email?.toLowerCase() === email?.toLowerCase()) {
+                                        if (login) login({ email: values.email.toLowerCase(), password: values.password })
                                 } else {
                                         message.error(`${t("A user with the same data already exists")}`)
                                 }

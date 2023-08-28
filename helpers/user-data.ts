@@ -15,7 +15,6 @@ export default {
                 try {
                         const data = isRefresh ? await refreshToken(curRefreshToken) : await ApiLogin({ email: email, password: password })
                         const { access, refresh } = data
-                        localStorage
                         const jwtData = jwt.decode(access, '', true)
                         localStorage.setItem(`${prefix}.Token`, access)
                         localStorage.setItem(`${prefix}.RefreshToken`, refresh)
