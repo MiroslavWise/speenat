@@ -39,7 +39,7 @@ const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({ handleOpen }) 
                                 && (
                                         <div className="descriptions">
                                                 <p>
-                                                        {t("Sorry, but there are no teachers for this request. You can open the entire list and make an appointment for a certain time")} <span style={{ color: 'var(--secondary-color)' }} onClick={handleOpen}>{t("open")}</span>
+                                                        {t("Welcome to Spenat. You're online. You can choose the media for communication or use")} <span style={{ color: 'var(--secondary-color)' }} onClick={handleOpen}>{t("search_")}</span>
                                                 </p>
                                         </div>
                                 )

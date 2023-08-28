@@ -56,7 +56,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         </motion.div>
                         <NavFooter />
                         <ModalMenu />
-                        {isSpeaker === false ? <WelcomeStudent /> : null}
                         <ModalCall />
                 </main>
         )

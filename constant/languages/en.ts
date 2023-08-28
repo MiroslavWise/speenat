@@ -151,4 +151,6 @@ export default {
         "Welcome to Spenat, a communication and learning platform. Ready to start? Use": "Welcome to Spenat, a communication and learning platform. Ready to start? Use",
         search_: "search",
         "to find topics and interlocutors that interest you": "to find topics and interlocutors that interest you",
+
+        "Welcome to Spenat. You're online. You can choose the media for communication or use": "Welcome to Spenat. You're online. You can choose the media for communication or use",
 } as Record<string, string>
