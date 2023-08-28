@@ -3,10 +3,10 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware'
 import * as jwt from "jsonwebtoken"
 
-import { login, verifyToken, refreshToken } from "api/api-auth"
+import { login, refreshToken } from "api/api-auth"
 
 
-type TAuthContext = 'SignIn' | 'Main' | 'Gates'
+export type TAuthContext = 'SignIn' | 'Main' | 'Gates'
 
 interface IUseAuth {
   state?: TAuthContext
@@ -45,6 +45,7 @@ export const useAuth = create(
             token: access,
             refreshToken: refresh,
             expiration: expiration,
+            state: "Main",
           })
           return {
             ok: true,
@@ -83,13 +84,12 @@ export const useAuth = create(
         }
         if (typeof get().expiration === "number" && isTokenExpired(get().expiration) && typeof get().refreshToken === "string") {
           const data = await refreshToken(get().refreshToken!)
-          const { access, refresh } = data ?? {}
+          const { access } = data ?? {}
           const expiration = decodeJwt(access)
           if (access) {
             set({
               state: "Main",
               token: access,
-              refreshToken: refresh,
               expiration: expiration,
             })
             return {

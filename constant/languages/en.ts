@@ -148,4 +148,7 @@ export default {
         "Kazakh, English, Spanish, French, German": "Kazakh, English, Spanish, French, German",
         "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.": "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.",
         
+        "Welcome to Spenat, a communication and learning platform. Ready to start? Use": "Welcome to Spenat, a communication and learning platform. Ready to start? Use",
+        search_: "search",
+        "to find topics and interlocutors that interest you": "to find topics and interlocutors that interest you",
 } as Record<string, string>

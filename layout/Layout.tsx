@@ -1,4 +1,4 @@
-import { type FC, type ReactNode, useEffect, useState, useContext } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Inter } from '@next/font/google'
@@ -11,9 +11,9 @@ import ModalMenu from "components/modal-menu";
 
 import { useUser } from "store/use-user";
 import { ProviderWebSocket } from "context/WebSocketContext";
-// import { ProviderJanusContext, CreateJanusContext } from "context/ContextJanus";
-import { ContextJanusVideoRoom, CreateJanusContext } from "context/ContextJanusVideoRoom";
+import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom";
 import { ModalCall } from 'components/modal-call'
+import { WelcomeStudent } from "./components/WelcomeStudent";
 
 const inter = Inter({
         preload: true,
@@ -22,9 +22,10 @@ const inter = Inter({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         const router = useRouter();
-        const { getUser, loading } = useUser(state => ({
+        const { getUser, loading, isSpeaker } = useUser(state => ({
                 getUser: state.getUserData,
                 loading: state.loading,
+                isSpeaker: state.is_speaker,
         }), shallow) ?? {}
 
         useEffect(() => getUser(true), [])
@@ -55,6 +56,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         </motion.div>
                         <NavFooter />
                         <ModalMenu />
+                        {isSpeaker === false ? <WelcomeStudent /> : null}
                         <ModalCall />
                 </main>
         )

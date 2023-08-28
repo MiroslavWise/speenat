@@ -14,13 +14,13 @@ import FemaleSign from "@icons-female-sign"
 import Phone from "@icons-phone"
 
 import { useUser } from "store/use-user"
-import { useAuth } from "context/Authorization"
 import { changeNumber } from "functions/change-number"
+import { useAuth } from "store/use-auth"
 
 const ItemsData: FC = () => {
         const { t } = useTranslation()
         const { push } = useRouter()
-        const { signOut } = useAuth()
+        const out = useAuth(state => state.out)
         const user = useUser(state => state.user)
         const isStaff = useUser(state => state.is_staff)
 
@@ -91,7 +91,7 @@ const ItemsData: FC = () => {
                                 <Button
                                         className="state-revers"
                                         onClick={() => {
-                                                signOut()
+                                                if (out) out()
                                                 push(`/`)
                                         }}
                                 >

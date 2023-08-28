@@ -1,7 +1,7 @@
 import { Dispatch, FC, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react"
 
 import { URL_SOCKET } from "api/api-general"
-import userData from "helpers/user-data"
+import { useAuth } from "store/use-auth"
 
 export const ContextWebSocket = createContext<{
         wsChannel: WebSocket | undefined
@@ -10,9 +10,10 @@ export const ContextWebSocket = createContext<{
 
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
         const [webSocket, setWebSocket] = useState<WebSocket | undefined>(undefined)
+        const { token } = useAuth(state => ({ token: state.token }))
 
         const connectWebSocket = () => {
-                const ws = new WebSocket(URL_SOCKET(userData.JWT))
+                const ws = new WebSocket(URL_SOCKET(token!))
 
                 ws.addEventListener('open', () => {
                         console.log('WebSocket connected')
@@ -42,8 +43,12 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
                         if (ws) {
                                 ws.close()
                         }
+                        if (webSocket) {
+                                webSocket?.close()
+                                setWebSocket(undefined)
+                        }
                 }
-        }, [userData.JWT])
+        }, [])
 
         return (
                 <ContextWebSocket.Provider value={{ wsChannel: webSocket, setWsChannel: setWebSocket }}>

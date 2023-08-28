@@ -147,5 +147,9 @@ export default {
         "Create your language path by choosing from a wide range of available languages, including": "Қол жетімді тілдердің кең ауқымын таңдау арқылы тілдік жолды жасаңыз, соның ішінде",
         "Kazakh, English, Spanish, French, German": "қазақ, ағылшын, испан, француз, неміс",
         "and many others. Our teachers are real experts with rich experience and understanding of the unique features of each language.": "және басқалары. Біздің оқытушыларымыз-бай тәжірибесі мен әр тілдің бірегей ерекшеліктерін түсінетін нағыз сарапшылар.",
+
+        "Welcome to Spenat, a communication and learning platform. Ready to start? Use": "Шпинатқа қош келдіңіз-байланыс және оқыту платформасы. Бастауға дайынсыз ба? Пайдаланыңыз",
+        search_: "іздеу",
+        "to find topics and interlocutors that interest you": "сізді қызықтыратын тақырыптар мен әңгімелесушілерді табу үшін",
         
 } as Record<string, string>

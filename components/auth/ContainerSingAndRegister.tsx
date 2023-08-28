@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
-import { FC, useCallback, useEffect, useState } from "react"
-import { Button, Form, message } from "antd"
+import { FC, useEffect, useState } from "react"
+import { Button, Form } from "antd"
 import { useRouter } from 'next/router'
 
 import RegisterForm from "./RegisterForm"
@@ -8,18 +8,11 @@ import SignForm from "./SignForm"
 
 import { registerUser, IRegister } from "api/api-auth"
 import { useAuth } from "store/use-auth"
+import { useLoginEnter } from "store/use-login-enter"
 
 interface IValues {
         email: string
         password: string
-}
-
-interface IReturnAccess {
-        access: boolean,
-        error: {
-                message: string
-                stack: string
-        } | null
 }
 
 const ContainerSingAndRegister: FC = () => {
@@ -28,7 +21,7 @@ const ContainerSingAndRegister: FC = () => {
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
         const { query } = useRouter()
-
+        const setActiveLoginEnter = useLoginEnter(state => state.setActive)
         const { referral_code } = query ?? {}
 
         useEffect(() => {
@@ -39,7 +32,12 @@ const ContainerSingAndRegister: FC = () => {
         }, [referral_code])
 
         const onSubmit = (values: IValues) => {
-                if (login) login({ email: values.email.toLowerCase(), password: values.password })
+                if (login) {
+                        login({ email: values.email.toLowerCase(), password: values.password })
+                                .finally(() => {
+                                        setActiveLoginEnter(true)
+                                })
+                }
         }
 
         const onRegister = (values: IRegister) => {
@@ -58,7 +56,12 @@ const ContainerSingAndRegister: FC = () => {
                         language_id: language_id || 1,
                 })
                         .then(response => {
-                                if (response?.email?.toLowerCase() === email?.toLowerCase()) if (login) login({ email: values.email.toLowerCase(), password: values.password })
+                                if (response?.email?.toLowerCase() === email?.toLowerCase()) if (login) {
+                                        login({ email: values.email.toLowerCase(), password: values.password })
+                                                .finally(() => {
+                                                        setActiveLoginEnter(true)
+                                                })
+                                }
                         })
         }
 

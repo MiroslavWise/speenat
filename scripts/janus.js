@@ -1,3 +1,4 @@
+//@ts-ignore
 import adapter from 'webrtc-adapter';
 
 Janus.sessions = {};

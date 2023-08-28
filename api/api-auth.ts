@@ -41,7 +41,7 @@ export const login = async (values: ILogin): Promise<any> => {
 
 export const refreshToken = async (refresh: string): Promise<any> => {
         try {
-                const response = await fetch(`${URL}/login/`, {
+                const response = await fetch(`${URL}/token/refresh`, {
                         method: "POST",
                         body: JSON.stringify({ refresh: refresh }),
                         headers: {
@@ -58,7 +58,7 @@ export const refreshToken = async (refresh: string): Promise<any> => {
 
 export const verifyToken = async (token: string): Promise<any> => {
         try {
-                const response = await fetch(`${URL}/login/`, {
+                const response = await fetch(`${URL}/token/verify`, {
                         method: "POST",
                         body: JSON.stringify({ token: token }),
                         headers: {

@@ -1,26 +1,30 @@
-import { type FC, type ReactNode, createContext, useContext, useState } from "react";
+import { type FC, type ReactNode, createContext, useContext, useState } from "react"
+import { shallow } from "zustand/shallow"
 
-import type { TAuthStateType, IAuthContext } from "types/auth";
+import type { IAuthContext } from "types/auth"
 
-import GatesComponent from "authorization/GatesComponent";
-import SignInComponent from "authorization/SignInComponent";
+import GatesComponent from "authorization/GatesComponent"
+import SignInComponent from "authorization/SignInComponent"
 
-import { useUser } from "store/use-user";
-import userData from "helpers/user-data";
-import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus";
+import { useUser } from "store/use-user"
+import { useAuth, type TAuthContext } from "store/use-auth"
+import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
 
 const AuthorizationContext = createContext<IAuthContext | undefined>(undefined)
 
-const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
-        const [authState, setAuthState] = useState<TAuthStateType>("gates")
+export const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
         const getReset = useUser(state => state.getReset)
         const deleteAllPropsJanus = usePropsCallingJanus(state => state.deleteAll)
         const deleteTime = useCallJanus(state => state.deleteTime)
+        const { state, out, } = useAuth(state => ({
+                state: state.state,
+                out: state.out,
+        }), shallow)
 
-        const Routers: Record<TAuthStateType, ReactNode> = {
-                "gates": <GatesComponent />,
-                "sign-in": <SignInComponent />,
-                "main": children,
+        const Routers: Record<TAuthContext, ReactNode> = {
+                Gates: <GatesComponent />,
+                SignIn: <SignInComponent />,
+                Main: children,
         }
 
         async function signOut(): Promise<any> {
@@ -28,36 +32,15 @@ const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
                         .finally(() => {
                                 deleteAllPropsJanus()
                                 deleteTime()
-                                userData.delete()
-                                setAuthState("sign-in")
+                                if (out) out()
                         })
         }
 
-        const ShowComponent = Routers[authState]
+        const ShowComponent = Routers[state || "Gates"]
 
         return (
-                <AuthorizationContext.Provider
-                        value={{
-                                authState: authState,
-                                setAuthState: setAuthState,
-                                signOut: signOut,
-                        }}
-                >
+                <AuthorizationContext.Provider value={{ signOut: signOut, }}>
                         {ShowComponent}
                 </AuthorizationContext.Provider>
         )
-}
-
-const useAuth = () => {
-        const context = useContext(AuthorizationContext)
-
-        if (context === undefined)  throw new Error('useAuth must be used within a Authorization Provider')
-
-        return context
-}
-
-export {
-        AuthorizationContext,
-        Authorization,
-        useAuth,
 }

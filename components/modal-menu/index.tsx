@@ -2,22 +2,19 @@ import { FC, MouseEvent, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "context/Authorization";
 import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
+import { useAuth } from "store/use-auth";
 import LanguageButtons from "./Language";
 
 const ModalMenu: FC = () => {
         const { t } = useTranslation()
         const { push } = useRouter()
-        const { signOut } = useAuth()
         const user = useUser(state => state.user)
         const active = useModal(state => state.active)
         const set = useModal(state => state.setActive)
         const isStaff = useUser(state => state?.user?.profile?.is_accountant)
-        const isStatus = useUser(state => state.user?.profile?.status)
-        const isSpeaker = useUser(state => state.is_speaker)
-        const reloadUser = useUser(state => state.getUserData)
+        const out = useAuth(state => state.out)
 
         console.log("user: ", user)
 
@@ -32,10 +29,8 @@ const ModalMenu: FC = () => {
                 event.preventDefault()
                 event.stopPropagation()
                 set(false)
-                signOut()
-                        .finally(() => {
-                                push('/')
-                        })
+                if (out) out()
+                push("/")
         }
 
         return (
