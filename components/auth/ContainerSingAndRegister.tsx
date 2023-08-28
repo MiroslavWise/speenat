@@ -58,11 +58,7 @@ const ContainerSingAndRegister: FC = () => {
                         language_id: language_id || 1,
                 })
                         .then(response => {
-                                if (response?.email?.toLowerCase() === email?.toLowerCase()) {
-                                        if (login) login({ email: values.email.toLowerCase(), password: values.password })
-                                } else {
-                                        message.error(`${t("A user with the same data already exists")}`)
-                                }
+                                if (response?.email?.toLowerCase() === email?.toLowerCase()) if (login) login({ email: values.email.toLowerCase(), password: values.password })
                         })
         }
 
