@@ -44,7 +44,6 @@ const Profile: FC = () => {
                                 <div className="profile-info-other">
                                         <ItemsData />
                                 </div>
-                                <a onClick={() => push(`/terms`, undefined, { shallow: true })}>{t("Terms of user agreements and other documentation")}</a>
                         </div>
                 </div>
         )

@@ -2,6 +2,7 @@ import { type FC, type ReactNode, type DispatchWithoutAction, type Dispatch, typ
 import { useRouter } from "next/router"
 const { v4: uuidv4 } = require('uuid')
 import { shallow } from "zustand/shallow"
+import { isMobile, useMobileOrientation } from "react-device-detect"
 
 import { Janus } from 'scripts/janus'
 import { useUser } from "store/use-user"
@@ -12,12 +13,16 @@ import { ModalCallingJanus } from "components/Janus"
 import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
 import { apiToConfInfo } from "api/api-review"
 
+interface IPropsAudioVideo{
+  isAudio: boolean
+  isVideo: boolean
+}
 interface IJanus {
   visible: boolean
   videocall: any
   createRoom: (value: number) => Promise<any>
   joinAndVisible: Dispatch<number>
-  publishOwnFeed: (value: boolean) => void
+  publishOwnFeed: (value: {useAudio: boolean, useVideo: boolean}) => void
 }
 
 type TProps = FC<{ children: ReactNode }>
@@ -108,7 +113,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
               joinInVideoRoom(response.id)
                 .finally(() => {
                   requestAnimationFrame(() => {
-                    publishOwnFeed(true)
+                    publishOwnFeed({useAudio: true, useVideo: true})
                     setVisible(true)
                   })
                 })
@@ -284,6 +289,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                           let unpublished = msg["unpublished"];
                           if (unpublished === "ok") {
                             // sfutest.hangup()
+                            if (refVideoLeft.current) {
+                              refVideoLeft.current.innerHTML = ""
+                            }
                           }
                           let remoteFeed = null;
                           for (let i = 1; i < 6; i++) {
@@ -293,10 +301,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                             }
                           }
                           if (remoteFeed) {
-                            //------------------------------------------------------------------
-                            // $('#remote'+remoteFeed.rfindex).empty().hide();
-                            // $('#videoremote'+remoteFeed.rfindex).empty();
-                            //------------------------------------------------------------------
                             feeds[remoteFeed.rfindex] = null;
                             remoteFeed.detach();
                           }
@@ -414,7 +418,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     joinInVideoRoom(idRoom)
       .finally(() => {
         requestAnimationFrame(() => {
-          publishOwnFeed(true)
+          publishOwnFeed({ useAudio: true, useVideo: true })
           setVisible(true)
         })
       })
@@ -443,20 +447,24 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
       })
   }
 
-  function publishOwnFeed(useAudio: boolean) {
+  function publishOwnFeed({ useAudio, useVideo }: { useAudio: boolean, useVideo: boolean }) {
     let tracks = []
-    tracks.push({
-      type: 'audio',
-      capture: true,
-      recv: false,
-    })
-    tracks.push({
-      type: 'video',
-      capture: true,
-      recv: false,
-      simulcast: doSimulcast,
-      svc: ((vcodec === 'vp9' || vcodec === 'av1') && doSvc) ? doSvc : null
-    })
+    if (useAudio) {
+      tracks.push({
+        type: 'audio',
+        capture: true,
+        recv: false,
+      })
+    }
+    if (useVideo) {
+      tracks.push({
+        type: 'video',
+        capture: true,
+        recv: false,
+        simulcast: doSimulcast,
+        svc: ((vcodec === 'vp9' || vcodec === 'av1') && doSvc) ? doSvc : null
+      })
+    }
     sfutest.createOffer({
       tracks: tracks,
       customizeSdp(jsep: any) {
@@ -468,22 +476,33 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         let publish: any = {
           request: "configure",
           audio: useAudio,
-          video: true,
+          video: useVideo,
           room: Number(call_info?.conf_id!),
           record: true,
           filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : student_id}-${uuid_conf}`,
         }
         if (acodec) {
-          publish["audiocodec"] = acodec
+          if (useAudio) {
+            publish["audiocodec"] = acodec
+          }
         }
         if (vcodec) {
-          publish["videocodec"] = vcodec
+          if (useVideo) {
+            publish["videocodec"] = vcodec
+          }
         }
         sfutest.send({ message: publish, jsep: jsep })
       },
       error(error: any) {
         console.log("---publishOwnFeed error track --- ", error)
       }
+    })
+  }
+
+  function updatedVideoAudio({ isAudio, isVideo }: IPropsAudioVideo) {
+    sfutest.send({
+      request: "unsubscribe",
+      streams: []
     })
   }
 
@@ -683,6 +702,8 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         refVideoLeft={refVideoLeft!}
         //@ts-ignore
         refVideoRight={refVideoRight!}
+        publishOwnFeed={publishOwnFeed}
+        updatedVideoAudio={updatedVideoAudio}
       />
     </CreateJanusContext.Provider>
   )

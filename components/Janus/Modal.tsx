@@ -1,4 +1,4 @@
-import { type FC, type DispatchWithoutAction, useState, useEffect, useContext, MutableRefObject } from 'react'
+import { type FC, type DispatchWithoutAction, useState, useEffect, useContext, MutableRefObject, Dispatch } from 'react'
 import { shallow } from 'zustand/shallow'
 
 import { TimerSession } from './timer-session'
@@ -16,18 +16,18 @@ interface IProps {
         doHangup: DispatchWithoutAction
         refVideoLeft: MutableRefObject<HTMLDivElement | null>
         refVideoRight: MutableRefObject<HTMLDivElement | null>
+        publishOwnFeed: Dispatch<{ useAudio: boolean, useVideo: boolean }>
+        updatedVideoAudio: Dispatch<{ isAudio: boolean, isVideo: boolean }>
 }
 
-export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, refVideoLeft, refVideoRight }) => {
+export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, refVideoLeft, refVideoRight, publishOwnFeed }) => {
         const [toggleAudio, setToggleAudio] = useState<boolean>(true)
         const [toggleVideo, setToggleVideo] = useState<boolean>(true)
-        const { speaker_info, user_info, } = usePropsCallingJanus(state => ({
+        const { speaker_info, user_info, call_info} = usePropsCallingJanus(state => ({
                 call_info: state.call_info,
                 speaker_info: state.speaker_info,
                 user_info: state.user_info,
         }), shallow)
-
-        console.log("videocall ModalCallingJanus: ", videocall)
 
         const { isSpeaker } = useUser(state => ({
                 isSpeaker: state.is_speaker,
@@ -89,18 +89,14 @@ export const ModalCallingJanus: FC<IProps> = ({ visible, videocall, doHangup, re
                                                 className={cx(styles.toggleCircle, !toggleVideo && styles.active)}
                                                 onClick={() => {
                                                         if (toggleVideo) {
-                                                                // videocall.send({
-                                                                //         message: {
-                                                                //                 "request" : "unpublish"
-                                                                //         }
-
-                                                                // })
+                                                                videocall.send({
+                                                                        message: {
+                                                                                "request": "unpublish",
+                                                                        }
+                                                                })
+                                                                publishOwnFeed({ useAudio: false, useVideo: false })
                                                         } else {
-                                                                // videocall.send({
-                                                                //         message: {
-                                                                //                 "request" : "publish"
-                                                                //         }
-                                                                // })
+                                                                publishOwnFeed({ useAudio: true, useVideo: true })
                                                         }
                                                         setToggleVideo(prev => !prev)
                                                 }}

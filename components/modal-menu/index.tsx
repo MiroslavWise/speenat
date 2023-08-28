@@ -16,8 +16,6 @@ const ModalMenu: FC = () => {
         const isStaff = useUser(state => state?.user?.profile?.is_accountant)
         const out = useAuth(state => state.out)
 
-        console.log("user: ", user)
-
         const handleUnActive = (event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault()
                 event.stopPropagation()
@@ -41,13 +39,13 @@ const ModalMenu: FC = () => {
                         <div className={`container-modal ${active && "active"}`}>
                                 <div className="elements">
                                         <div className="list">
-                                                <div className="list-item" onClick={() => { push('/chat', undefined, { shallow: true }) }}><p>{t("Chat")}</p></div>
                                                 <div className="list-item" onClick={() => { push('/invited', undefined, { shallow: true }) }}><p>{t("Invite_a_friend")}</p></div>
                                                 {
                                                         isStaff ? (
                                                                 <div className="list-item" onClick={() => { push('/analytics', undefined, { shallow: true }) }}><p>{t("Analytics")}</p></div>
                                                         ) : null
                                                 }
+                                                <div className="list-item" onClick={() => push(`/terms`, undefined, { shallow: true })}><p>{t("Terms of user agreements and other documentation")}</p></div>
                                         </div>
                                         <LanguageButtons />
                                         <div
