@@ -28,7 +28,7 @@ export const WelcomeStudent: FC = () => {
         />
       </header>
       <section>
-        <p>{t("Welcome to Spinach, a communication and learning platform. Ready to start? Use")} <span onClick={handleClickToSearch}>{t("search_")}</span>, {t("to find topics and interlocutors that interest you")}!</p>
+        <p>{t("Welcome to Spenat, a communication and learning platform. Ready to start? Use")} <span onClick={handleClickToSearch}>{t("search_")}</span>, {t("to find topics and interlocutors that interest you")}!</p>
       </section>
       <footer>
         <div className={styles.button} onClick={handleClickToSearch}>
