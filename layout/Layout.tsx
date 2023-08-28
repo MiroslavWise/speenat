@@ -13,7 +13,6 @@ import { useUser } from "store/use-user";
 import { ProviderWebSocket } from "context/WebSocketContext";
 import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom";
 import { ModalCall } from 'components/modal-call'
-import { WelcomeStudent } from "./components/WelcomeStudent";
 
 const inter = Inter({
         preload: true,
