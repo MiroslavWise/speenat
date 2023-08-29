@@ -9,8 +9,8 @@ import { Switch } from "antd"
 import { useTranslation } from "react-i18next"
 import { TStatus } from "types/store/user"
 import { updateStatus } from "api/api-status"
-import useSound from 'use-sound'
 import styles from "./styles/header.module.scss"
+import usePlaySound from "hooks/usePlaySound";
 
 const objectStatus = (t: (value: string) => string): Record<TStatus, [string, string]> => ({
         online: [t("Online"), "green"],
@@ -28,11 +28,7 @@ const Header: FC = () => {
                 reloadUser: state.getUserData,
         }), shallow) ?? {}
 
-        const soundDoctorSwitchStatusUrl = './sound/new_message_tone.mp3'
-
-        const [playSoundSwitchStatus] = useSound(soundDoctorSwitchStatusUrl, {
-                volume: 0.9
-        })
+        const {playSoundSwitchStatus} = usePlaySound()
 
         const useStatus = useCallback(() => {
                 if (isStatus && ["busy", "offline"]?.includes(isStatus)) {

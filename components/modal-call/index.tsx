@@ -14,6 +14,7 @@ import { usePropsCallingJanus } from "store/use-call-janus";
 
 
 import { platform } from "functions/platform";
+import usePlaySound from "hooks/usePlaySound";
 
 const sound = "./sound/zvuk-skayp-skype-call-calling-23010.wav"
 
@@ -23,6 +24,8 @@ export const ModalCall: FC = () => {
         const [play, { stop, duration }] = useSound(sound, {
                 volume: 0.75,
         });
+
+        const {incomingDoctorCall} = usePlaySound()
 
         const { wsChannel } = useWeb()
         const context = useContext(CreateJanusContext)
@@ -56,7 +59,7 @@ export const ModalCall: FC = () => {
                         if (notification?.type === "incall") {
                                 console.log("notification: ", notification)
                                 requestAnimationFrame(() => {
-                                        play()
+                                        incomingDoctorCall()
                                 })
                                 setCallInfo(notification.call_info)
                                 setSpeakerInfo(notification.speaker_info)
