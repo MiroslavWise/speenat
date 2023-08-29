@@ -65,6 +65,7 @@
   left: calc(100% - 15px);
   transform: translateX(-100%);
   flex-direction: column;
+  z-index: -1;
 
   &[data-is-open="true"] {
     width: 48px;
