@@ -27,7 +27,6 @@ const CurrentChatUUID: NextPage = () => {
 
         return (
                 <div className="content-archive">
-                        <div className="header-archive" />
                         <Messages
                                 id_speaker={data?.speaker?.id}
                                 id_student={data?.student?.id}

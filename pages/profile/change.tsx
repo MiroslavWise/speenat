@@ -13,7 +13,6 @@ const Change: NextPage = () => {
 
         return (
                 <div className="wrapper-profile show-animate">
-                        <div className="header-profile" />
                         <div className="forms-edit">
                                 <FormName />
                                 <Divider />

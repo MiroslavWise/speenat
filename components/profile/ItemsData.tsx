@@ -16,6 +16,7 @@ import Phone from "@icons-phone"
 import { useUser } from "store/use-user"
 import { changeNumber } from "functions/change-number"
 import { useAuth } from "store/use-auth"
+import { updateStatus } from "api/api-status"
 
 const ItemsData: FC = () => {
         const { t } = useTranslation()
@@ -23,8 +24,7 @@ const ItemsData: FC = () => {
         const out = useAuth(state => state.out)
         const user = useUser(state => state.user)
         const isStaff = useUser(state => state.is_staff)
-
-        const handleChange = () => push('/profile/change', undefined, { shallow: true })
+        
         const handlePageInvite = () => push('/invited', undefined)
         const handlePageStaff = () => push('/analytics', undefined)
         const handlePageAccountant = () => push(`/accountant`, undefined)
@@ -81,23 +81,6 @@ const ItemsData: FC = () => {
                                                 </div>
                                         ) : null
                         }
-                        <div className="buttons">
-                                <Button
-                                        className="login-submit"
-                                        onClick={handleChange}
-                                >
-                                        <p>{t("Edit")}</p>
-                                </Button>
-                                <Button
-                                        className="state-revers"
-                                        onClick={() => {
-                                                if (out) out()
-                                                push(`/`)
-                                        }}
-                                >
-                                        <p>{t("Exit")}</p>
-                                </Button>
-                        </div>
                 </>
         )
 }

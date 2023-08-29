@@ -38,7 +38,6 @@ const ListArchive: FC = () => {
 
         return (
                 <div className="content-archive">
-                        <div className="header-archive" />
                         <MotionUL classNames={["list-archive"]}>
                                 {
                                         data && data?.results?.length > 0

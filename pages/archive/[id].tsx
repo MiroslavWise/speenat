@@ -35,7 +35,6 @@ export default function ArchiveCurrent() {
 
   return (
     <div className="content-archive">
-      <div className="header-archive" />
       <div className="list-archive">
         <section className={styles.container}>
           <Image

@@ -27,7 +27,6 @@ const Chats: NextPage = () => {
 
         return (
                 <div className="content-archive">
-                        <div className="header-archive" />
                         <div className="list-archive">
                                 {
                                         data && data?.length > 0

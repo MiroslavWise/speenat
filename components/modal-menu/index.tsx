@@ -6,6 +6,7 @@ import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
 import { useAuth } from "store/use-auth";
 import LanguageButtons from "./Language";
+import { updateStatus } from "api/api-status";
 
 const ModalMenu: FC = () => {
         const { t } = useTranslation()
@@ -13,6 +14,7 @@ const ModalMenu: FC = () => {
         const user = useUser(state => state.user)
         const active = useModal(state => state.active)
         const set = useModal(state => state.setActive)
+        const isSpeaker = useUser(state => state.is_speaker)
         const isStaff = useUser(state => state?.user?.profile?.is_accountant)
         const out = useAuth(state => state.out)
 
@@ -26,9 +28,12 @@ const ModalMenu: FC = () => {
         const handleOut = (event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault()
                 event.stopPropagation()
-                set(false)
-                if (out) out()
-                push("/")
+                updateStatus("offline")
+                requestAnimationFrame(() => {
+                        set(false)
+                        if (out) out()
+                        push("/")
+                })
         }
 
         return (

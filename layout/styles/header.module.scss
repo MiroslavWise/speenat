@@ -1,5 +1,6 @@
 .wrapperHeader{
-  position: fixed;
+  position: sticky;
+  top: 0;
   width: 100%;
   border-bottom: 2px solid #FFF;
   background: rgba(51,54,124, 0.26);

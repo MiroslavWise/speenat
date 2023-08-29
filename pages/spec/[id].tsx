@@ -41,25 +41,14 @@ const CurrentSpec: NextPage = () => {
                 <div className="content-archive">
                         <div className="header-archive" />
                         <div className="list-archive form">
-                                <div className="buttons">
-                                        <Button
-                                                className="login-submit"
-                                                onClick={(event) => {
-                                                        event.preventDefault()
-                                                        event.stopPropagation()
-                                                        push(`/spec/edit/${id}`)
-                                                }}
-                                        >
-                                                <p>{t("To change")}</p>
-                                        </Button>
-                                        <Button
-                                                className="state-revers"
-                                                onClick={() => onDeleteSpec(Number(id))}
-                                        >
-                                                <p>{t("Remove")}</p>
-                                        </Button>
+                                <div className="item-form">
+                                        <p>Язык общения:</p>
+                                        <i>{currentSpec?.specialization?.name}</i>
                                 </div>
-                                <div className="item-form"><p>{currentSpec?.specialization?.name}</p></div>
+                                <div className="item-form">
+                                        <p>Темы общения:</p>
+                                        <i>{currentSpec?.topic_conversation?.map(item => item?.name)?.join(", ")}</i>
+                                </div>
                                 <div className="item-form">
                                         <p>{t("UNIVERSITY")}:</p>
                                         <i>{currentSpec?.university || <span>{t("The university is not filled")}</span>}</i>
@@ -97,6 +86,24 @@ const CurrentSpec: NextPage = () => {
                                 </div>
                                 <Divider />
                                 <ListAttachments edit={false} />
+                                <div className="buttons">
+                                        <Button
+                                                className="login-submit"
+                                                onClick={(event) => {
+                                                        event.preventDefault()
+                                                        event.stopPropagation()
+                                                        push(`/spec/edit/${id}`)
+                                                }}
+                                        >
+                                                <p>{t("To change")}</p>
+                                        </Button>
+                                        <Button
+                                                className="state-revers"
+                                                onClick={() => onDeleteSpec(Number(id))}
+                                        >
+                                                <p>{t("Remove")}</p>
+                                        </Button>
+                                </div>
                         </div>
                 </div>
         )

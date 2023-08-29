@@ -78,11 +78,8 @@ ul {
 }
 
 .wrapper {
-        padding-top: 120px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding: 15px 15px 80px;
         overflow: auto;
-        padding-bottom: 80px;
 
         &.terms {
                 display: flex;

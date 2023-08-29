@@ -11,6 +11,7 @@ import Loader from "@loader-spin"
 
 import { speakerSpecAdd, speakerSpecEdit, specializationsAllList } from "api/api-spec"
 import { specializations } from "api/api-user"
+import { topicHandbooks } from "api/api-handbooks"
 
 const [{ Item }, { Option }] = [Form, Select]
 
@@ -42,6 +43,7 @@ interface IValuesSpecUpdateData {
         }
         additional_info: string
         region_living: string
+        topic_conversation: number[]
 
 }
 
@@ -50,8 +52,10 @@ const FormSpec: FC = () => {
         const [form] = Form.useForm()
         const { query: { id }, back, push } = useRouter()
         const [loading, setLoading] = useState(false)
+        const [pageTopic, setPageTopic] = useState(1)
         const { data: spec, isLoading: loadSpeakerSpec, refetch } = useQuery(['specializations'], () => specializations(), { refetchOnWindowFocus: false })
         const { data: specializationsAll, isLoading: loadSpecs } = useQuery(["specializations_all"], () => specializationsAllList(), { refetchOnWindowFocus: false })
+        const {data: topicHandbooksAll} = useQuery(["topicHandbooksAll", pageTopic], () => topicHandbooks(), {refetchOnWindowFocus: false})
 
         const currentSpec: ISpecItems | undefined = useMemo(() => {
                 if (spec && id) return spec?.find(item => Number(item?.id) === Number(id))
@@ -66,8 +70,8 @@ const FormSpec: FC = () => {
                 return times
         }, [currentSpec])
 
-
         const onUpdate = (values: IValuesSpecUpdateData) => {
+                console.log("values: ", values)
                 setLoading(true)
                 if (!!currentSpec) {
                         const consultation_time = [{
@@ -83,6 +87,7 @@ const FormSpec: FC = () => {
                                 consultation_time: consultation_time,
                                 region_living: values.region_living,
                                 additional_info: values.additional_info,
+                                topic_conversation: values.topic_conversation.map(item => Number(item)),
                         }
 
                         //@ts-ignore
@@ -108,6 +113,7 @@ const FormSpec: FC = () => {
                                 consultation_time: consultation_time,
                                 region_living: values.region_living || "",
                                 additional_info: values.additional_info,
+                                topic_conversation: values.topic_conversation.map(item => Number(item)),
                         }
                         //@ts-ignore
                         speakerSpecAdd(data)
@@ -138,7 +144,8 @@ const FormSpec: FC = () => {
                                 category: currentSpec?.category,
                                 consultation_time: currentSpec?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price,
                                 region_living: currentSpec?.region_living,
-                                additional_info: currentSpec?.additional_info
+                                additional_info: currentSpec?.additional_info,
+                                topic_conversation: currentSpec?.topic_conversation?.map(item => item?.id)
                         }}
                 >
                         <div className="item-form">
@@ -157,6 +164,27 @@ const FormSpec: FC = () => {
                                                         specializationsAll?.map(item => (
                                                                 <Option key={`${item?.id}_specs`} value={item?.id}>
                                                                         {item?.name}
+                                                                </Option>
+                                                        ))
+                                                }
+                                        </Select>
+                                </Form.Item>
+                        </div>
+                        <div className="item-form">
+                                <p>{t("Тема для общения")}</p>
+                                <Form.Item
+                                        name="topic_conversation"
+                                        rules={[{ required: true, message: `${t("Тема для общения")}!`, },]}
+                                >
+                                        <Select
+                                                className="form-input-select"
+                                                size="large"
+                                                mode="multiple"
+                                        >
+                                                {
+                                                        topicHandbooksAll?.results?.map(item => (
+                                                                <Option key={item.id + "topic"} value={item.id}>
+                                                                        {item.name}
                                                                 </Option>
                                                         ))
                                                 }

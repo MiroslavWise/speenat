@@ -41,7 +41,8 @@ const Spec: NextPage = () => {
                                                                 }}
                                                         >
                                                                 <div className="descriptions">
-                                                                        <p style={{ textAlign: "center" }}>{item?.specialization?.name}</p>
+                                                                        <p style={{ textAlign: "center", fontSize: 18, lineHeight: 1.1, }}>{item?.specialization?.name}</p>
+                                                                        <p>Темы общения: <span>{ item?.topic_conversation?.map(item => item?.name)?.join(", ")}</span></p>
                                                                         <p>{t("UNIVERSITY")}: <span>{item?.university || <i>{t("The university is not filled")}</i>}</span></p>
                                                                         <p>{t("Work experience")}: <span>{work_experience(item?.work_experience, t)}</span></p>
                                                                         <p>{t("Duration of the consultation")}: <span>{item?.consultation_time?.find(item => item?.sessions_time === "20min")?.original_price}₸</span></p>

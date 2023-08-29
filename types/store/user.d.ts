@@ -130,6 +130,10 @@ export interface ISpec{
         "rating": number
         region_living: string
         additional_info: string
+        topic_conversation: {
+                id: number
+                name: string
+        }[]
 }
 
 export interface ISpeakerData{
@@ -248,6 +252,10 @@ export interface ISpecItems{
                 "sessions_time": TSession
                 "original_price": number | string
                 "price": number | string
+        }[]
+        topic_conversation: {
+                id: number
+                name: string
         }[]
         "rating": number
         additional_info: string

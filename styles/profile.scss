@@ -4,16 +4,13 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        padding-bottom: 80px;
+        padding-bottom: calc(68px);
 
-
-        .header-profile {
-                position: relative;
-                overflow: hidden;
-                height: 170px;
-                width: 100%;
-                background-color: var(--secondary-purple-light);
-                border-bottom: 1px solid var(--secondary-orange);
+        h2{
+                color: gray;
+                padding-top: 5px;
+                text-align: center;
+                font-size: 1rem;
         }
 
         .profile-content {
@@ -34,14 +31,40 @@
                 }
 
                 .profile-info-other {
+                        list-style: none;
                         display: flex;
                         gap: 10px;
                         align-items: flex-start;
                         width: 100%;
-                        // flex-wrap: wrap;
-                        // padding-left: 15px;
-                        // padding-right: 15px;
                         flex-direction: column;
+
+                        li{
+                                padding: 0px 12px 0px 0;
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                gap: 6px;
+
+                                .icon{
+                                        width: 30px;
+                                        height: 30px;
+                                        border-radius: 15px;
+                                        background: white;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                }
+
+                                p{
+                                        color:  #667085;
+                                        text-align: center;
+                                        font-size: 16px;
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        line-height: 24px;
+                                        letter-spacing: -0.5px;
+                                }
+                        }
                 }
 
                 a {
@@ -75,21 +98,23 @@
                 justify-content: center;
                 align-content: center;
         }
+}
 
-        .buttons {
-                display: flex;
-                flex-wrap: wrap;
-                flex-direction: row;
-                width: 100%;
-                gap: 10px;
+.buttons {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        width: calc(100% - 30px);
+        gap: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
 
-                .login-submit {
-                        flex: 1 0 auto;
-                }
+        .login-submit {
+                flex: 1 0 auto;
+        }
 
-                .state-revers {
-                        flex: 1 0 auto;
-                }
+        .state-revers {
+                flex: 1 0 auto;
         }
 }
 

@@ -1,24 +1,35 @@
 import { FC, MouseEvent } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image"
 
-import DotsHorizontalRounded from "@icons-dots-horizontal-rounded";
-
-import { useModal } from "store/use-modal";
+import { updateStatus } from "api/api-status";
+import { useAuth } from "store/use-auth";
 
 import styles from "../../styles/left-arrow.module.scss"
 
 const MenuDots: FC = () => {
-        const set = useModal(state => state.setActive)
+        const { push } = useRouter()
+        const out = useAuth(state => state.out)
 
-        const handleActive = (event: MouseEvent<HTMLDivElement>): void => {
+        const handleOut = (event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault()
                 event.stopPropagation()
-                set(true)
+                updateStatus("offline")
+                requestAnimationFrame(() => {
+                        if (out) out()
+                        push("/")
+                })
         }
 
         return (
-                <div className={styles.container} onClick={handleActive}>
-                        <DotsHorizontalRounded  fill="#33367c" size={14} />
-                </div>
+                <Image 
+                        className={styles.exit}
+                        onClick={handleOut}
+                        src="/svg/log-out.svg"
+                        alt="log-out"
+                        height={34}
+                        width={34}
+                />
         )
 }
 

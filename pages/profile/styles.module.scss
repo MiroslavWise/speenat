@@ -1,13 +1,9 @@
 .header{
-  margin-top: calc(72px + 15px);
   display: inline-flex;
   gap: 15px;
   padding-left: 15px;
   padding-right: 15px;
-
-  &.speaker{
-    margin-top: calc(108px + 15px);
-  }
+  padding-top: 15px;
 }
 
 .avatar{
@@ -36,6 +32,29 @@
     font-style: normal;
     font-weight: 600;
     line-height: 30px;
+    letter-spacing: -0.5px;
+  }
+}
+
+.buttonEdit{
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  padding: 6px 12px;
+  border: 2px solid var(--premium-color);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+
+  p{
+    color: var(--premium-color);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
     letter-spacing: -0.5px;
   }
 }

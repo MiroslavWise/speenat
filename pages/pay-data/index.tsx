@@ -34,7 +34,6 @@ const PayData: NextPage = () => {
 
         return (
                 <div className="content-archive">
-                        <div className="header-archive" />
                         {
                                 !isSpeaker
                                 &&

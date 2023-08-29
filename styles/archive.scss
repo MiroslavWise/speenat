@@ -1,17 +1,14 @@
 .content-archive{
-        padding-bottom: 80px;
+        padding-bottom: calc(68px + 15px - 0.7rem);
         animation: show 450ms;
 
-        .header-archive{
-                background-color: transparent;
-                height: 110px;
-        }
         .list-archive{
                 padding: 0.7rem;
                 width: calc(100% - 1.4rem);
                 display: flex;
                 flex-direction: column;
                 gap: 7px;
+                margin: 0;
 
                 .item-archive{
                         background-color: white;
