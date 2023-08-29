@@ -1,37 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import useSound from "use-sound";
+import { useEffect, useRef } from 'react';
 
 const usePlaySound = () => {
-
-    const [fileName, setFileName] = useState('')
-    let audiosWeWantToUnlock: HTMLAudioElement[] | null = []
-
-    const [play, soundEnabled] = useSound(fileName, {
-        volume: 0.9
-    })
+    const audiosWeWantToUnlock = useRef<HTMLAudioElement[]>([])
 
     useEffect(() => {
-
-        console.log(audiosWeWantToUnlock)
-
-        // audiosWeWantToUnlock.push(new Audio('./sound/nothing.wav'))
-        audiosWeWantToUnlock?.push(new Audio('./sound/nothing.wav'))
-        // audiosWeWantToUnlock.push(new Audio('./sound/537061_7117640-lq.mp3'))
+        audiosWeWantToUnlock.current?.push(new Audio('./sound/nothing.wav'))
 
         const isTouched = () => {
             if (audiosWeWantToUnlock != null) {
-                for (const audio of audiosWeWantToUnlock) {
+                for (const audio of audiosWeWantToUnlock.current) {
                     audio.play()
                     audio.pause()
                     audio.currentTime = 0
                 }
-                audiosWeWantToUnlock = null
+                audiosWeWantToUnlock.current = []
             }
         }
 
         window?.addEventListener('touchstart', isTouched, false)
 
-        // const nothing = new Audio('./sound/nothing.wav')
         const nothing = new Audio('./sound/nothing.wav')
 
         nothing
