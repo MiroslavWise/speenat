@@ -33,7 +33,6 @@ const Profile: FC = () => {
 
         return (
                 <div className="wrapper-profile show-animate">
-                        <h2>Профиль</h2>
                         <div className={cx(styles.header)}>
                                 <div className={styles.avatar}>
                                         <Image

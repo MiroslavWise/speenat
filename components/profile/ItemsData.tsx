@@ -37,12 +37,12 @@ const ItemsData: FC = () => {
                                 </div>
                                 <p>{user?.profile?.user?.email}</p>
                         </div>
-                        <div className="item-data-small">
+                        {/* <div className="item-data-small">
                                 <div className="circle-image">
                                         <CurrentLocation size={18} />
                                 </div>
                                 <p>{user?.profile?.address || "No adress"}</p>
-                        </div>
+                        </div> */}
                         <div className="item-data-small">
                                 <div className="circle-image">
                                         <Wallet size={18} />
