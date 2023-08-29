@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { useState } from "react"
+import { useState, type FC } from "react"
 import { useTranslation } from "react-i18next"
 import { motion } from "framer-motion"
 
@@ -12,7 +12,7 @@ import { cx } from "functions/cx"
 
 import styles from "./style.module.scss"
 
-export const LanguagesOpenButton = () => {
+export const LanguagesOpenButton: FC<{className?: string}> = ({className}) => {
   const { i18n } = useTranslation()
   const [visible, setVisible] = useState(false)
 
@@ -20,13 +20,12 @@ export const LanguagesOpenButton = () => {
 
   const handleLanguage = (value: "ru" | "en" | "kz") => {
     changeLanguage(value, i18n, setLang)
-    // setVisible(false)
   }
 
   return (
     <>
       <motion.ul
-        className={cx(styles.containerArrow, visible && styles.active)}
+        className={cx(styles.containerArrow, visible && styles.active, className)}
         onClick={() => { setVisible(prev => !prev) }}
         layout
         data-is-open={visible}
@@ -63,25 +62,6 @@ export const LanguagesOpenButton = () => {
             )
         }
       </motion.ul>
-      {/* <ul className={cx(styles.containerLanguages, visible && styles.active)}>
-        {
-          FLAGS_LANGUAGE.map(item => (
-            <li
-              key={`${item.value}_${item.icon}`}
-              onClick={() => handleLanguage(item.value)}
-              className={cx(i18n.language === item.value && styles.active)}
-            >
-              <Image
-                src={item?.icon}
-                alt="fl"
-                height={50}
-                width={50}
-                className={styles["img-flag"]}
-              />
-            </li>
-          ))
-        }
-      </ul> */}
     </>
   )
 }

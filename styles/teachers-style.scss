@@ -386,9 +386,10 @@
                                 flex-direction: row;
                                 gap: 10px;
                                 width: 100%;
+                                justify-content: space-between;
 
                                 .avatar{
-                                        border-radius: 50%;
+                                        border-radius: 12px;
                                         height: 40px;
                                         width: 40px;
                                         object-fit: cover;
@@ -405,12 +406,7 @@
                                                 line-height: 15px;
                                                 color: var(--premium-color);
                                         }
-                                        .sub-name{
-                                                font-weight: 500;
-                                                font-size: 13px;
-                                                line-height: 15px;
-                                                color: var(--cyan);
-                                        }
+
                                 }
 
                                 .rate{
@@ -428,10 +424,33 @@
                         }
 
                         .footer-feed{
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: space-between;
+                                width: 100%;
                                 .ant-rate{
-                                        color: var(--secondary-color)
+                                        color: var(--secondary-color);
+                                }
+                                ul{
+                                        display: flex;
+                                        flex-direction: row;
+                                        gap: 3px;
+
+                                        li{
+                                                padding: 0 !important;
+                                                margin: 0 !important;
+                                                
+                                        }
                                 }
                         }
                 }
         }
+}
+
+.sub-name{
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 15px;
+        color: var(--cyan);
 }

@@ -25,7 +25,7 @@ const FLAGS_LANGUAGE: ILangFlags[] = [
         }
 ]
 
-const LanguageButtons: FC = () => {
+export const LanguageButtons: FC = () => {
         const { i18n } = useTranslation()
 
         const { changeLanguage: setLang } = useAntdLang()
@@ -56,5 +56,3 @@ const LanguageButtons: FC = () => {
                 </div>
         )
 }
-
-export default LanguageButtons

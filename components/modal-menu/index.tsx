@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useModal } from "store/use-modal";
 import { useUser } from "store/use-user";
 import { useAuth } from "store/use-auth";
-import LanguageButtons from "./Language";
+import {LanguageButtons} from "./Language";
 import { updateStatus } from "api/api-status";
 
 const ModalMenu: FC = () => {

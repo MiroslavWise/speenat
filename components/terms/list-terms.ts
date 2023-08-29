@@ -30,4 +30,9 @@ export const TERMS: IDataTerms[] = [
                 path: "/terms/safe-pay",
                 icon: "/svg/terms/credit-card-shield.svg",
         },
+        {
+                label: "Invite_a_friend",
+                path: "/invited",
+                icon: "/svg/terms/attachment.svg",
+        }
 ]

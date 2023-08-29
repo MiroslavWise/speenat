@@ -17,6 +17,7 @@ interface IValues {
 
 const ContainerSingAndRegister: FC = () => {
         const { t } = useTranslation()
+        const { push } = useRouter()
         const { login } = useAuth()
         const [isState, setIsState] = useState(false)
         const [form] = Form.useForm()
@@ -35,6 +36,7 @@ const ContainerSingAndRegister: FC = () => {
                 if (login) {
                         login({ email: values.email.toLowerCase(), password: values.password })
                                 .finally(() => {
+                                        push("/", undefined, { shallow: true })
                                         setActiveLoginEnter(true)
                                 })
                 }

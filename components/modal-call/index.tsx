@@ -20,8 +20,8 @@ const sound = "./sound/zvuk-skayp-skype-call-calling-23010.wav"
 export const ModalCall: FC = () => {
         const { t } = useTranslation()
         const [visible, setVisible] = useState(false)
-        const [play, { stop }] = useSound(sound, {
-                volume: 0.75
+        const [play, { stop, duration }] = useSound(sound, {
+                volume: 0.75,
         });
 
         const { wsChannel } = useWeb()

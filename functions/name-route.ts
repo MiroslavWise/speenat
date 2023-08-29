@@ -26,6 +26,12 @@ export const nameRoute = (route: string, t: (value: string) => string, name?: st
                 }
                 return t("Chat")
         }
+        if (split[0] === "profile") {
+                if (split?.[1] === "change") {
+                        return t("Настройка профиля")
+                }
+                return t("Profile")
+        }
         if (split[0] === "terms") {
                 if(terms.hasOwnProperty(split[1])) return t(terms[split[1]])
                 return  t("Terms_of_agreements")

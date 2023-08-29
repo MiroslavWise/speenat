@@ -49,38 +49,6 @@ const ItemsData: FC = () => {
                                 </div>
                                 <p>{Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
                         </div>
-                        {
-                                user?.profile?.gender === "male"
-                                        ? (
-                                                <div className="item-data-small">
-                                                        <div className="circle-image">
-                                                                <MaleSign size={18} />
-                                                        </div>
-                                                        <p>{user?.profile?.gender_display}</p>
-                                                </div>
-                                        )
-                                        : user?.profile?.gender === "female"
-                                                ? (
-                                                        <div className="item-data-small">
-                                                                <div className="circle-image">
-                                                                        <FemaleSign size={18} />
-                                                                </div>
-                                                                <p>{user?.profile?.gender_display}</p>
-                                                        </div>
-                                                )
-                                                : null
-                        }
-                        {
-                                user?.profile?.phone
-                                        ? (
-                                                <div className="item-data-small">
-                                                        <div className="circle-image">
-                                                                <Phone size={18} />
-                                                        </div>
-                                                        <p>{user?.profile?.phone ? changeNumber(user?.profile?.phone.toString()!) : ""}</p>
-                                                </div>
-                                        ) : null
-                        }
                 </>
         )
 }

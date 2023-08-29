@@ -13,6 +13,7 @@ import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
 import { replaceHttps } from "functions/replace-https"
 import loadImage from "functions/load-image"
+import { LanguagesOpenButton } from "components/auth/components/LanguagesOpenButton"
 
 import { TERMS } from "components/terms/list-terms"
 import { cx } from "functions/cx"
@@ -24,8 +25,6 @@ const Profile: FC = () => {
         const { push } = useRouter()
         const loading = useUser(state => state.loading)
         const user = useUser(state => state.user)
-        const isSpeaker = useUser(state => state.is_speaker)
-        const out = useAuth(state => state.out)
         useDocumentTitle("Profile")
 
         const handleChange = () => push('/profile/change', undefined, { shallow: true })
@@ -59,6 +58,7 @@ const Profile: FC = () => {
                                 </div>
                         </div>
                         <div className="profile-content">
+                                <LanguagesOpenButton className={styles.languages} />
                                 <div className="profile-info-other">
                                         <ItemsData />
                                 </div>
@@ -85,20 +85,6 @@ const Profile: FC = () => {
                                                 ))
                                         }
                                 </div>
-                        </div>
-                        <div className="buttons">
-                                <Button
-                                        className="state-revers"
-                                        onClick={() => {
-                                                updateStatus("offline")
-                                                        .finally(() => {
-                                                                if (out) out()
-                                                                push(`/`)
-                                                        })
-                                        }}
-                                >
-                                        <p>{t("Exit")}</p>
-                                </Button>
                         </div>
                 </div>
         )

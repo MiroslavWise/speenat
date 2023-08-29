@@ -95,7 +95,7 @@ const Feedback = () => {
 
   return (
     <div className="wrapper-profile show-animate">
-      <div className="profile-content" style={{ marginTop: isSpeaker ? 120 : 88 }}>
+      <div className="profile-content">
         {
           isSpeaker
             ? <h3>{t("Recommendations to the student")} {user_info?.full_name}</h3>

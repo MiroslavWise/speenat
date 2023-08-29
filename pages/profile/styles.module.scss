@@ -58,3 +58,16 @@
     letter-spacing: -0.5px;
   }
 }
+
+.languages{
+  position: absolute;
+  top: 15px;
+  left: calc(100% - 15px);
+  transform: translateX(-100%);
+  flex-direction: column;
+
+  &[data-is-open="true"] {
+    width: 48px;
+    height: 136px;
+  }
+}
