@@ -15,7 +15,7 @@ import { usePropsCallingJanus } from "store/use-call-janus";
 
 import { platform } from "functions/platform";
 
-const sound = "../../public/sound/zvuk-skayp-skype-call-calling-23010.wav"
+const sound = "./sound/zvuk-skayp-skype-call-calling-23010.wav"
 
 export const ModalCall: FC = () => {
         const { t } = useTranslation()
