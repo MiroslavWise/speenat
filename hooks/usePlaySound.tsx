@@ -40,8 +40,6 @@ const usePlaySound = () => {
     const playSoundSwitchStatus = () => {
         const onlineStatusSound = './sound/new_message_tone.mp3'
 
-        console.log('navigator.getAutoplayPolicy("mediaelement")', window?.navigator.getAutoplayPolicy("mediaelement"))
-
         audiosWeWantToUnlock.current?.push(new Audio(onlineStatusSound))
 
         if (audiosWeWantToUnlock != null) {
