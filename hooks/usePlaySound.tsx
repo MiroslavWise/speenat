@@ -34,27 +34,33 @@ const usePlaySound = () => {
 
 
     const playSoundSwitchStatus = () => {
-        const onlineStatusSound = new Audio('./sound/new_message_tone.mp3')
+        const onlineStatusSound = './sound/new_message_tone.mp3'
 
-        onlineStatusSound
-            .play()
-            .then(() => {
-                console.log('playSoundSwitchStatus')
-            })
-            .catch(() => {})
+        audiosWeWantToUnlock.current?.push(new Audio(onlineStatusSound))
 
+        if (audiosWeWantToUnlock != null) {
+            for (const audio of audiosWeWantToUnlock.current) {
+                audio.play()
+                // audio.pause()
+                // audio.currentTime = 0
+            }
+            audiosWeWantToUnlock.current = []
+        }
         console.log('Sound 111111111111')
     }
 
     const incomingDoctorCall = () => {
-        const callSound = new Audio("./sound/zvuk-skayp-skype-call-calling-23010.wav")
+        const callSound = "./sound/zvuk-skayp-skype-call-calling-23010.wav"
+        audiosWeWantToUnlock.current?.push(new Audio(callSound))
 
-        callSound
-            .play()
-            .then(() => {
-                console.log('incomingDoctorCall play')
-            })
-            .catch(() => {})
+        if (audiosWeWantToUnlock != null) {
+            for (const audio of audiosWeWantToUnlock.current) {
+                audio.play()
+                // audio.pause()
+                // audio.currentTime = 0
+            }
+            audiosWeWantToUnlock.current = []
+        }
     }
 
 
