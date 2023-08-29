@@ -53,7 +53,6 @@ const Header: FC = () => {
                                                 isSpeaker ? (
                                                         <div className="list-item status" style={{ background: 'transparent' }}>
                                                                 <p>{t("Status")}: </p>
-                                                                {window?.navigator.getAutoplayPolicy("mediaelement")}
                                                                 {
                                                                         isStatus && objectStatus(t).hasOwnProperty(isStatus) ? (
                                                                                 <p style={{ color: objectStatus(t)[isStatus][1] }}>{objectStatus(t)[isStatus][0]}</p>
