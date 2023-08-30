@@ -6,6 +6,16 @@ export interface IDataTerms{
 
 export const TERMS: IDataTerms[] = [
         {
+                label: "Invite_a_friend",
+                path: "/invited",
+                icon: "/svg/terms/attachment.svg",
+        },
+        {
+                label: "Сменить язык",
+                path: "language",
+                icon: "/svg/terms/type.svg",
+        },
+        {
                 label: "Terms of use",
                 path: "/terms/general",
                 icon: "/svg/terms/help-square.svg",
@@ -30,14 +40,5 @@ export const TERMS: IDataTerms[] = [
                 path: "/terms/safe-pay",
                 icon: "/svg/terms/credit-card-shield.svg",
         },
-        {
-                label: "Invite_a_friend",
-                path: "/invited",
-                icon: "/svg/terms/attachment.svg",
-        },
-        {
-                label: "Сменить язык",
-                path: "language",
-                icon: "/svg/terms/type.svg",
-        },
+
 ]

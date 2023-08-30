@@ -1,10 +1,10 @@
-.container{
+.containerLeftAOrHide{
   display: flex;
-  padding: 10px;
   justify-content: center;
   align-items: center;
-}
 
-.exit{
-  
+  &.notActive{
+    opacity: 0;
+    visibility: hidden;
+  }
 }
