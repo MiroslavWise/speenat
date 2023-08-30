@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 const usePlaySound = () => {
     const audiosWeWantToUnlock = useRef<HTMLAudioElement[]>([])
+    const audioCtx = new AudioContext();
+
 
     useEffect(() => {
         audiosWeWantToUnlock.current?.push(new Audio('./sound/nothing.wav'))
@@ -9,6 +11,8 @@ const usePlaySound = () => {
         const isTouched = () => {
             if (audiosWeWantToUnlock != null) {
                 for (const audio of audiosWeWantToUnlock.current) {
+                    const source = audioCtx.createMediaElementSource(audio);
+                    source.connect(audioCtx.destination);
                     audio.play()
                     audio.pause()
                     audio.currentTime = 0
@@ -40,6 +44,8 @@ const usePlaySound = () => {
 
         if (audiosWeWantToUnlock != null) {
             for (const audio of audiosWeWantToUnlock.current) {
+                const source = audioCtx.createMediaElementSource(audio);
+                source.connect(audioCtx.destination);
                 audio.play()
                 // audio.pause()
                 // audio.currentTime = 0
@@ -55,6 +61,8 @@ const usePlaySound = () => {
 
         if (audiosWeWantToUnlock != null) {
             for (const audio of audiosWeWantToUnlock.current) {
+                const source = audioCtx.createMediaElementSource(audio);
+                source.connect(audioCtx.destination);
                 audio.play()
                 // audio.pause()
                 // audio.currentTime = 0
