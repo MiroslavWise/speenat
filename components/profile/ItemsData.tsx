@@ -6,15 +6,21 @@ import { useTranslation } from "react-i18next";
 import { useUser } from "store/use-user";
 import { useAuth } from "store/use-auth";
 
-const ItemsData: FC = () => {
-    const { t } = useTranslation();
-    const { push } = useRouter();
-    const out = useAuth((state) => state.out);
-    const user = useUser((state) => state.user);
+export const ItemsData: FC = () => {
+    const { t } = useTranslation()
+    const { push } = useRouter()
+    const out = useAuth((state) => state.out)
+    const user = useUser((state) => state.user)
+    const isStaff = useUser((state) => state?.user?.profile?.is_accountant)
+    const handlePageInvite = () => push("/invited", undefined)
+    const handlePageStaff = () => push("/analytics", undefined)
+    const handlePageAccountant = () => push(`/accountant`, undefined)
 
-    const handlePageInvite = () => push("/invited", undefined);
-    const handlePageStaff = () => push("/analytics", undefined);
-    const handlePageAccountant = () => push(`/accountant`, undefined);
+    // {
+    //     label: "Invite_a_friend",
+    //     path: "/invited",
+    //     icon: "/svg/terms/attachment.svg",
+    // },
 
     return (
         <>
@@ -44,8 +50,32 @@ const ItemsData: FC = () => {
                     )}
                 </p>
             </li>
+            {
+                isStaff ? (
+                    <li onClick={() => push("/analytics")}>
+                        <div className="icon">
+                            <Image
+                                src="/svg/terms/bar-chart.svg"
+                                alt="bar-chart"
+                                width={18}
+                                height={18}
+                            />
+                        </div>
+                        <p>{t("Accountant_office")}</p>
+                    </li>
+                ) : null
+            }
+            <li onClick={() => { push("/invited", undefined, { shallow: true }) }}>
+                <div className="icon">
+                    <Image
+                        src="/svg/terms/attachment.svg"
+                        alt="wallet"
+                        width={18}
+                        height={18}
+                    />
+                </div>
+                <p>{t("Invite_a_friend")}</p>
+            </li>
         </>
-    );
-};
-
-export default ItemsData;
+    )
+}

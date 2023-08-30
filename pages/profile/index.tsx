@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useTranslation } from "react-i18next"
 import { Modal } from 'antd'
 
-import ItemsData from "components/profile/ItemsData"
+import { ItemsData } from "components/profile/ItemsData"
 import Loader from "@loader-spin"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
@@ -27,7 +27,6 @@ const Profile: FC = () => {
     const [active, setActive] = useState(false)
     const loading = useUser((state) => state.loading);
     const user = useUser((state) => state.user);
-    const isStaff = useUser((state) => state?.user?.profile?.is_accountant);
     useDocumentTitle("Profile");
     const { changeLanguage: setLang } = useAntdLang()
     const handleLanguage = (value: "ru" | "en" | "kz") => {
@@ -78,21 +77,6 @@ const Profile: FC = () => {
                 <h2>{t("Условия и соглашения")}</h2>
                 <div className="profile-content">
                     <div className="profile-info-other">
-                        {
-                            isStaff ? (
-                                <li onClick={() => push("/analytics")}>
-                                    <div className="icon">
-                                        <Image
-                                            src="/svg/terms/bar-chart.svg"
-                                            alt="bar-chart"
-                                            width={18}
-                                            height={18}
-                                        />
-                                    </div>
-                                    <p>{t("Accountant_office")}</p>
-                                </li>
-                            ) : null
-                        }
                         {TERMS.map((item) => (
                             <li
                                 key={item.path}
