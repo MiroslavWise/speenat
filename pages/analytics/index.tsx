@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
@@ -12,9 +12,9 @@ import CompanyIncoming from "components/accountant/CompanyIncoming";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useUser } from "store/use-user";
 import { conferenceAll, usersAll, speakersAll } from "api/api-user";
+import { cx } from "functions/cx";
 
 import styles from "./style.module.scss"
-import { cx } from "functions/cx";
 
 const columns = (t: (value: string) => string) => [
         {
@@ -33,8 +33,8 @@ const columns = (t: (value: string) => string) => [
 
 const Analytics: NextPage = () => {
         const { t } = useTranslation()
+        const { push } = useRouter()
         const isStaff = useUser(state => state?.user?.profile?.is_accountant)
-        const isSpeaker = useUser(state => state.is_speaker)
         const loading = useUser(state => state.loading)
         useDocumentTitle("Analytics")
 
@@ -58,11 +58,16 @@ const Analytics: NextPage = () => {
                 }
         ]), [data])
 
+        useEffect(() => {
+                if (!loading && isStaff === false) {
+                        push("/")
+                }
+        }, [isStaff, loading])
 
         if (loading || isLoading) return <Loader />
 
         return (
-                <div className={cx("wrapper", !isSpeaker && styles.pTopWrapper)}>
+                <div className={cx("wrapper")}>
                         <h2 className={styles.h2}>Количественная статистика</h2>
                         <Table
                                 columns={columns(t)}

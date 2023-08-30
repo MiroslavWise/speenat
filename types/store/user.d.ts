@@ -24,7 +24,7 @@ export interface IUser{
                 }
                 gender: TGender
                 gender_display: string
-                is_accountant: string
+                is_accountant: boolean
                 is_can_use_ref_code: boolean
                 phone: string
                 photo: string

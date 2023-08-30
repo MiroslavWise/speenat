@@ -34,5 +34,10 @@ export const TERMS: IDataTerms[] = [
                 label: "Invite_a_friend",
                 path: "/invited",
                 icon: "/svg/terms/attachment.svg",
-        }
+        },
+        {
+                label: "Сменить язык",
+                path: "language",
+                icon: "/svg/terms/type.svg",
+        },
 ]

@@ -1,56 +1,51 @@
-import { FC } from "react"
-import { useRouter } from "next/router"
-import moment from "moment"
-import { useTranslation } from "react-i18next"
+import { FC } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
-import { Button } from "antd"
-
-import CalendarEvent from "@icons-calendar-event"
-import CurrentLocation from "@icons-current-location"
-import Wallet from "@icons-wallet"
-import Envelope from "@icons-envelope"
-import MaleSign from "@icons-male-sign"
-import FemaleSign from "@icons-female-sign"
-import Phone from "@icons-phone"
-
-import { useUser } from "store/use-user"
-import { changeNumber } from "functions/change-number"
-import { useAuth } from "store/use-auth"
-import { updateStatus } from "api/api-status"
+import { useUser } from "store/use-user";
+import { useAuth } from "store/use-auth";
 
 const ItemsData: FC = () => {
-        const { t } = useTranslation()
-        const { push } = useRouter()
-        const out = useAuth(state => state.out)
-        const user = useUser(state => state.user)
-        const isStaff = useUser(state => state.is_staff)
-        
-        const handlePageInvite = () => push('/invited', undefined)
-        const handlePageStaff = () => push('/analytics', undefined)
-        const handlePageAccountant = () => push(`/accountant`, undefined)
+    const { t } = useTranslation();
+    const { push } = useRouter();
+    const out = useAuth((state) => state.out);
+    const user = useUser((state) => state.user);
 
-        return (
-                <>
-                        <div className="item-data-small">
-                                <div className="circle-image">
-                                        <Envelope size={18} />
-                                </div>
-                                <p>{user?.profile?.user?.email}</p>
-                        </div>
-                        {/* <div className="item-data-small">
-                                <div className="circle-image">
-                                        <CurrentLocation size={18} />
-                                </div>
-                                <p>{user?.profile?.address || "No adress"}</p>
-                        </div> */}
-                        <div className="item-data-small">
-                                <div className="circle-image">
-                                        <Wallet size={18} />
-                                </div>
-                                <p>{Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
-                        </div>
-                </>
-        )
-}
+    const handlePageInvite = () => push("/invited", undefined);
+    const handlePageStaff = () => push("/analytics", undefined);
+    const handlePageAccountant = () => push(`/accountant`, undefined);
 
-export default ItemsData
+    return (
+        <>
+            <li>
+                <div className="icon">
+                    <Image
+                        src="/svg/terms/mail.svg"
+                        alt="wallet"
+                        width={18}
+                        height={18}
+                    />
+                </div>
+                <p>{user?.profile?.user?.email}</p>
+            </li>
+            <li>
+                <div className="icon">
+                    <Image
+                        src="/svg/terms/wallet.svg"
+                        alt="wallet"
+                        width={18}
+                        height={18}
+                    />
+                </div>
+                <p>
+                    {Number(user?.profile?.balance?.current_balance)?.toFixed(
+                        2,
+                    )}
+                </p>
+            </li>
+        </>
+    );
+};
+
+export default ItemsData;
