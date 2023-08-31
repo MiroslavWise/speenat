@@ -7,17 +7,17 @@ export interface ILangFlags {
 export const FLAGS_LANGUAGE: ILangFlags[] = [
   {
     value: "ru",
-    icon: "/svg/flags/ru.svg",
+    icon: "РУ",
     label: "Русский",
   },
   {
     value: "kz",
-    icon: "/svg/flags/kz.svg",
+    icon: "ҚАЗ",
     label: "Казахский",
   },
   {
     value: "en",
-    icon: "/svg/flags/us.svg",
+    icon: "EN",
     label: "English",
   }
 ]

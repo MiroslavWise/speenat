@@ -96,12 +96,8 @@ const ContainerSingAndRegister: FC = () => {
                                                 <p>{isState ? t("Registration") : t("Enter")}</p>
                                         </Button>
                                         <div className="register-component-button">
-                                                {
-                                                        !isState ? <p>{t("No account")}? </p> : null
-                                                }
-                                                {
-                                                        !isState ? <a onClick={() => setIsState(state => !state)}>{t("Registration")}</a> : <a onClick={() => setIsState(state => !state)}>{t("Enter")}</a>
-                                                }
+                                                {!isState ? <p>{t("No account")}? </p> : null}
+                                                {!isState ? <a onClick={() => setIsState(state => !state)}>{t("Registration")}</a> : <a onClick={() => setIsState(state => !state)}>{t("Enter")}</a>}
                                         </div>
                                 </Form>
                         </div>

@@ -6,11 +6,6 @@ export interface IDataTerms{
 
 export const TERMS: IDataTerms[] = [
         {
-                label: "Сменить язык",
-                path: "language",
-                icon: "/svg/terms/type.svg",
-        },
-        {
                 label: "Terms of use",
                 path: "/terms/general",
                 icon: "/svg/terms/help-square.svg",

@@ -19,7 +19,7 @@ const SignInComponent: FC = () => {
                                         />
                                 </header>
                                 <ContainerSingAndRegister />
-                                <LanguagesOpenButton />
+                                {/* <LanguagesOpenButton /> */}
                                 <Welcome />
                         </div>
                 </>

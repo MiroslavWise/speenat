@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
@@ -6,21 +6,12 @@ import { useTranslation } from "react-i18next";
 import { useUser } from "store/use-user";
 import { useAuth } from "store/use-auth";
 
-export const ItemsData: FC = () => {
+export const ItemsData: FC<{ setActive: Dispatch<SetStateAction<boolean>> }> = ({ setActive }) => {
     const { t } = useTranslation()
     const { push } = useRouter()
     const out = useAuth((state) => state.out)
     const user = useUser((state) => state.user)
     const isStaff = useUser((state) => state?.user?.profile?.is_accountant)
-    const handlePageInvite = () => push("/invited", undefined)
-    const handlePageStaff = () => push("/analytics", undefined)
-    const handlePageAccountant = () => push(`/accountant`, undefined)
-
-    // {
-    //     label: "Invite_a_friend",
-    //     path: "/invited",
-    //     icon: "/svg/terms/attachment.svg",
-    // },
 
     return (
         <>
@@ -75,6 +66,17 @@ export const ItemsData: FC = () => {
                     />
                 </div>
                 <p>{t("Invite_a_friend")}</p>
+            </li>
+            <li onClick={() => setActive(true)}>
+                <div className="icon">
+                    <Image
+                        src="/svg/terms/type.svg"
+                        alt="wallet"
+                        width={18}
+                        height={18}
+                    />
+                </div>
+                <p>Сменить язык</p>
             </li>
         </>
     )
