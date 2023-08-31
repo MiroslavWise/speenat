@@ -153,4 +153,6 @@ export default {
         "to find topics and interlocutors that interest you": "сізді қызықтыратын тақырыптар мен әңгімелесушілерді табу үшін",
         
         "Welcome to Spenat. You're online. You can choose the media for communication or use": "Шпинатқа қош келдіңіз. Сіз желісіз. Сіз байланыс үшін медианы таңдай аласыз немесе пайдалана аласыз",
+
+        "Go to Home": "Басты бетке өтіңіз",
 } as Record<string, string>

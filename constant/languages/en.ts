@@ -153,4 +153,6 @@ export default {
         "to find topics and interlocutors that interest you": "to find topics and interlocutors that interest you",
 
         "Welcome to Spenat. You're online. You can choose the media for communication or use": "Welcome to Spenat. You're online. You can choose the media for communication or use",
+
+        "Go to Home": "Go to Home",
 } as Record<string, string>

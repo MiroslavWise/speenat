@@ -66,8 +66,7 @@ export const ModalCallingJanus: FC<IProps> = ({
                     ref={refVideoRight}
                 />
                 <div className="partner_text">
-                    {/* {isSpeaker ? user_info?.full_name : speaker_info?.full_name}
-                    &nbsp;&nbsp; */}
+                    <div className="flashing-dot" />
                     <TimerSession {...{ visible, doHangup, isSpeaker }} />
                 </div>
                 <div className="panel-body" id="videoleft" ref={refVideoLeft} />

@@ -118,6 +118,28 @@ $mobile: 550px;
     padding: 0.25rem 0.45rem;
     border-radius: 0.55rem;
     max-width: calc(100% - 40px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    justify-content: center;
+
+    .flashing-dot{
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        animation: flash 2.5s infinite;
+        background-color: red;
+    }
+}
+
+@keyframes flash {
+    0%, 50% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
 }
 
 .red_timer {
