@@ -140,7 +140,7 @@ const Feedback = () => {
                         <Rate
                             onChange={setRate}
                             value={rate}
-                            style={{ color: "red" }}
+                            style={{ color: "var(--premium-color)" }}
                         />
                     ) : null}
                     <Button
