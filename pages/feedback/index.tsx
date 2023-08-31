@@ -120,12 +120,13 @@ const Feedback = () => {
                     </h2>
                 </header>
                 <section>
-                    <Image
+                    <Image 
                         src={isSpeaker ? urlStudent : urlAvatar}
                         alt="avatar"
                         width={400}
                         height={400}
                         className={styles.avatar}
+                        unoptimized
                     />
                     <h4>{isSpeaker ? user_info?.full_name : speaker_info?.full_name}</h4>
                     <Input.TextArea
