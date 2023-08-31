@@ -66,8 +66,8 @@ export const ModalCallingJanus: FC<IProps> = ({
                     ref={refVideoRight}
                 />
                 <div className="partner_text">
-                    {isSpeaker ? user_info?.full_name : speaker_info?.full_name}
-                    &nbsp;&nbsp;
+                    {/* {isSpeaker ? user_info?.full_name : speaker_info?.full_name}
+                    &nbsp;&nbsp; */}
                     <TimerSession {...{ visible, doHangup, isSpeaker }} />
                 </div>
                 <div className="panel-body" id="videoleft" ref={refVideoLeft} />
@@ -92,11 +92,7 @@ export const ModalCallingJanus: FC<IProps> = ({
                         }}
                     >
                         <Image
-                            src={
-                                toggleAudio
-                                    ? "/call-svg/microphone-on.svg"
-                                    : "/call-svg/microphone-off.svg"
-                            }
+                            src={toggleAudio ? "/call-svg/microphone-on.svg" : "/call-svg/microphone-off.svg"}
                             alt="micro-on"
                             width={31}
                             height={31}
@@ -141,11 +137,7 @@ export const ModalCallingJanus: FC<IProps> = ({
                         }}
                     >
                         <Image
-                            src={
-                                toggleVideo
-                                    ? "/call-svg/video-recorder-on.svg"
-                                    : "/call-svg/video-recorder-off.svg"
-                            }
+                            src={toggleVideo ? "/call-svg/video-recorder-on.svg" : "/call-svg/video-recorder-off.svg"}
                             alt="micro-on"
                             width={31}
                             height={31}
