@@ -12,9 +12,11 @@ const MainPage: NextPage = () => {
         const isSpeaker = useUser(state => state.is_speaker)
 
         useEffect(() => {
-                if (isSpeaker) {
+                console.log("isSpeaker: ", isSpeaker)
+                if (isSpeaker === true) {
                         push('/archive', undefined)
-                } else {
+                }
+                if (isSpeaker === false) {
                         push('/teachers', undefined)
                 }
         }, [isSpeaker])

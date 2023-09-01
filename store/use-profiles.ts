@@ -13,7 +13,7 @@ export const useProfiles = create<IUseProfiles>(
                         price_gte: 0,
                         price_lte: 100000,
                         speaker__status: "online",
-                        topic_conversation: null,
+                        topic_conversation: [],
                 },
                 getReset() {
                         set({

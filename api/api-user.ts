@@ -13,8 +13,14 @@ export const profileId = async (id: any): Promise<IUserCurrent> => {
 }
 
 export const speakers = async ({ page, verified, topic_conversation, price_gte, price_lte, speaker__status }: IFilterProfiles): Promise<IDataProfile> => {
+        let topic: string[] = []
+        if (topic_conversation.length > 0) {
+                topic_conversation.forEach(item => {
+                        topic.push(`&topic_conversation=${Number(item)}`)
+                })
+        }
 
-        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${topic_conversation ? `&topic_conversation=${Number(topic_conversation)}` : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker__profile__status=${speaker__status}` : ""}`)
+        return axiosInstance.get(`/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${topic.length > 0 ? topic.join("") : ""}&price_gte=${price_gte}&price_lte=${price_lte}${speaker__status ? `&speaker__profile__status=${speaker__status}` : ""}`)
                 .then(response => response.data)
                 .catch(e => { console.error("USER DATA: ", e) })
 }

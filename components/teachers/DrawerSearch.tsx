@@ -11,6 +11,7 @@ import { topicHandbooks } from "api/api-handbooks"
 import { STATUS_ONLINE, VERIFIED } from "./constants"
 
 import styles from "./style.module.scss"
+import { shallow } from "zustand/shallow"
 interface IProps {
     open: boolean
 
@@ -20,8 +21,10 @@ interface IProps {
 const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
     const { t } = useTranslation()
     const handleClose = () => setOpen(false)
-    const filters = useProfiles((state) => state.filters)
-    const getFilters = useProfiles((state) => state.getFilter)
+    const { filters, getFilters } = useProfiles(state => ({
+        filters: state.filters,
+        getFilters: state.getFilter,
+    }), shallow)
     const [pageTopic, setPageTopic] = useState(1)
     const { data: topicHandbooksAll } = useQuery(
         ["topicHandbooksAll", pageTopic],
@@ -38,7 +41,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
         filters.speaker__status,
     )
     const [verified_, setVerified_] = useState<boolean | "">(filters.verified)
-    const [topicConversation, setTopicConversation] = useState<number | null>(
+    const [topicConversation, setTopicConversation] = useState<number[]>(
         filters.topic_conversation,
     )
 
@@ -101,6 +104,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                     <Select
                         className={styles.selectFilter}
                         placeholder={t("Topics for communication")!}
+                        mode="multiple"
                         options={
                             Array.isArray(topicHandbooksAll?.results)
                                 ? topicHandbooksAll?.results?.map((item) => ({
@@ -109,9 +113,9 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 }))
                                 : []
                         }
-                        onSelect={(value) => setTopicConversation(value)}
+                        onChange={setTopicConversation}
                         clearIcon
-                        onClear={() => setTopicConversation(null)}
+                        onClear={() => setTopicConversation([])}
                         allowClear
                     />
                 </div>

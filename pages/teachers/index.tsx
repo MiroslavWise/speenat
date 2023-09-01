@@ -26,7 +26,7 @@ const Teachers: NextPage = () => {
                 if (isSpeaker) {
                         push('/archive', undefined)
                 }
-        }, [])
+        }, [isSpeaker])
 
         if(loadingUser) return <Loader />
 
