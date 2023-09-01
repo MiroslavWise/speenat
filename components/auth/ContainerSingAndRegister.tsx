@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
+import { LanguagesOpenButton } from "./components/LanguagesOpenButton"
 
 import { registerUser, IRegister } from "api/api-auth"
 import { useAuth } from "store/use-auth"

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { InputMask } from '@react-input/mask'
 
 import { useUser } from "store/use-user"
-import { changeNumber } from "functions/change-number"
+// import { changeNumber } from "functions/change-number"
 import { updateDataUser, IValueDataUser } from "api/put-user"
 
 const FormDataUser: FC = () => {
@@ -20,7 +20,7 @@ const FormDataUser: FC = () => {
                 setLoading(true)
                 updateDataUser({
                         ...value,
-                        phone: value.phone.replace(/\D/g, "")
+                        // phone: value.phone.replace(/\D/g, "")
                 })
                         .finally(() => {
                                 getReloadUser(false)
@@ -32,14 +32,14 @@ const FormDataUser: FC = () => {
                 <Form
                         form={form}
                         initialValues={{
-                                phone: changeNumber(user?.profile?.phone?.toString()!),
+                                // phone: changeNumber(user?.profile?.phone?.toString()!),
                                 address: user?.profile?.address,
                                 gender: user?.profile?.gender,
                         } as IValueDataUser}
                         className="form"
                         onFinish={onSubmit}
                 >
-                        <div className="item-form">
+                        {/* <div className="item-form">
                                 <p>{t("Telephone")}</p>
                                 <Form.Item
                                         name="phone"
@@ -56,7 +56,7 @@ const FormDataUser: FC = () => {
                                                 replacement={{ _: /\d/ }}
                                         />
                                 </Form.Item>
-                        </div>
+                        </div> */}
                         <div className="item-form">
                                 <p>{t("Address")}</p>
                                 <Form.Item

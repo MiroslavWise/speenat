@@ -155,4 +155,5 @@ export default {
         "Welcome to Spenat. You're online. You can choose the media for communication or use": "Шпинатқа қош келдіңіз. Сіз желісіз. Сіз байланыс үшін медианы таңдай аласыз немесе пайдалана аласыз",
 
         "Go to Home": "Басты бетке өтіңіз",
+        "Topics for communication": "Темы для общения",
 } as Record<string, string>

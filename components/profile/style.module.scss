@@ -1,0 +1,27 @@
+.modalUl {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    list-style: none;
+
+    li {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 17px;
+        background: rgb(231, 231, 231);
+
+        p {
+            color: #667085;
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: -0.5px;
+        }
+    }
+}

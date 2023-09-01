@@ -155,4 +155,5 @@ export default {
         "Welcome to Spenat. You're online. You can choose the media for communication or use": "Welcome to Spenat. You're online. You can choose the media for communication or use",
 
         "Go to Home": "Go to Home",
+        "Topics for communication": "Topics for communication",
 } as Record<string, string>

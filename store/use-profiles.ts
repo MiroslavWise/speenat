@@ -2,8 +2,6 @@ import { create } from "zustand"
 
 import type { IUseProfiles } from "types/store/profiles"
 
-import { speakers } from "api/api-user"
-
 export const useProfiles = create<IUseProfiles>(
         (set, get) => ({
                 profiles: [],
@@ -15,7 +13,7 @@ export const useProfiles = create<IUseProfiles>(
                         price_gte: 0,
                         price_lte: 100000,
                         speaker__status: "online",
-                        spec_rating: "",
+                        topic_conversation: null,
                 },
                 getReset() {
                         set({
@@ -23,7 +21,7 @@ export const useProfiles = create<IUseProfiles>(
                                 loading: false,
                         })
                 },
-                getFilter({ verified, price_gte, price_lte, speaker__status, spec_rating, page }) {
+                getFilter({ verified, price_gte, price_lte, speaker__status, topic_conversation, page }) {
                         set({
                                 filters: {
                                         verified: verified,
@@ -31,7 +29,7 @@ export const useProfiles = create<IUseProfiles>(
                                         price_gte: price_gte,
                                         price_lte: price_lte,
                                         speaker__status: speaker__status,
-                                        spec_rating: spec_rating,
+                                        topic_conversation: topic_conversation,
                                 }
                         })
                 }

@@ -32,7 +32,7 @@ export interface IFilterProfiles{
         price_gte: number
         price_lte: number
         speaker__status: TStatus | ""
-        spec_rating: number | ""
+        topic_conversation: number | nul
         verified: boolean | ""
         page: number
 }

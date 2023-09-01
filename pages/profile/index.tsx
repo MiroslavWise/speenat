@@ -21,17 +21,11 @@ import { FLAGS_LANGUAGE } from "components/auth/components/constants"
 import styles from "./styles.module.scss";
 
 const Profile: FC = () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const { push } = useRouter()
-    const [active, setActive] = useState(false)
     const loading = useUser((state) => state.loading)
     const user = useUser((state) => state.user)
     useDocumentTitle("Profile")
-    const { changeLanguage: setLang } = useAntdLang()
-    const handleLanguage = (value: "ru" | "en" | "kz") => {
-        changeLanguage(value, i18n, setLang)
-        setActive(false)
-    }
 
     function handleChange() { push("/profile/change", undefined, { shallow: true }) }
 
@@ -69,9 +63,7 @@ const Profile: FC = () => {
                 </div>
                 <div className="profile-content">
                     <div className="profile-info-other">
-                        <ItemsData
-                            setActive={setActive}
-                        />
+                        <ItemsData />
                     </div>
                 </div>
                 <h2>{t("Условия и соглашения")}</h2>
@@ -96,27 +88,6 @@ const Profile: FC = () => {
                     </div>
                 </div>
             </div>
-            <Modal
-                open={active}
-                footer={null}
-                onCancel={() => setActive(false)}
-                centered
-                closable={false}
-            >
-                <ul className={styles.modalUl}>
-                    {
-                        FLAGS_LANGUAGE.map(item => (
-                            <li
-                                key={`${item.value}`}
-                                onClick={() => handleLanguage(item.value)}
-                            >
-                                <h1>{item.icon}</h1>
-                                <p>{item.label}</p>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </Modal>
         </>
     )
 }

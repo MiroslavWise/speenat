@@ -1,15 +1,25 @@
-import { Dispatch, FC, SetStateAction } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { useTranslation } from "react-i18next";
+import { Dispatch, FC, SetStateAction, useState } from "react"
+import { useRouter } from "next/router"
+import Image from "next/image"
+import { useTranslation } from "react-i18next"
+import { Modal } from "antd"
 
-import { useUser } from "store/use-user";
-import { useAuth } from "store/use-auth";
+import { FLAGS_LANGUAGE } from "components/auth/components/constants"
+import { useUser } from "store/use-user"
+import { useAntdLang } from "context/LanguageContext"
+import changeLanguage from "helpers/changeLanguage"
 
-export const ItemsData: FC<{ setActive: Dispatch<SetStateAction<boolean>> }> = ({ setActive }) => {
-    const { t } = useTranslation()
+import styles from "./style.module.scss"
+
+export const ItemsData: FC = () => {
+    const { t, i18n } = useTranslation()
+    const { changeLanguage: setLang } = useAntdLang()
+    const handleLanguage = (value: "ru" | "en" | "kz") => {
+        changeLanguage(value, i18n, setLang)
+        setActive(false)
+    }
     const { push } = useRouter()
-    const out = useAuth((state) => state.out)
+    const [active, setActive] = useState(false)
     const user = useUser((state) => state.user)
     const isStaff = useUser((state) => state?.user?.profile?.is_accountant)
 
@@ -78,6 +88,26 @@ export const ItemsData: FC<{ setActive: Dispatch<SetStateAction<boolean>> }> = (
                 </div>
                 <p>Сменить язык</p>
             </li>
+            <Modal
+                open={active}
+                footer={null}
+                onCancel={() => setActive(false)}
+                centered
+                closable={false}
+            >
+                <ul className={styles.modalUl}>
+                    {
+                        FLAGS_LANGUAGE.map(item => (
+                            <li
+                                key={`${item.value}`}
+                                onClick={() => handleLanguage(item.value)}
+                            >
+                                <p>{item.label}</p>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </Modal>
         </>
     )
 }

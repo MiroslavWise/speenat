@@ -15,7 +15,7 @@ const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({ handleOpen }) 
         const filters = useProfiles(state => state.filters)
         const { wsChannel } = useWeb()
 
-        const { data, isLoading, refetch } = useQuery(["speakers", filters.page, filters.price_gte, filters.price_lte, filters.speaker__status, filters.spec_rating, filters.verified], () => speakers(filters))
+        const { data, isLoading, refetch } = useQuery(["speakers", filters.page, filters.price_gte, filters.price_lte, filters.speaker__status, filters.topic_conversation, filters.verified], () => speakers(filters))
 
         useEffect(() => {
                 const eventUpdate = (event: MessageEventInit<any>) => {
