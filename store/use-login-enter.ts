@@ -1,25 +1,25 @@
-import { type DispatchWithoutAction, type Dispatch } from "react";
-import { create } from "zustand";
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { type DispatchWithoutAction, type Dispatch } from "react"
+import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 interface IUseLoginEnter {
-  active: boolean | undefined
+    active: boolean | undefined
 
-  setActive: Dispatch<boolean>
+    setActive: Dispatch<boolean>
 }
 
 export const useLoginEnter = create(
-  persist<IUseLoginEnter>(
-    (set, get) => ({
-      active: undefined,
+    persist<IUseLoginEnter>(
+        (set, get) => ({
+            active: undefined,
 
-      setActive(value) {
-        set({ active: value, })
-      },
-    }),
-    {
-      name: 'enter',
-      storage: createJSONStorage(() => sessionStorage),
-    }
-  )
+            setActive(value) {
+                set({ active: value })
+            },
+        }),
+        {
+            name: "enter",
+            storage: createJSONStorage(() => sessionStorage),
+        },
+    ),
 )

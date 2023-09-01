@@ -1,10 +1,10 @@
-.containerLeftAOrHide{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.containerLeftAOrHide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &.notActive{
-    opacity: 0;
-    visibility: hidden;
-  }
+    &.notActive {
+        opacity: 0;
+        visibility: hidden;
+    }
 }

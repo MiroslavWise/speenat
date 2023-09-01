@@ -1,19 +1,18 @@
-.invited{
-
-        .link-invited{
-                p{
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 16px;
-                        line-height: 19px;
-                        color: var(--premium-color);
-                }
-                .link{
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 16px;
-                        line-height: 19px;
-                        color: var(--secondary-color);
-                }
+.invited {
+    .link-invited {
+        p {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+            color: var(--premium-color);
         }
+        .link {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+            color: var(--secondary-color);
+        }
+    }
 }

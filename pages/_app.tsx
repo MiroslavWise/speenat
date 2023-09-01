@@ -1,29 +1,26 @@
-import type { AppProps } from 'next/app'
-import {
-        QueryClient,
-        QueryClientProvider,
-} from 'react-query'
+import type { AppProps } from "next/app"
+import { QueryClient, QueryClientProvider } from "react-query"
 
-import { Authorization } from 'context/Authorization'
-import { AntdLanguageProvider } from 'context/LanguageContext'
-import Layout from 'layout/Layout'
+import { Authorization } from "context/Authorization"
+import { AntdLanguageProvider } from "context/LanguageContext"
+import Layout from "layout/Layout"
 
-import 'styles/init.scss'
+import "styles/init.scss"
 import "plyr-react/plyr.css"
-import 'helpers/i18n'
+import "helpers/i18n"
 
 const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
-        return (
-                <AntdLanguageProvider>
-                        <QueryClientProvider client={queryClient}>
-                                <Authorization>
-                                        <Layout>
-                                                <Component {...pageProps} />
-                                        </Layout>
-                                </Authorization>
-                        </QueryClientProvider>
-                </AntdLanguageProvider>
-        )
+    return (
+        <AntdLanguageProvider>
+            <QueryClientProvider client={queryClient}>
+                <Authorization>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                </Authorization>
+            </QueryClientProvider>
+        </AntdLanguageProvider>
+    )
 }

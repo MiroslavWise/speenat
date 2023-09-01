@@ -1,200 +1,199 @@
-.content-archive{
-        padding-bottom: calc(68px + 15px - 0.7rem);
-        animation: show 450ms;
+.content-archive {
+    padding-bottom: calc(68px + 15px - 0.7rem);
+    animation: show 450ms;
 
-        .list-archive{
-                padding: 0.7rem;
-                width: calc(100% - 1.4rem);
-                display: flex;
-                flex-direction: column;
-                gap: 7px;
-                margin: 0;
-
-                .item-archive{
-                        background-color: white;
-                        border: 1px solid var(--gray-color);
-                        border-radius: 25px;
-                        overflow: hidden;
-                        width: calc(100% - 2rem);
-                        min-height: 100px;
-                        display: flex;
-                        flex-direction: row;
-                        gap: 10px;
-                        padding: 1rem;
-
-                        .avatar{
-                                border: 1px solid var(--gray-color);
-                                height: 100px;
-                                width: 100px;
-                                border-radius: 21px;
-                                object-fit: cover;
-                        }
-
-                        .descriptions{
-                                display: flex;
-                                flex-direction: column;
-                                gap: 4px;
-
-                                p{
-                                        font-weight: 600;
-                                        font-size: 13px;
-                                        line-height: 15px;
-                                        color: var(--premium-color);
-                                        text-overflow: ellipsis;
-                                        span{
-                                                color: var(--cyan);
-                                                i{
-                                                        color: var(--premium-orange);
-                                                }
-                                        }
-                                }
-                        }
-
-                        .buttons{
-                                display: flex;
-                                flex-direction: row;
-                                gap: 10px;
-                                flex-wrap: wrap;
-
-                                .login-submit, .state-revers{
-                                        flex: 1 0 auto;
-                                }
-                                .login-submit{
-                                        p{
-                                                color: white;
-                                        }
-                                }
-                        }
-                }
-
-                .input-message{
-                        display: grid;
-                        grid-template-columns: calc(100% - 35px) 25px;
-                        gap: 10px;
-                        height: 30px;
-                        align-items: center;
-
-
-                }
-
-                .item-chat{
-                        background-color: white;
-                        border: 1px solid var(--gray-color);
-                        border-radius: 25px;
-                        overflow: hidden;
-                        width: calc(100% - 1rem);
-                        min-height: 50px;
-                        display: flex;
-                        flex-direction: row;
-                        gap: 10px;
-                        padding: 0.5rem;
-
-                        .avatar{
-                                border: 1px solid var(--gray-color);
-                                height: 60px;
-                                width: 60px;
-                                border-radius: 21px;
-                                object-fit: cover;
-                        }
-
-                        .description-chat{
-                                padding-top: 0.5rem;
-                                display: flex;
-                                flex-direction: column;
-                                gap: 0.3rem;
-                                width: calc(100% - 60px - 1rem);
-
-                                .full-name-class{
-                                        font-weight: 500;
-                                        font-size: 18px;
-                                        line-height: 15px;
-                                        color: var(--premium-color);
-                                        text-overflow: ellipsis;
-                                }
-
-                                .last-messages{
-                                        width: 100%;
-                                        display: flex;
-                                        flex-direction: row;
-                                        justify-content: space-between;
-                                        p{
-                                                font-weight: 500;
-                                                font-size: 14px;
-                                                line-height: 13px;
-                                                width: 85%;
-                                                white-space: nowrap;
-                                                color: var(--secondary-color);
-                                                text-overflow: ellipsis;
-                                                overflow-x: hidden;
-                                        }
-                                }
-                                .time-message{
-                                        width: 100%;
-                                        display: flex;
-                                        flex-direction: row;
-                                        justify-content: flex-end;
-                                        i{
-                                                font-weight: 500;
-                                                font-size: 12px;
-                                                line-height: 12px;
-                                                white-space: nowrap;
-                                                color: gray;
-                                        }
-                                }
-                        }
-                }
-        }
-
-        .item-money{
-                border-radius: 25px;
-                overflow: hidden;
-                width: calc(100%);
-                background-color: white;
-                border: 1px solid var(--gray-color);
-                min-height: 100px;
-                display: flex;
-                flex-direction: column;
-                padding: 1rem;
-                gap: 15px;
-
-                .title{
-                        font-weight: 600;
-                        font-size: 20px;
-                        line-height: 15px;
-                        color: var(--premium-color);
-                }
-        }
-}
-
-.link-to-invite-text{
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 15px;
-        color: var(--premium-color);
-}
-
-@keyframes show{
-        from{
-                opacity: 0;
-        }
-        to{
-                opacity: 1;
-        }
-}
-
-.descriptions-archive{
+    .list-archive {
+        padding: 0.7rem;
+        width: calc(100% - 1.4rem);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 7px;
+        margin: 0;
 
-        p{
-                font-weight: 600;
-                font-size: 13px;
-                line-height: 15px;
-                color: var(--premium-color);
-                text-overflow: ellipsis;
-                span{
+        .item-archive {
+            background-color: white;
+            border: 1px solid var(--gray-color);
+            border-radius: 25px;
+            overflow: hidden;
+            width: calc(100% - 2rem);
+            min-height: 100px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            padding: 1rem;
+
+            .avatar {
+                border: 1px solid var(--gray-color);
+                height: 100px;
+                width: 100px;
+                border-radius: 21px;
+                object-fit: cover;
+            }
+
+            .descriptions {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                p {
+                    font-weight: 600;
+                    font-size: 13px;
+                    line-height: 15px;
+                    color: var(--premium-color);
+                    text-overflow: ellipsis;
+                    span {
                         color: var(--cyan);
+                        i {
+                            color: var(--premium-orange);
+                        }
+                    }
                 }
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                flex-wrap: wrap;
+
+                .login-submit,
+                .state-revers {
+                    flex: 1 0 auto;
+                }
+                .login-submit {
+                    p {
+                        color: white;
+                    }
+                }
+            }
         }
+
+        .input-message {
+            display: grid;
+            grid-template-columns: calc(100% - 35px) 25px;
+            gap: 10px;
+            height: 30px;
+            align-items: center;
+        }
+
+        .item-chat {
+            background-color: white;
+            border: 1px solid var(--gray-color);
+            border-radius: 25px;
+            overflow: hidden;
+            width: calc(100% - 1rem);
+            min-height: 50px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            padding: 0.5rem;
+
+            .avatar {
+                border: 1px solid var(--gray-color);
+                height: 60px;
+                width: 60px;
+                border-radius: 21px;
+                object-fit: cover;
+            }
+
+            .description-chat {
+                padding-top: 0.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+                width: calc(100% - 60px - 1rem);
+
+                .full-name-class {
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 15px;
+                    color: var(--premium-color);
+                    text-overflow: ellipsis;
+                }
+
+                .last-messages {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    p {
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 13px;
+                        width: 85%;
+                        white-space: nowrap;
+                        color: var(--secondary-color);
+                        text-overflow: ellipsis;
+                        overflow-x: hidden;
+                    }
+                }
+                .time-message {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                    i {
+                        font-weight: 500;
+                        font-size: 12px;
+                        line-height: 12px;
+                        white-space: nowrap;
+                        color: gray;
+                    }
+                }
+            }
+        }
+    }
+
+    .item-money {
+        border-radius: 25px;
+        overflow: hidden;
+        width: calc(100%);
+        background-color: white;
+        border: 1px solid var(--gray-color);
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 15px;
+
+        .title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 15px;
+            color: var(--premium-color);
+        }
+    }
+}
+
+.link-to-invite-text {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 15px;
+    color: var(--premium-color);
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.descriptions-archive {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    p {
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 15px;
+        color: var(--premium-color);
+        text-overflow: ellipsis;
+        span {
+            color: var(--cyan);
+        }
+    }
 }

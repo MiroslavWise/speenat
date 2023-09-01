@@ -13,37 +13,32 @@ import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
 
 const Teachers: NextPage = () => {
-        const { t } = useTranslation()
-        const { push } = useRouter()
-        const [open, setOpen] = useState(false)
-        const handleOpen = () => setOpen(true)
-        useDocumentTitle("Teachers")
+    const { t } = useTranslation()
+    const { push } = useRouter()
+    const [open, setOpen] = useState(false)
+    const handleOpen = () => setOpen(true)
+    useDocumentTitle("Teachers")
 
-        const isSpeaker = useUser(state => state.is_speaker)
-        const loadingUser = useUser(state => state.loading)
+    const isSpeaker = useUser((state) => state.is_speaker)
+    const loadingUser = useUser((state) => state.loading)
 
-        useEffect(() => {
-                if (isSpeaker) {
-                        push('/archive', undefined)
-                }
-        }, [isSpeaker])
+    useEffect(() => {
+        if (isSpeaker) {
+            push("/archive", undefined)
+        }
+    }, [isSpeaker])
 
-        if(loadingUser) return <Loader />
+    if (loadingUser) return <Loader />
 
-        return (
-                <div className="wrapper teachers">
-                        <Button className="button-search" onClick={handleOpen}>
-                                <p>{t("Search Parameters")}</p>
-                        </Button>
-                        <ListSpeaker
-                                handleOpen={handleOpen}
-                        />
-                        <DrawerSearch
-                                open={open}
-                                setOpen={setOpen}
-                        />
-                </div>
-        )
+    return (
+        <div className="wrapper teachers">
+            <Button className="button-search" onClick={handleOpen}>
+                <p>{t("Search Parameters")}</p>
+            </Button>
+            <ListSpeaker handleOpen={handleOpen} />
+            <DrawerSearch open={open} setOpen={setOpen} />
+        </div>
+    )
 }
 
 export default Teachers

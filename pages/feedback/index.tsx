@@ -19,16 +19,15 @@ const Feedback = () => {
     const { push } = useRouter()
     const [text, setText] = useState("")
     const [rate, setRate] = useState(0)
-    const { deleteAll, call_info, speaker_info, user_info } =
-        usePropsCallingJanus(
-            (state) => ({
-                call_info: state.call_info,
-                speaker_info: state.speaker_info,
-                user_info: state.user_info,
-                deleteAll: state.deleteAll,
-            }),
-            shallow,
-        )
+    const { deleteAll, call_info, speaker_info, user_info } = usePropsCallingJanus(
+        (state) => ({
+            call_info: state.call_info,
+            speaker_info: state.speaker_info,
+            user_info: state.user_info,
+            deleteAll: state.deleteAll,
+        }),
+        shallow,
+    )
 
     const { user, isSpeaker } = useUser(
         (state) => ({
@@ -41,9 +40,9 @@ const Feedback = () => {
     useEffect(() => {
         if (!!deleteAll && !call_info) {
             if (isSpeaker) {
-                push("/archive");
+                push("/archive")
             } else {
-                push("/teachers");
+                push("/teachers")
             }
         }
     }, [call_info, deleteAll])
@@ -54,7 +53,7 @@ const Feedback = () => {
                 push("/archive")
                 //@ts-ignore
                 deleteAll()
-            });
+            })
         } else {
             push("/teachers")
         }
@@ -100,12 +99,11 @@ const Feedback = () => {
     }, [])
 
     const urlAvatar =
-        (speaker_info?.avatar_url?.includes("default") ||
-            !speaker_info?.avatar_url)
+        speaker_info?.avatar_url?.includes("default") || !speaker_info?.avatar_url
             ? "/images/default.png"
             : replaceHttps(speaker_info?.avatar_url!)
     const urlStudent =
-        (user_info?.avatar_url?.includes("default") || !user_info?.avatar_url)
+        user_info?.avatar_url?.includes("default") || !user_info?.avatar_url
             ? "/images/default.png"
             : replaceHttps(user_info?.avatar_url!)
 
@@ -113,14 +111,10 @@ const Feedback = () => {
         <div className={styles.wrapper}>
             <div className={styles.container}>
                 <header>
-                    <h2>
-                        {isSpeaker
-                            ? t("Recommendations to the student")
-                            : t("Rate the teacher")}
-                    </h2>
+                    <h2>{isSpeaker ? t("Recommendations to the student") : t("Rate the teacher")}</h2>
                 </header>
                 <section>
-                    <Image 
+                    <Image
                         src={isSpeaker ? urlStudent : urlAvatar}
                         alt="avatar"
                         width={400}
@@ -133,33 +127,29 @@ const Feedback = () => {
                         className={styles.textArea}
                         rows={4}
                         minLength={10}
-                        placeholder={isSpeaker ? `${t("Write a recommendation to the student",)} ${user_info?.full_name}` : t("feedback")!}
+                        placeholder={
+                            isSpeaker
+                                ? `${t("Write a recommendation to the student")} ${user_info?.full_name}`
+                                : t("feedback")!
+                        }
                         value={text}
-                        onChange={(value) => { setText(value?.target?.value) }}
+                        onChange={(value) => {
+                            setText(value?.target?.value)
+                        }}
                     />
                     {!isSpeaker ? (
-                        <Rate
-                            onChange={setRate}
-                            value={rate}
-                            style={{ color: "var(--premium-color)" }}
-                        />
+                        <Rate onChange={setRate} value={rate} style={{ color: "var(--premium-color)" }} />
                     ) : null}
-                    <Button
-                        className={styles.button}
-                        onClick={sendReview}
-                        disabled={text.length < 5}
-                    >
+                    <Button className={styles.button} onClick={sendReview} disabled={text.length < 5}>
                         <p>{t("Send")}</p>
                     </Button>
                 </section>
                 <footer>
-                    <Link href={isSpeaker ? "/archive" : "/teachers"}>
-                        {t("Go to Home")}
-                    </Link>
+                    <Link href={isSpeaker ? "/archive" : "/teachers"}>{t("Go to Home")}</Link>
                 </footer>
             </div>
         </div>
     )
 }
 
-export default Feedback;
+export default Feedback

@@ -1,17 +1,15 @@
 import { create } from "zustand"
 
 interface IUseModal {
-        active: boolean
+    active: boolean
 
-        setActive(value: boolean): void
+    setActive(value: boolean): void
 }
 
-export const useModal = create<IUseModal>(
-        (set, get) => ({
-                active: false,
+export const useModal = create<IUseModal>((set, get) => ({
+    active: false,
 
-                setActive(value) {
-                        set({ active: value })
-                },
-        })
-)
+    setActive(value) {
+        set({ active: value })
+    },
+}))

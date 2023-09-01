@@ -66,10 +66,7 @@ export const useAuth = create(
             },
             async checkAuth() {
                 try {
-                    if (
-                        !isTokenExpired(get().expiration) &&
-                        typeof get().expiration === "number"
-                    ) {
+                    if (!isTokenExpired(get().expiration) && typeof get().expiration === "number") {
                         set({
                             state: "Main",
                         })
@@ -114,10 +111,7 @@ export const useAuth = create(
                         ok: false,
                     }
                 } catch (e) {
-                    console.warn(
-                        "---ERROR UPDATE REFRESH TOKEN OR TOKEN--- ",
-                        e,
-                    )
+                    console.warn("---ERROR UPDATE REFRESH TOKEN OR TOKEN--- ", e)
                     set({
                         token: undefined,
                         refreshToken: undefined,
