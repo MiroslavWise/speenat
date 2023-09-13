@@ -1,10 +1,4 @@
-import {
-    type FC,
-    type ReactNode,
-    createContext,
-    useContext,
-    useState,
-} from "react"
+import { type FC, type ReactNode, createContext } from "react"
 import { shallow } from "zustand/shallow"
 
 import type { IAuthContext } from "types/auth"
@@ -46,9 +40,5 @@ export const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
 
     const ShowComponent = Routers[state || "Gates"]
 
-    return (
-        <AuthorizationContext.Provider value={{ signOut: signOut }}>
-            {ShowComponent}
-        </AuthorizationContext.Provider>
-    )
+    return <AuthorizationContext.Provider value={{ signOut: signOut }}>{ShowComponent}</AuthorizationContext.Provider>
 }

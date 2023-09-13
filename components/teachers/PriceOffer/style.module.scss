@@ -1,0 +1,29 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    li {
+        padding: 5px 10px;
+        border-radius: 10px;
+        background: #fff;
+        span {
+            color: #101828;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 20px;
+            letter-spacing: 0px;
+        }
+
+        &.active {
+            background: var(--premium-color);
+            span {
+                color: var(--secondary-purple-light);
+            }
+        }
+    }
+}

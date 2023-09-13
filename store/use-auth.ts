@@ -103,10 +103,22 @@ export const useAuth = create(
                                 ok: true,
                             }
                         }
+                        set({
+                            token: undefined,
+                            refreshToken: undefined,
+                            expiration: undefined,
+                            state: "SignIn",
+                        })
                         return {
                             ok: false,
                         }
                     }
+                    set({
+                        token: undefined,
+                        refreshToken: undefined,
+                        expiration: undefined,
+                        state: "SignIn",
+                    })
                     return {
                         ok: false,
                     }

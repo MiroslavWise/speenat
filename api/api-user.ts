@@ -46,14 +46,10 @@ export const speakers = async ({
 
     return axiosInstance
         .get(
-            `/speaker-filter/?page=${page}${
-                verified ? `&verified=${verified}` : ""
-            }${
+            `/speaker-filter/?page=${page}${verified ? `&verified=${verified}` : ""}${
                 topic.length > 0 ? topic.join("") : ""
             }&price_gte=${price_gte}&price_lte=${price_lte}${
-                speaker__status
-                    ? `&speaker__profile__status=${speaker__status}`
-                    : ""
+                speaker__status ? `&speaker__profile__status=${speaker__status}` : ""
             }`,
         )
         .then((response) => response.data)
@@ -71,10 +67,7 @@ export const speakerId = async (id: any): Promise<ISpeakerData> => {
         })
 }
 
-export const feedbackSpeakerId = async (
-    id: any,
-    page: number,
-): Promise<IFeedback> => {
+export const feedbackSpeakerId = async (id: any, page: number): Promise<IFeedback> => {
     return axiosInstance
         .get(`/speaker/${id}/feedback/?page=${page}`)
         .then((response) => response.data)
@@ -110,9 +103,7 @@ export const specializations = async (): Promise<ISpecItems[]> => {
         })
 }
 
-export const specializationDelete = async (
-    id: number,
-): Promise<ISpecItems[]> => {
+export const specializationDelete = async (id: number): Promise<ISpecItems[]> => {
     return axiosInstance
         .delete(`/speaker/spec/${id}/delete/`)
         .then((response) => response.data)

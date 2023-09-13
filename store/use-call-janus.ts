@@ -25,8 +25,7 @@ export const useCallJanus = create(
             },
             getTimerCurrent() {
                 if (get().time) {
-                    const REMAINING_TIME =
-                        get().time! + OVERALL_TIME - dayjs().valueOf() / 1000
+                    const REMAINING_TIME = get().time! + OVERALL_TIME - dayjs().valueOf() / 1000
                     set({ currentTime: Number(REMAINING_TIME.toFixed(0)) })
                 }
             },

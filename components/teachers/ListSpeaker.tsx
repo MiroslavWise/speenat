@@ -10,15 +10,14 @@ import { useWeb } from "context/WebSocketContext"
 import { useProfiles } from "store/use-profiles"
 import { speakers } from "api/api-user"
 
-const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({
-    handleOpen,
-}) => {
+const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({ handleOpen }) => {
     const { t } = useTranslation()
     const filters = useProfiles((state) => state.filters)
     const { wsChannel } = useWeb()
 
-    const { data, isLoading, refetch } = useQuery(
-        [
+    const { data, isLoading, refetch } = useQuery({
+        queryFn: () => speakers(filters),
+        queryKey: [
             "speakers",
             filters.page,
             filters.price_gte,
@@ -27,8 +26,7 @@ const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({
             filters.topic_conversation,
             filters.verified,
         ],
-        () => speakers(filters),
-    )
+    })
 
     useEffect(() => {
         const eventUpdate = (event: MessageEventInit<any>) => {
@@ -49,13 +47,8 @@ const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({
             {data?.count === 0 && isLoading === false && (
                 <div className="descriptions">
                     <p>
-                        {t(
-                            "Welcome to Spenat. You're online. You can choose the media for communication or use",
-                        )}{" "}
-                        <span
-                            style={{ color: "var(--secondary-color)" }}
-                            onClick={handleOpen}
-                        >
+                        {t("Welcome to Spenat. You're online. You can choose the media for communication or use")}{" "}
+                        <span style={{ color: "var(--secondary-color)" }} onClick={handleOpen}>
                             {t("search_")}
                         </span>
                     </p>
@@ -63,12 +56,7 @@ const ListSpeaker: FC<{ handleOpen: DispatchWithoutAction }> = ({
             )}
             {data && data?.results?.length > 0 && isLoading === false ? (
                 <MotionUL classNames={["teacher-list"]}>
-                    {data?.results?.map((item) => (
-                        <ItemSpeaker
-                            {...item}
-                            key={`${item?.id}_item_speaker`}
-                        />
-                    ))}
+                    {data?.results?.map((item) => <ItemSpeaker {...item} key={`${item?.id}_item_speaker`} />)}
                 </MotionUL>
             ) : null}
         </div>

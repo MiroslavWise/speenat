@@ -67,7 +67,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
             height={"auto"}
         >
             <div className="wrapper-search">
-                <div className="block-search">
+                {/* <div className="block-search">
                     <p>{t("Session price")}</p>
                     <div className="inputs">
                         <InputNumber
@@ -97,7 +97,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                             }
                         />
                     </div>
-                </div>
+                </div> */}
                 <Divider />
                 <div className="block-search">
                     <p>{t("Topics for communication")}</p>

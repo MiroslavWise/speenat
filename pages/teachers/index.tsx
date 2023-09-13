@@ -6,11 +6,12 @@ import { useTranslation } from "react-i18next"
 import { Button } from "antd"
 
 import Loader from "@loader-spin"
-import DrawerSearch from "components/teachers/DrawerSearch"
+import { useUser } from "store/use-user"
+import { PriceOffer } from "components/teachers/PriceOffer"
 import ListSpeaker from "components/teachers/ListSpeaker"
+import DrawerSearch from "components/teachers/DrawerSearch"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
-import { useUser } from "store/use-user"
 
 const Teachers: NextPage = () => {
     const { t } = useTranslation()
@@ -32,6 +33,7 @@ const Teachers: NextPage = () => {
 
     return (
         <div className="wrapper teachers">
+            <PriceOffer />
             <Button className="button-search" onClick={handleOpen}>
                 <p>{t("Search Parameters")}</p>
             </Button>

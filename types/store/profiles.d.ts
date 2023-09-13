@@ -1,5 +1,6 @@
 import { Dispatch, DispatchWithoutAction } from "react"
 import { TStatus } from "./user"
+import type { TPriceOffer } from "./search"
 
 export interface IProfile {
     id: number
@@ -47,7 +48,9 @@ export interface IUseProfiles {
     loading: boolean
     filters: IFilterProfiles
     total: number
+    priceOffer: TPriceOffer
 
+    usePriceOffer(value: TPriceOffer): void
     getReset: DispatchWithoutAction
     getFilter: Dispatch<IFilterProfiles>
 }
