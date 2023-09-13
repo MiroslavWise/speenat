@@ -157,4 +157,10 @@ export default {
 
         "Go to Home": "Перейти на Главную",
         "Topics for communication": "Темы для общения",
+
+
+        economy: "эконом",
+        business: "бизнес",
+        premium: "премиум",
+        vip: "vip",
 } as Record<string, string>

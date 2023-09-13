@@ -156,4 +156,10 @@ export default {
 
         "Go to Home": "Басты бетке өтіңіз",
         "Topics for communication": "Темы для общения",
+
+
+        economy: "үнемді",
+        business: "бизнес",
+        premium: "жоғары",
+        vip: "vip",
 } as Record<string, string>

@@ -156,4 +156,10 @@ export default {
 
         "Go to Home": "Go to Home",
         "Topics for communication": "Topics for communication",
+
+
+        economy: "economy",
+        business: "business",
+        premium: "premium",
+        vip: "vip",
 } as Record<string, string>

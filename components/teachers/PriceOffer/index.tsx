@@ -4,6 +4,7 @@ import styles from "./style.module.scss"
 import { cx } from "functions/cx"
 import { useProfiles } from "store/use-profiles"
 import { shallow } from "zustand/shallow"
+import { useTranslation } from "react-i18next"
 
 const BUTTONS: { value: TPriceOffer }[] = [
     {
@@ -21,6 +22,7 @@ const BUTTONS: { value: TPriceOffer }[] = [
 ]
 
 export function PriceOffer() {
+    const { t } = useTranslation()
     const { usePriceOffer, priceOffer } = useProfiles((state) => state, shallow)
 
     return (
@@ -33,7 +35,7 @@ export function PriceOffer() {
                         usePriceOffer(item.value)
                     }}
                 >
-                    <span>{item.value?.toUpperCase()}</span>
+                    <span>{t(item.value!)!.toUpperCase()}</span>
                 </li>
             ))}
         </ul>
