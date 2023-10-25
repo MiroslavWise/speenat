@@ -10,9 +10,9 @@ const PayData: NextPage = () => {
     const isSpeaker = useUser((state) => state.is_speaker)
     useDocumentTitle("Online_payments")
 
-    const onOutMoney = (values: { "money-out": any }) => { }
+    const onOutMoney = (values: { "money-out": any }) => {}
 
-    const onInMoney = (values: { "money-incom": any }) => { }
+    const onInMoney = (values: { "money-incom": any }) => {}
 
     const checkPrice50 = (_: any, value: { number: number }) => {
         if (value.number > 50) {
@@ -30,7 +30,45 @@ const PayData: NextPage = () => {
 
     return (
         <div className="content-archive">
-            {!isSpeaker && (
+            {isSpeaker ? (
+                <Form
+                    onFinish={onOutMoney}
+                    className="list-archive form"
+                    initialValues={{
+                        "money-out": 250,
+                    }}
+                >
+                    <div className="item-money">
+                        <p className="title">{t("Withdrawal of money")}</p>
+                        <div className="item-form">
+                            <p>{t("Specify the withdrawal amount (the minimum withdrawal amount is 250₸)")}</p>
+                            <Form.Item
+                                name="money-out"
+                                rules={
+                                    [
+                                        // { validator: checkPrice250 }
+                                    ]
+                                }
+                            >
+                                <InputNumber
+                                    min={250}
+                                    type="number"
+                                    prefix="₸"
+                                    style={{
+                                        margin: 0,
+                                        borderColor: "var( --gray-color)",
+                                    }}
+                                />
+                            </Form.Item>
+                        </div>
+                        <div className="item-form">
+                            <Button className="login-submit" htmlType="submit">
+                                <p>{t("Withdraw money")}</p>
+                            </Button>
+                        </div>
+                    </div>
+                </Form>
+            ) : (
                 <Form
                     onFinish={onInMoney}
                     className="list-archive form"
@@ -71,43 +109,6 @@ const PayData: NextPage = () => {
                     </div>
                 </Form>
             )}
-            <Form
-                onFinish={onOutMoney}
-                className="list-archive form"
-                initialValues={{
-                    "money-out": 250,
-                }}
-            >
-                <div className="item-money">
-                    <p className="title">{t("Withdrawal of money")}</p>
-                    <div className="item-form">
-                        <p>{t("Specify the withdrawal amount (the minimum withdrawal amount is 250₸)")}</p>
-                        <Form.Item
-                            name="money-out"
-                            rules={
-                                [
-                                    // { validator: checkPrice250 }
-                                ]
-                            }
-                        >
-                            <InputNumber
-                                min={250}
-                                type="number"
-                                prefix="₸"
-                                style={{
-                                    margin: 0,
-                                    borderColor: "var( --gray-color)",
-                                }}
-                            />
-                        </Form.Item>
-                    </div>
-                    <div className="item-form">
-                        <Button className="login-submit" htmlType="submit">
-                            <p>{t("Withdraw money")}</p>
-                        </Button>
-                    </div>
-                </div>
-            </Form>
         </div>
     )
 }

@@ -82,16 +82,6 @@ const FormSpec: FC = () => {
         return undefined
     }, [spec, id])
 
-    const object_time: any = useMemo(() => {
-        const times: Record<string, number> = {}
-        currentSpec?.consultation_time?.forEach((item) => {
-            Object.assign(times, {
-                [item?.sessions_time]: Number(item?.original_price),
-            })
-        })
-        return times
-    }, [currentSpec])
-
     const onUpdate = (values: IValuesSpecUpdateData) => {
         console.log("values: ", values)
         setLoading(true)

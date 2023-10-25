@@ -31,9 +31,3 @@ const ServiceRule: NextPage = () => {
 }
 
 export default ServiceRule
-
-export const getStaticProps = () => {
-    return {
-        props: {},
-    }
-}

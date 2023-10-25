@@ -135,7 +135,7 @@ export default {
         лет: "лет",
 
         "invited you to the Spenat service -male": "пригласил Вас в сервис Spenat",
-        "invited you to the Spenat service -female": "пригласилаS Вас в сервис Spenat",
+        "invited you to the Spenat service -female": "пригласилаS Вас в сервис Spenat", 
 
         "Waiting for a response from": "Ожидание ответа от",
         "Session": "Сессия",

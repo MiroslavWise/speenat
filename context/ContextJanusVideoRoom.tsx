@@ -12,8 +12,6 @@ import {
 } from "react"
 import { useRouter } from "next/router"
 const { v4: uuidv4 } = require("uuid")
-import { shallow } from "zustand/shallow"
-import { isMobile, useMobileOrientation } from "react-device-detect"
 
 import { Janus } from "scripts/janus"
 import { useUser } from "store/use-user"
@@ -46,7 +44,6 @@ var jsep: any
 var trackId: any = null
 var tracks: any = null
 var speaker_id: any = null
-var speaker_id_prof: any
 var student_id: any = null
 var uuid_conf: any = null
 var doSimulcast = false
@@ -62,23 +59,14 @@ var localTracks: any = {},
     localVideos = 0
 var feeds: any[] = [],
     feedStreams: any = {}
-var doSimulcast =
-    getQueryStringValue("simulcast") === "yes" ||
-    getQueryStringValue("simulcast") === "true"
+var doSimulcast = getQueryStringValue("simulcast") === "yes" || getQueryStringValue("simulcast") === "true"
 
-var acodec =
-    getQueryStringValue("acodec") !== "" ? getQueryStringValue("acodec") : null
-var vcodec =
-    getQueryStringValue("vcodec") !== "" ? getQueryStringValue("vcodec") : null
-var doDtx =
-    getQueryStringValue("dtx") === "yes" ||
-    getQueryStringValue("dtx") === "true"
+var acodec = getQueryStringValue("acodec") !== "" ? getQueryStringValue("acodec") : null
+var vcodec = getQueryStringValue("vcodec") !== "" ? getQueryStringValue("vcodec") : null
+var doDtx = getQueryStringValue("dtx") === "yes" || getQueryStringValue("dtx") === "true"
 var subscriber_mode =
-    getQueryStringValue("subscriber-mode") === "yes" ||
-    getQueryStringValue("subscriber-mode") === "true"
-var use_msid =
-    getQueryStringValue("msid") === "yes" ||
-    getQueryStringValue("msid") === "true"
+    getQueryStringValue("subscriber-mode") === "yes" || getQueryStringValue("subscriber-mode") === "true"
+var use_msid = getQueryStringValue("msid") === "yes" || getQueryStringValue("msid") === "true"
 var remoteFeed: any
 
 interface IValuesResponseConfInfo {
@@ -96,13 +84,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     const refVideoLeft = useRef<HTMLDivElement>()
     const refVideoRight = useRef<HTMLDivElement>()
     const [doSvc, setDoSvc] = useState("")
-    const { deleteTime, setTime } = useCallJanus(
-        (state) => ({
-            setTime: state.setTime,
-            deleteTime: state.deleteTime,
-        }),
-        shallow,
-    )
+    const { deleteTime, setTime } = useCallJanus()
     const {
         call_info,
         speaker_info,
@@ -110,27 +92,12 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         setCallInfo,
         setSpeakerInfo,
         setUserInfo,
-        idRoomState,
+        idRoom: idRoomState,
         setIdRoom,
         setUuidRoom,
         deleteAll,
         uuidRoom,
-    } = usePropsCallingJanus(
-        (state) => ({
-            call_info: state.call_info,
-            speaker_info: state.speaker_info,
-            user_info: state.user_info,
-            setCallInfo: state.setCallInfo,
-            setSpeakerInfo: state.setSpeakerInfo,
-            uuidRoom: state.uuidRoom,
-            setUserInfo: state.setUserInfo,
-            idRoomState: state.idRoom,
-            setIdRoom: state.setIdRoom,
-            setUuidRoom: state.setUuidRoom,
-            deleteAll: state.deleteAll,
-        }),
-        shallow,
-    )
+    } = usePropsCallingJanus()
 
     useEffect(() => {
         setDoSvc(getQueryStringValue("svc"))
@@ -138,21 +105,19 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     useEffect(() => {
         setTimeout(() => {
             if (call_info?.uuid) {
-                apiToConfInfo(call_info.uuid).then(
-                    (response: IValuesResponseConfInfo) => {
-                        if (response?.status === "CALL_ONLINE") {
-                            joinInVideoRoom(response.id).finally(() => {
-                                requestAnimationFrame(() => {
-                                    publishOwnFeed({
-                                        useAudio: true,
-                                        useVideo: true,
-                                    })
-                                    setVisible(true)
+                apiToConfInfo(call_info.uuid).then((response: IValuesResponseConfInfo) => {
+                    if (response?.status === "CALL_ONLINE") {
+                        joinInVideoRoom(response.id).finally(() => {
+                            requestAnimationFrame(() => {
+                                publishOwnFeed({
+                                    useAudio: true,
+                                    useVideo: true,
                                 })
+                                setVisible(true)
                             })
-                        }
-                    },
-                )
+                        })
+                    }
+                })
             } else {
                 deleteAll()
             }
@@ -166,7 +131,6 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         }
         if (speaker_info) {
             speaker_id = speaker_info?.speaker_id
-            speaker_id_prof = speaker_info?.profile_id
         }
         if (user_info) {
             student_id = user_info?.profile_id
@@ -243,17 +207,9 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                 }
                             },
                             iceState: function (state: any) {},
-                            mediaState: function (
-                                medium: any,
-                                on: any,
-                                mid: any,
-                            ) {},
+                            mediaState: function (medium: any, on: any, mid: any) {},
                             webrtcState: function (on: any) {},
-                            slowLink: function (
-                                uplink: any,
-                                lost: any,
-                                mid: any,
-                            ) {},
+                            slowLink: function (uplink: any, lost: any, mid: any) {},
                             onmessage: function (msg: any, jsep: any) {
                                 let event = msg["videoroom"]
                                 if (event) {
@@ -273,13 +229,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                                     stream["display"] = display
                                                 }
                                                 feedStreams[id] = streams
-                                                newRemoteFeed(
-                                                    id,
-                                                    display,
-                                                    streams,
-                                                    uuid,
-                                                    myRoomId,
-                                                )
+                                                newRemoteFeed(id, display, streams, uuid, myRoomId)
                                             }
                                         }
                                     } else if (event === "destroyed") {
@@ -290,9 +240,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                                 let stream = streams[i]
                                                 stream["id"] = myid
                                                 stream["display"] = `${
-                                                    is_speaker
-                                                        ? "speaker"
-                                                        : "student"
+                                                    is_speaker ? "speaker" : "student"
                                                 }-${myusername}`
                                             }
                                             feedStreams[myid] = streams
@@ -309,22 +257,13 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                                     stream["display"] = display
                                                 }
                                                 feedStreams[id] = streams
-                                                newRemoteFeed(
-                                                    id,
-                                                    display,
-                                                    streams,
-                                                    uuid,
-                                                    myRoomId,
-                                                )
+                                                newRemoteFeed(id, display, streams, uuid, myRoomId)
                                             }
                                         } else if (msg["leaving"]) {
                                             let leaving = msg["leaving"]
                                             let remoteFeed = null
                                             for (let i = 1; i < 6; i++) {
-                                                if (
-                                                    feeds[i] &&
-                                                    feeds[i].rfid == leaving
-                                                ) {
+                                                if (feeds[i] && feeds[i].rfid == leaving) {
                                                     remoteFeed = feeds[i]
                                                     break
                                                 }
@@ -343,16 +282,12 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                             if (unpublished === "ok") {
                                                 // sfutest.hangup()
                                                 if (refVideoLeft.current) {
-                                                    refVideoLeft.current.innerHTML =
-                                                        ""
+                                                    refVideoLeft.current.innerHTML = ""
                                                 }
                                             }
                                             let remoteFeed = null
                                             for (let i = 1; i < 6; i++) {
-                                                if (
-                                                    feeds[i] &&
-                                                    feeds[i].rfid == unpublished
-                                                ) {
+                                                if (feeds[i] && feeds[i].rfid == unpublished) {
                                                     remoteFeed = feeds[i]
                                                     break
                                                 }
@@ -363,10 +298,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                             }
                                             delete feedStreams[unpublished]
                                         } else if (msg["error"]) {
-                                            console.info(
-                                                "---ERROR---",
-                                                msg["error"],
-                                            )
+                                            console.info("---ERROR---", msg["error"])
                                         }
                                     }
                                 }
@@ -399,19 +331,13 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                             let tracks = stream.getTracks()
                                             for (let i in tracks) {
                                                 let mst = tracks[i]
-                                                if (
-                                                    mst !== null &&
-                                                    mst !== undefined
-                                                )
-                                                    mst.stop()
+                                                if (mst !== null && mst !== undefined) mst.stop()
                                             }
                                         } catch (e) {}
                                     }
                                     if (track.kind === "video") {
                                         if (refVideoLeft.current) {
-                                            refVideoLeft.current.getElementsByTagName(
-                                                "video",
-                                            )[0].style.display = "none"
+                                            refVideoLeft.current.getElementsByTagName("video")[0].style.display = "none"
                                         }
                                         localVideos--
                                         if (localVideos === 0) {
@@ -431,32 +357,19 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                                     localVideos++
                                     stream = new MediaStream([track])
                                     localTracks[trackId] = stream
-                                    const newElementVideo =
-                                        document.createElement("video")
-                                    newElementVideo.className =
-                                        "rounded centered peervideo"
+                                    const newElementVideo = document.createElement("video")
+                                    newElementVideo.className = "rounded centered peervideo"
                                     newElementVideo.id = `myvideo${trackId}`
                                     newElementVideo.style.width = "100%"
                                     newElementVideo.style.height = "100%"
                                     newElementVideo.autoplay = true
                                     newElementVideo.playsInline = true
                                     newElementVideo.muted = true
-                                    refVideoLeft.current?.appendChild(
-                                        newElementVideo,
-                                    )
-                                    Janus.attachMediaStream(
-                                        document.getElementById(
-                                            `myvideo${trackId}`,
-                                        ),
-                                        stream,
-                                    )
+                                    refVideoLeft.current?.appendChild(newElementVideo)
+                                    Janus.attachMediaStream(document.getElementById(`myvideo${trackId}`), stream)
                                 }
                             },
-                            onremotetrack: function (
-                                track: any,
-                                mid: any,
-                                on: any,
-                            ) {},
+                            onremotetrack: function (track: any, mid: any, on: any) {},
                             oncleanup: function () {
                                 mystream = null
                                 delete feedStreams[myid]
@@ -530,13 +443,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
             })
     }
 
-    function publishOwnFeed({
-        useAudio,
-        useVideo,
-    }: {
-        useAudio: boolean
-        useVideo: boolean
-    }) {
+    function publishOwnFeed({ useAudio, useVideo }: { useAudio: boolean; useVideo: boolean }) {
         let tracks = []
         if (useAudio) {
             tracks.push({
@@ -551,20 +458,14 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                 capture: true,
                 recv: false,
                 simulcast: doSimulcast,
-                svc:
-                    (vcodec === "vp9" || vcodec === "av1") && doSvc
-                        ? doSvc
-                        : null,
+                svc: (vcodec === "vp9" || vcodec === "av1") && doSvc ? doSvc : null,
             })
         }
         sfutest.createOffer({
             tracks: tracks,
             customizeSdp(jsep: any) {
                 if (doDtx) {
-                    jsep.sdp = jsep.sdp.replace(
-                        "useinbandfec=1",
-                        "useinbandfec=1;usedtx=1",
-                    )
+                    jsep.sdp = jsep.sdp.replace("useinbandfec=1", "useinbandfec=1;usedtx=1")
                 }
             },
             success(jsep: any) {
@@ -574,9 +475,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                     video: useVideo,
                     room: Number(call_info?.conf_id!),
                     record: true,
-                    filename: `/opt/janus/share/janus/recordings/${
-                        is_speaker ? speaker_id : student_id
-                    }-${uuid_conf}`,
+                    filename: `/opt/janus/share/janus/recordings/${is_speaker ? speaker_id : student_id}-${uuid_conf}`,
                 }
                 if (acodec) {
                     if (useAudio) {
@@ -622,13 +521,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
         )
     }
 
-    function newRemoteFeed(
-        id: any,
-        display: any,
-        streams: any,
-        opaqueId: any,
-        idRoom: number,
-    ) {
+    function newRemoteFeed(id: any, display: any, streams: any, opaqueId: any, idRoom: number) {
         let remoteFeed: any = null
         if (!streams) streams = feedStreams[id]
         janus.attach({
@@ -678,9 +571,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                             }
                         }
                         if (!remoteFeed.spinner) {
-                            let target = document.getElementById(
-                                "videoremote" + remoteFeed.rfindex,
-                            )
+                            let target = document.getElementById("videoremote" + remoteFeed.rfindex)
                         } else {
                             remoteFeed.spinner.spin()
                         }
@@ -719,10 +610,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                         tracks: [{ type: "data" }],
                         customizeSdp: function (jsep: any) {
                             if (stereo && jsep.sdp.indexOf("stereo=1") == -1) {
-                                jsep.sdp = jsep.sdp.replace(
-                                    "useinbandfec=1",
-                                    "useinbandfec=1;stereo=1",
-                                )
+                                jsep.sdp = jsep.sdp.replace("useinbandfec=1", "useinbandfec=1;stereo=1")
                             }
                         },
                         success: function (jsep: any) {
@@ -736,12 +624,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                 }
             },
             onlocaltrack: function (track: any, on: any) {},
-            onremotetrack: function (
-                track: any,
-                mid: any,
-                on: any,
-                metadata: any,
-            ) {
+            onremotetrack: function (track: any, mid: any, on: any, metadata: any) {
                 if (!on) {
                     if (track.kind === "video") {
                         remoteFeed.remoteVideos--
@@ -764,12 +647,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                     newAudioElement.id = `remotevideo${remoteFeed.rfindex}-${mid}`
                     newAudioElement.autoplay = true
                     refVideoRight.current?.appendChild(newAudioElement)
-                    Janus.attachMediaStream(
-                        document.getElementById(
-                            `remotevideo${remoteFeed.rfindex}-${mid}`,
-                        ),
-                        stream,
-                    )
+                    Janus.attachMediaStream(document.getElementById(`remotevideo${remoteFeed.rfindex}-${mid}`), stream)
                     if (remoteFeed.remoteVideos === 0) {
                     }
                 } else {
@@ -785,12 +663,7 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
                     newElementVideo.playsInline = true
                     newElementVideo.muted = true
                     refVideoRight.current?.appendChild(newElementVideo)
-                    Janus.attachMediaStream(
-                        document.getElementById(
-                            `remotevideo${remoteFeed.rfindex}-${mid}`,
-                        ),
-                        stream,
-                    )
+                    Janus.attachMediaStream(document.getElementById(`remotevideo${remoteFeed.rfindex}-${mid}`), stream)
                 }
             },
             oncleanup: function () {
@@ -836,9 +709,7 @@ function getQueryStringValue(name: string) {
     }
     let regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(window.location.search)
-    return results === null
-        ? ""
-        : decodeURIComponent(results[1].replace(/\+/g, " "))
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "))
 }
 
 function escapeXmlTags(value: string) {

@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next"
 import { Typography } from "antd"
 
 import { ButtonsSocial } from "components/invited/ButtonsSocial"
-import ListInvited from "components/invited/ListInvited"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
