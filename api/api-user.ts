@@ -60,7 +60,7 @@ export const speakers = async ({
 
 export const speakerId = async (id: any): Promise<ISpeakerData> => {
     return axiosInstance
-        .get(`/speaker/${id}`)
+        .get(`/speaker/${id}/`)
         .then((response) => response.data)
         .catch((e) => {
             console.error("USER DATA: ", e)
