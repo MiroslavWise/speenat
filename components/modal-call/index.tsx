@@ -70,7 +70,6 @@ export const ModalCall: FC = () => {
 
     const speakerAnswer = (answer: boolean) => {
         if (answer) {
-            // registerUsername()
             if (joinAndVisible && createRoom) {
                 createRoom(call_info?.conf_id!).finally(() => {
                     joinAndVisible(Number(call_info?.conf_id!))
@@ -166,7 +165,7 @@ export const ModalCall: FC = () => {
             </Row>
             <Row justify="start">
                 <h6>
-                    {t("Specialization")}: {call_info?.specialization} (Сеанс:{" "} 
+                    {t("Specialization")}: {call_info?.specialization} (Сеанс:{" "}
                     {call_info?.sessions_time.replace("min", " мин")})
                 </h6>
             </Row>

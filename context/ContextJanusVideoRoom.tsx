@@ -413,13 +413,15 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     }
 
     function joinAndVisible(idRoom: number) {
-        setIdRoom(idRoom)
-        joinInVideoRoom(idRoom).finally(() => {
-            requestAnimationFrame(() => {
-                publishOwnFeed({ useAudio: true, useVideo: true })
-                setVisible(true)
+        setTimeout(() => {
+            setIdRoom(idRoom)
+            joinInVideoRoom(idRoom).finally(() => {
+                requestAnimationFrame(() => {
+                    publishOwnFeed({ useAudio: true, useVideo: true })
+                    setVisible(true)
+                })
             })
-        })
+        }, 1400)
     }
 
     async function closeVideoCallTalk() {
