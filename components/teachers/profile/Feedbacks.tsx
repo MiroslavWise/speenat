@@ -13,17 +13,19 @@ import { feedbackSpeakerId } from "api/api-user"
 import loadImage from "functions/load-image"
 import { replaceHttps } from "functions/replace-https"
 
-const Feedbacks: FC<{}> = ({ }) => {
+const Feedbacks: FC<{}> = ({}) => {
     const { t } = useTranslation()
     const {
         query: { id },
     } = useRouter()
     const [page, setPage] = useState(1)
 
-    const { data, isLoading } = useQuery(
-        ["feedback", `speaker_${id}`, `page_${page}`],
-        () => feedbackSpeakerId(id, page),
-    )
+    const { data, isLoading } = useQuery({
+        queryFn: () => feedbackSpeakerId(id, page),
+        queryKey: ["feedback", `speaker_${id}`, `page_${page}`],
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
 
     if (isLoading) return <Loader />
 
@@ -33,62 +35,45 @@ const Feedbacks: FC<{}> = ({ }) => {
             <div className="list-feedback">
                 {data && data?.results?.length > 0
                     ? data?.results?.map((item) => (
-                        <div
-                            className="item-feedback"
-                            key={`item_feed_${item?.id}_${item?.created_at}`}
-                        >
-                            <div className="header-feed">
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        gap: 10,
-                                    }}
-                                >
-                                    <Image
-                                        loader={loadImage}
-                                        src={
-                                            !item ||
-                                                item?.author?.avatar_url?.includes(
-                                                    "default",
-                                                )
-                                                ? "/images/default.png"
-                                                : item?.author?.avatar_url
-                                                    ? replaceHttps(
-                                                        item?.author
-                                                            ?.avatar_url,
-                                                    )
-                                                    : "/images/default.png"
-                                        }
-                                        alt="av"
-                                        height={40}
-                                        width={40}
-                                        className="avatar"
-                                    />
-                                    <div className="name-time">
-                                        <p className="name">
-                                            {item?.author?.full_name}
-                                        </p>
-                                        <p className="sub-name">
-                                            {moment(item?.created_at).format(
-                                                "HH:mm DD.MM.YYYY",
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="contain">
-                                <p>{item?.text}</p>
-                            </div>
-                            <div className="footer-feed">
-                                <Rate
-                                    disabled
-                                    defaultValue={item?.rating || 0}
-                                    className="rate-item"
-                                />
-                            </div>
-                        </div>
-                    ))
+                          <div className="item-feedback" key={`item_feed_${item?.id}_${item?.created_at}`}>
+                              <div className="header-feed">
+                                  <div
+                                      style={{
+                                          display: "flex",
+                                          flexDirection: "row",
+                                          gap: 10,
+                                      }}
+                                  >
+                                      <Image
+                                          loader={loadImage}
+                                          src={
+                                              !item || item?.author?.avatar_url?.includes("default")
+                                                  ? "/images/default.png"
+                                                  : item?.author?.avatar_url
+                                                  ? replaceHttps(item?.author?.avatar_url)
+                                                  : "/images/default.png"
+                                          }
+                                          alt="av"
+                                          height={40}
+                                          width={40}
+                                          className="avatar"
+                                      />
+                                      <div className="name-time">
+                                          <p className="name">{item?.author?.full_name}</p>
+                                          <p className="sub-name">
+                                              {moment(item?.created_at).format("HH:mm DD.MM.YYYY")}
+                                          </p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div className="contain">
+                                  <p>{item?.text}</p>
+                              </div>
+                              <div className="footer-feed">
+                                  <Rate disabled defaultValue={item?.rating || 0} className="rate-item" />
+                              </div>
+                          </div>
+                      ))
                     : null}
             </div>
         </div>

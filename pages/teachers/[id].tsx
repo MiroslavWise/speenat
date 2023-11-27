@@ -8,6 +8,7 @@ import Loader from "@loader-spin"
 import Specialization from "components/teachers/profile/Specialization"
 import Feedbacks from "components/teachers/profile/Feedbacks"
 
+import { cx } from "functions/cx"
 import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useWeb } from "context/WebSocketContext"
 import { speakerId } from "api/api-user"
@@ -15,7 +16,6 @@ import loadImage from "functions/load-image"
 import { replaceHttps } from "functions/replace-https"
 
 import styles from "./style.module.scss"
-import { cx } from "functions/cx"
 
 const ProfileTeacher: NextPage = () => {
     const {
@@ -23,9 +23,12 @@ const ProfileTeacher: NextPage = () => {
     } = useRouter()
     useDocumentTitle("Teacher")
 
-    const { data, isLoading, refetch } = useQuery(["speaker", id], () =>
-        speakerId(id),
-    )
+    const { data, isLoading, refetch } = useQuery({
+        queryKey: ["speaker", id],
+        queryFn: () => speakerId(id),
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
 
     const { wsChannel } = useWeb()
 

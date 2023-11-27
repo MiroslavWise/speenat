@@ -1,30 +1,41 @@
-import {
-    Dispatch,
-    FC,
-    ReactNode,
-    SetStateAction,
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-} from "react"
+import { Dispatch, FC, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react"
 
 import { URL_SOCKET } from "api/api-general"
 import { useAuth } from "store/use-auth"
+import { toast } from "react-toastify"
+import { useQuery } from "react-query"
+import { profileMy } from "api/api-user"
+import { useUser } from "store/use-user"
 
 export const ContextWebSocket = createContext<
     | {
-        wsChannel: WebSocket | undefined
-        setWsChannel: Dispatch<SetStateAction<WebSocket | undefined>>
-    }
+          wsChannel: WebSocket | undefined
+          setWsChannel: Dispatch<SetStateAction<WebSocket | undefined>>
+      }
     | undefined
 >(undefined)
 
-export const ProviderWebSocket: FC<{ children: ReactNode }> = ({
-    children,
-}) => {
+export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
     const [webSocket, setWebSocket] = useState<WebSocket | undefined>(undefined)
-    const { token } = useAuth((state) => ({ token: state.token }))
+    const token = useAuth(({ token }) => token)
+    const user = useUser(({ user }) => user)
+    const notify = (text: string) =>
+        toast(text, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        })
+
+    const { refetch } = useQuery({
+        queryFn: () => profileMy(),
+        queryKey: ["profile-me", user?.profile?.user?.id!],
+        enabled: false,
+    })
 
     const connectWebSocket = () => {
         const ws = new WebSocket(URL_SOCKET(token!))
@@ -51,6 +62,13 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({
     }
 
     useEffect(() => {
+        if (webSocket) {
+            webSocket.addEventListener("message", eventMessage)
+        }
+        return () => webSocket?.removeEventListener("message", eventMessage)
+    }, [webSocket])
+
+    useEffect(() => {
         const ws = connectWebSocket()
 
         return () => {
@@ -64,10 +82,19 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({
         }
     }, [])
 
+    function eventMessage(event: any) {
+        const data = JSON.parse(event.data).data
+        if (data?.type === "billing_deposit_up") {
+            console.log("message: ", data?.message)
+            const message = data?.message?.verb
+
+            refetch()
+            notify(message)
+        }
+    }
+
     return (
-        <ContextWebSocket.Provider
-            value={{ wsChannel: webSocket, setWsChannel: setWebSocket }}
-        >
+        <ContextWebSocket.Provider value={{ wsChannel: webSocket, setWsChannel: setWebSocket }}>
             {children}
         </ContextWebSocket.Provider>
     )

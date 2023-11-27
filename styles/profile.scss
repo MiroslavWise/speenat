@@ -158,6 +158,13 @@
         flex-direction: column;
         gap: 5px;
 
+        & > input {
+            min-width: 120px !important;
+            width: 110px;
+            padding: 6px 12px;
+            border: 1px solid;
+        }
+
         p {
             font-size: 15px;
             font-weight: 500;

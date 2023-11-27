@@ -1,18 +1,21 @@
 import Image from "next/image"
-import { FC, useContext, Dispatch, useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-
-import type { ISpeakerData, ISpec, IUserCurrent } from "types/store/user"
-
-import { work_experience } from "functions/work-exp"
 import { Button, Divider, Modal, Row, Space } from "antd"
+import { FC, useContext, Dispatch, useState, useEffect } from "react"
+
+import type { ISpeakerData, ISpec } from "types/store/user"
+
 import Time from "@icons-time"
 import Wallet from "@icons-wallet"
-import { platform } from "functions/platform"
-import { CreateJanusContext } from "context/ContextJanusVideoRoom"
-import { useUser } from "store/use-user"
-import { useWeb } from "context/WebSocketContext"
 import PhoneOff from "components/icons/phone-off"
+
+import { useUser } from "store/use-user"
+import { platform } from "functions/platform"
+import { useWeb } from "context/WebSocketContext"
+import { work_experience } from "functions/work-exp"
+import { CreateJanusContext } from "context/ContextJanusVideoRoom"
+import { useQuery } from "react-query"
+import { profileMy } from "api/api-user"
 
 const Specialization: FC<{
     data: ISpec[] | undefined
@@ -20,11 +23,20 @@ const Specialization: FC<{
     speaker: ISpeakerData
 }> = ({ data, online, speaker }) => {
     const { t } = useTranslation()
-    const user = useUser((state) => state.user)
+    const user = useUser(({ user }) => user)
     const contextJanus = useContext(CreateJanusContext)
     const { visible: janusVisible } = contextJanus ?? {}
-
     const { wsChannel } = useWeb()
+
+    const { data: dataMe } = useQuery({
+        queryFn: () => profileMy(),
+        queryKey: ["profile-me", user?.profile?.user?.id!],
+        enabled: !!user,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
+    })
+
+    console.log("dataMe: ", dataMe)
 
     const startEndTimer = (value: boolean) => {
         const onTimer = setTimeout(() => {
@@ -62,12 +74,7 @@ const Specialization: FC<{
         return () => wsChannel?.removeEventListener("message", eventMessage)
     }, [wsChannel])
 
-    const handleBell = (
-        time_id: any,
-        specialization_id: any,
-        spec: any,
-        time: any,
-    ) => {
+    const handleBell = (time_id: any, specialization_id: any, spec: any, time: any) => {
         calling(spec, time, handleCancelCall, speaker, startEndTimer, t)
         startEndTimer(true)
         const data = {
@@ -103,19 +110,10 @@ const Specialization: FC<{
             {data &&
                 data?.length > 0 &&
                 data?.map((item) => (
-                    <div
-                        key={`${item?.profile?.id}_${item?.specialization_id}`}
-                        className="container-spec"
-                    >
+                    <div key={`${item?.profile?.id}_${item?.specialization_id}`} className="container-spec">
                         <div className="title">
                             <div className="image-headphone">
-                                <Image
-                                    src="/gif/headphone.gif"
-                                    alt="gif"
-                                    height={30}
-                                    width={30}
-                                    className="img"
-                                />
+                                <Image src="/gif/headphone.gif" alt="gif" height={30} width={30} className="img" />
                             </div>
                             <div
                                 style={{
@@ -124,25 +122,16 @@ const Specialization: FC<{
                                     gap: 7,
                                 }}
                             >
-                                <p className="name">
-                                    {item?.specialization?.name}
-                                </p>
-                                <p className="sub-name">
-                                    {" "}
-                                    {item?.specialization?.description}
-                                </p>
+                                <p className="name">{item?.specialization?.name}</p>
+                                <p className="sub-name"> {item?.specialization?.description}</p>
                             </div>
                         </div>
                         <div className="content">
-                            <p className="name">
-                                {t("Work experience and education")}:
-                            </p>
+                            <p className="name">{t("Work experience and education")}:</p>
                             {item?.topic_conversation?.length > 0 ? (
                                 <p className="sub-name">
                                     <b>Темы общения: </b>
-                                    {item?.topic_conversation
-                                        ?.map((it) => it.name)
-                                        ?.join(", ")}
+                                    {item?.topic_conversation?.map((it) => it.name)?.join(", ")}
                                 </p>
                             ) : null}
                             {item?.university ? (
@@ -170,34 +159,20 @@ const Specialization: FC<{
                         </div>
                         <div className="consultation-time-list">
                             {item?.consultation_time?.map((time) => (
-                                <div
-                                    className="bell-container"
-                                    key={`time_${time?.id}`}
-                                >
-                                    {online ? (
+                                <div className="bell-container" key={`time_${time?.id}`}>
+                                    {online &&
+                                    Number(dataMe?.profile?.balance?.current_balance!) >= Number(time?.price) ? (
                                         <Button
                                             type="text"
                                             className="but-bell"
-                                            onClick={() =>
-                                                handleBell(
-                                                    time?.id,
-                                                    item?.specialization_id,
-                                                    item,
-                                                    time,
-                                                )
-                                            }
+                                            onClick={() => handleBell(time?.id, item?.specialization_id, item, time)}
                                         >
                                             <p>{t("To call")}</p>
                                         </Button>
                                     ) : null}
                                     <div className="times">
                                         <Time size={25} fill="var(--cyan)" />
-                                        <p>
-                                            {time?.sessions_time?.replace(
-                                                "min",
-                                                " мин",
-                                            )}
-                                        </p>
+                                        <p>{time?.sessions_time?.replace("min", " мин")}</p>
                                     </div>
                                     <div className="times">
                                         <Wallet size={25} fill="var(--cyan)" />
@@ -241,43 +216,31 @@ const calling = (
                 </Row>
                 <Space direction="vertical">
                     <p>
-                        <b>{t("Specialization")}</b>:{" "}
-                        {info?.specialization?.name}
+                        <b>{t("Specialization")}</b>: {info?.specialization?.name}
                     </p>
                     <p>
-                        <b>{t("Session")}</b>:{" "}
-                        {time?.sessions_time?.replace("min", " минут")}
+                        <b>{t("Session")}</b>: {time?.sessions_time?.replace("min", " минут")}
                     </p>
                 </Space>
                 <Divider />
                 <Row justify="center" className="w-100">
                     <Row justify="center" style={{ maxWidth: 350 }}>
-                        <h3 style={{ color: "red", textAlign: "center" }}>
-                            {t("Connection is in progress")}
-                        </h3>
+                        <h3 style={{ color: "red", textAlign: "center" }}>{t("Connection is in progress")}</h3>
                     </Row>
                     <Row justify="center" style={{ maxWidth: 350 }}>
                         <p style={{ color: "red", textAlign: "center" }}>
-                            {t(
-                                "Wait a bit - do not close the app and do not lock the phone",
-                            )}
+                            {t("Wait a bit - do not close the app and do not lock the phone")}
                         </p>
                     </Row>
                     <Row justify="center" style={{ maxWidth: 350 }}>
                         <p style={{ textAlign: "center" }}>
-                            {t(
-                                "The speaker's response time depends on the quality of your internet connection",
-                            )}
+                            {t("The speaker's response time depends on the quality of your internet connection")}
                         </p>
                     </Row>
                 </Row>
                 <br />
                 <Row justify="center">
-                    <Button
-                        type="primary"
-                        className="but-bell"
-                        onClick={handleCancelCall}
-                    >
+                    <Button type="primary" className="but-bell" onClick={handleCancelCall}>
                         <div
                             style={{
                                 display: "flex",
@@ -313,9 +276,7 @@ const onCancelSpeakerCall = () =>
                         justifyContent: "center",
                     }}
                 >
-                    <p style={{ color: "red", textAlign: "center" }}>
-                        Спикер отклонил ваш вызов
-                    </p>
+                    <p style={{ color: "red", textAlign: "center" }}>Спикер отклонил ваш вызов</p>
                 </Row>
                 <br />
                 <Row justify="center">

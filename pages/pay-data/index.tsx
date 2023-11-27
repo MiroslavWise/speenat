@@ -1,32 +1,67 @@
-import { Button, Form, InputNumber } from "antd"
+import { useState } from "react"
 import { NextPage } from "next"
 import { useTranslation } from "react-i18next"
+import { Button, Form, InputNumber } from "antd"
+import { useForm } from "react-hook-form"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useUser } from "store/use-user"
 
+import { apiCreateOrder } from "api/api-order"
+import { useQuery } from "react-query"
+import { profileMy } from "api/api-user"
+
+interface IValues {
+    incom: number
+}
+
 const PayData: NextPage = () => {
-    const { t } = useTranslation()
-    const isSpeaker = useUser((state) => state.is_speaker)
     useDocumentTitle("Online_payments")
+    const { t } = useTranslation()
+    const isSpeaker = useUser(({ is_speaker }) => is_speaker)
+    const user = useUser(({ user }) => user)
+    const [form] = Form.useForm<IValues>()
+    const { register, handleSubmit } = useForm<IValues>({
+        defaultValues: {
+            incom: 51,
+        },
+    })
+    const [loading, setLoading] = useState(false)
 
-    const onOutMoney = (values: { "money-out": any }) => {}
+    const { data, isLoading } = useQuery({
+        queryFn: () => profileMy(),
+        queryKey: ["profile-me", user?.profile?.user?.id!],
+        enabled: !!user?.profile?.user?.id,
+        refetchOnMount: false,
+        refetchOnReconnect: true,
+    })
 
-    const onInMoney = (values: { "money-incom": any }) => {}
+    const onOutMoney = (values: { incom: number }) => {}
 
-    const checkPrice50 = (_: any, value: { number: number }) => {
-        if (value.number > 50) {
-            return Promise.resolve()
+    const onInMoney = (values: IValues) => {
+        if (!loading) {
+            setLoading(true)
+            if (values?.["incom"]) {
+                apiCreateOrder({ amount: values["incom"] })
+                    .then((response) => {
+                        if (response) {
+                            console.log("values: ", response)
+                            document.location.href = response?.data?.payment_order_url
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("error:", error)
+                    })
+                    .finally(() => {
+                        setLoading(false)
+                    })
+            }
         }
-        return Promise.reject(new Error("Сумма не менее 50₸!"))
     }
 
-    const checkPrice250 = (_: any, value: { number: number }) => {
-        if (value.number > 250) {
-            return Promise.resolve()
-        }
-        return Promise.reject(new Error("Сумма не менее 250₸!"))
-    }
+    const onSubmit = handleSubmit(onInMoney)
+
+    if (isLoading) return null
 
     return (
         <div className="content-archive">
@@ -42,14 +77,7 @@ const PayData: NextPage = () => {
                         <p className="title">{t("Withdrawal of money")}</p>
                         <div className="item-form">
                             <p>{t("Specify the withdrawal amount (the minimum withdrawal amount is 250₸)")}</p>
-                            <Form.Item
-                                name="money-out"
-                                rules={
-                                    [
-                                        // { validator: checkPrice250 }
-                                    ]
-                                }
-                            >
+                            <Form.Item name="money-out">
                                 <InputNumber
                                     min={250}
                                     type="number"
@@ -69,37 +97,23 @@ const PayData: NextPage = () => {
                     </div>
                 </Form>
             ) : (
-                <Form
-                    onFinish={onInMoney}
-                    className="list-archive form"
-                    initialValues={{
-                        "money-incom": 50,
-                    }}
-                >
+                <form onSubmit={onSubmit} className="list-archive form">
                     <div className="item-money">
-                        <p className="title">{t("Withdrawal of money")}</p>
+                        <p className="title">{t("Top up your balance")}</p>
                         <div className="item-form">
-                            <p>{t("Specify the deposit amount (the minimum deposit amount is 50₸)")}</p>
-                            <Form.Item
-                                name="money-incom"
-                                rules={
-                                    [
-                                        // {
-                                        //         validator: checkPrice50,
-                                        // }
-                                    ]
-                                }
-                            >
-                                <InputNumber
-                                    min={50}
-                                    type="number"
-                                    prefix="₸"
-                                    style={{
-                                        margin: 0,
-                                        borderColor: "var( --gray-color)",
-                                    }}
-                                />
-                            </Form.Item>
+                            <p>
+                                {t("Specify the deposit amount (the minimum deposit amount is 50₸)")} / Баланс сейчас:{" "}
+                                {Number(data?.profile?.balance?.current_balance)?.toFixed(0)}₸
+                            </p>
+                            <input
+                                type="number"
+                                prefix="₸"
+                                {...register("incom", { required: true, min: 50 })}
+                                style={{
+                                    margin: 0,
+                                    borderColor: "var( --gray-color)",
+                                }}
+                            />
                         </div>
                         <div className="item-form">
                             <Button className="login-submit" htmlType="submit">
@@ -107,7 +121,7 @@ const PayData: NextPage = () => {
                             </Button>
                         </div>
                     </div>
-                </Form>
+                </form>
             )}
         </div>
     )

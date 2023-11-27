@@ -24,20 +24,14 @@ export const ModalCall: FC = () => {
     const { wsChannel } = useWeb()
     const context = useContext(CreateJanusContext)
     const { joinAndVisible, createRoom } = context ?? {}
-    const { call_info, speaker_info, user_info, setCallInfo, setSpeakerInfo, setUserInfo, deleteAll, setUuidRoom } =
-        usePropsCallingJanus(
-            (state) => ({
-                call_info: state.call_info,
-                speaker_info: state.speaker_info,
-                user_info: state.user_info,
-                setCallInfo: state.setCallInfo,
-                setSpeakerInfo: state.setSpeakerInfo,
-                setUserInfo: state.setUserInfo,
-                deleteAll: state.deleteAll,
-                setUuidRoom: state.setUuidRoom,
-            }),
-            shallow,
-        )
+    const call_info = usePropsCallingJanus(({ call_info }) => call_info)
+    const speaker_info = usePropsCallingJanus(({ speaker_info }) => speaker_info)
+    const user_info = usePropsCallingJanus(({ user_info }) => user_info)
+    const setCallInfo = usePropsCallingJanus(({ setCallInfo }) => setCallInfo)
+    const setSpeakerInfo = usePropsCallingJanus(({ setSpeakerInfo }) => setSpeakerInfo)
+    const setUserInfo = usePropsCallingJanus(({ setUserInfo }) => setUserInfo)
+    const deleteAll = usePropsCallingJanus(({ deleteAll }) => deleteAll)
+    const setUuidRoom = usePropsCallingJanus(({ setUuidRoom }) => setUuidRoom)
 
     useEffect(() => {
         const listenerCall = (event: any) => {
