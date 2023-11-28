@@ -20,7 +20,7 @@ const terms: Record<any, string> = {
 
 export const nameRoute = (route: string, t: (value: string) => string, name?: string | undefined): string => {
     const split = route.split("/").filter((_) => _)
-    if (split[0]) {
+    if (split[0] === "order") {
         return "Транзакции"
     }
     if (split[0] === "chat") {
@@ -39,8 +39,8 @@ export const nameRoute = (route: string, t: (value: string) => string, name?: st
         if (terms.hasOwnProperty(split[1])) return t(terms[split[1]])
         return t("Terms_of_agreements")
     }
-    if (paths.hasOwnProperty(split[0])) return t(paths[split[0]])
-    return split[0] ? t(split[0]) : ""
+    if (paths.hasOwnProperty(split[0]?.split("?")[0]!)) return t(paths[split[0]?.split("?")[0]!])
+    return split[0]?.split("?")[0]! ? t(split[0]?.split("?")[0]!) : ""
 }
 
 export const activePath = (route: string, value: string): boolean => route.split("/").filter((_) => _)[0] === value

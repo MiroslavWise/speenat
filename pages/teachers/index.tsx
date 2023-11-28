@@ -1,6 +1,6 @@
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Button } from "antd/lib"
@@ -12,10 +12,11 @@ import ListSpeaker from "components/teachers/ListSpeaker"
 import DrawerSearch from "components/teachers/DrawerSearch"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
+import { OrderId } from "components/teachers/OrderId"
 
 const Teachers: NextPage = () => {
     const { t } = useTranslation()
-    const { push } = useRouter()
+    const { query, push } = useRouter()
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     useDocumentTitle("Teachers")
@@ -29,10 +30,23 @@ const Teachers: NextPage = () => {
         }
     }, [isSpeaker])
 
+    const orderId = useMemo(() => {
+        const id = query["order-id"]
+        if (!id) {
+            return null
+        }
+        if (id) {
+            return true
+        }
+
+        return null
+    }, [query["order-id"]])
+
     if (loadingUser) return <Loader />
 
     return (
         <div className="wrapper teachers">
+            {orderId && <OrderId />}
             <PriceOffer />
             <Button className="button-search" onClick={handleOpen}>
                 <p>{t("Search Parameters")}</p>

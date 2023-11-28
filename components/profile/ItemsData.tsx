@@ -10,6 +10,7 @@ import { useAntdLang } from "context/LanguageContext"
 import changeLanguage from "helpers/changeLanguage"
 
 import styles from "./style.module.scss"
+import Link from "next/link"
 
 export const ItemsData: FC = () => {
     const { t, i18n } = useTranslation()
@@ -25,19 +26,27 @@ export const ItemsData: FC = () => {
 
     return (
         <>
-            <li>
+            <li
+                onClick={(event) => {
+                    event.stopPropagation()
+                }}
+            >
                 <div className="icon">
                     <Image src="/svg/terms/mail.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
                 <p>{user?.profile?.user?.email}</p>
             </li>
-            <li onClick={() => push(`/order`)}>
+            <Link href={`/order`}>
                 <div className="icon">
                     <Image src="/svg/order/coins-stacked-01.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
-                <p>История пополнения баланса</p>
-            </li>
-            <li>
+                <span>История пополнения баланса</span>
+            </Link>
+            <li
+                onClick={(event) => {
+                    event.stopPropagation()
+                }}
+            >
                 <div className="icon">
                     <Image src="/svg/terms/wallet.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>

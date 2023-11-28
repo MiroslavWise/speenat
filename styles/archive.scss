@@ -149,7 +149,6 @@
         overflow: hidden;
         background-color: white;
         border: 1px solid var(--gray-color);
-        min-height: 100px;
         display: flex;
         flex-direction: column;
         padding: 1rem;
@@ -160,6 +159,17 @@
             font-size: 20px;
             line-height: 15px;
             color: var(--premium-color);
+        }
+
+        p {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--gray-600);
+
+            & > span {
+                font-weight: 600;
+                color: var(--gray-800);
+            }
         }
     }
 }

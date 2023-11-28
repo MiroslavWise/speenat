@@ -38,7 +38,11 @@
             width: 100%;
             flex-direction: column;
 
-            li {
+            & > a,
+            & > li {
+                font-weight: 400 !important;
+                margin: 0 !important;
+                text-decoration: none;
                 width: calc(100% - 20px);
                 padding: 5px 10px;
                 display: flex;
@@ -46,6 +50,7 @@
                 align-items: center;
                 gap: 4px;
                 background: white;
+                cursor: pointer;
 
                 .icon {
                     width: 30px;
@@ -57,13 +62,14 @@
                     align-items: center;
                 }
 
+                span,
                 p {
                     white-space: nowrap;
                     color: #667085;
                     text-align: center;
                     font-size: 16px;
                     font-style: normal;
-                    font-weight: 400;
+                    font-weight: 400 !important;
                     line-height: 24px;
                     letter-spacing: -0.5px;
                 }
@@ -196,7 +202,9 @@
                     font-style: normal;
                     font-weight: 500;
                     letter-spacing: -0.3px;
-                    transition: color, font-weight var(--transition);
+                    transition:
+                        color,
+                        font-weight var(--transition);
                 }
 
                 &[data-is="true"] {
@@ -249,9 +257,8 @@
             }
         }
 
-        &>.pay-button{
-            &>p{
-                
+        & > .pay-button {
+            & > p {
             }
         }
 

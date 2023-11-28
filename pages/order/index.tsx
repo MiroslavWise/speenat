@@ -52,40 +52,20 @@ const TYPES_TRANSACTIONS: { img: string; label: string }[] = [
 ]
 
 export default function Oder() {
-    const { query, replace } = useRouter()
+    const { query, push } = useRouter()
     const token = useAuth(({ token }) => token)
     const [page, setPage] = useState(1)
-    const [inform, setInform] = useState({
-        visible: false,
-        message: "",
-    })
-    const { wsChannel } = useWeb()
 
-    useEffect(() => {
+    const orderId = useMemo(() => {
+        if (!query["order-id"]) {
+            return null
+        }
         if (query["order-id"]) {
-            setInform({
-                visible: true,
-                message: "",
-            })
+            const id = query["order-id"]?.toString()?.split("&order-id=")?.[0]!
+
+            return id
         }
     }, [query["order-id"]])
-
-    useEffect(() => {
-        if (wsChannel) {
-            wsChannel.addEventListener("message", eventMessage)
-        }
-        return () => wsChannel?.removeEventListener("message", eventMessage)
-    }, [wsChannel])
-
-    function eventMessage(event: any) {
-        const data = JSON.parse(event.data).data
-        if (data?.type === "billing_deposit_up") {
-            console.log("message: ", data?.message)
-            const message = data?.message?.verb
-            refetch()
-            refetchOrder()
-        }
-    }
 
     const { data: dataProfile } = useQuery({
         queryFn: () => profileMy(),
@@ -95,15 +75,7 @@ export default function Oder() {
         refetchOnWindowFocus: false,
     })
 
-    const { data: dataOrder, refetch: refetchOrder } = useQuery({
-        queryFn: () => apiOrder(query["order-id"]! as string),
-        queryKey: ["order", `order-id=${query["order-id"]!}`],
-        enabled: !!query["order-id"],
-        refetchOnMount: false,
-        refetchOnWindowFocus: true,
-    })
-
-    const { data, refetch } = useQuery({
+    const { data } = useQuery({
         queryFn: () => apiOrderList(page),
         queryKey: ["order", "list", `page=${page}`],
         refetchOnMount: false,
@@ -111,13 +83,14 @@ export default function Oder() {
     })
 
     useEffect(() => {
-        if (dataOrder?.data) {
-            if (dataOrder?.data?.status === "charged") {
-                setInform({ visible: false, message: "" })
-                replace("/order", undefined, { shallow: true })
+        if (dataProfile?.profile && orderId) {
+            if (dataProfile?.profile?.user?.is_speaker) {
+                push(`/archive?order-id=${orderId}`, undefined)
+            } else if (dataProfile?.profile?.user?.is_speaker === false) {
+                push(`/teachers?order-id=${orderId}`, undefined)
             }
         }
-    }, [dataOrder?.data])
+    }, [dataProfile, orderId])
 
     const list = useMemo(() => {
         return data?.data?.results || []
@@ -146,9 +119,6 @@ export default function Oder() {
                     </section>
                 ))}
             </div>
-            {/* <div data-is-info={inform.visible}>
-                <p>Ожидание поступления средств</p>
-            </div> */}
             <h5>Транзакции</h5>
             <ul>
                 {list.map((item) => (

@@ -56,11 +56,12 @@ const PayData: NextPage = () => {
     })
     const [loading, setLoading] = useState(false)
 
-    const { isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryFn: () => profileMy(),
         queryKey: ["profile-me", token!],
-        enabled: false,
+        enabled: !!token,
         refetchOnMount: false,
+        refetchOnWindowFocus: false,
         refetchOnReconnect: true,
     })
 
@@ -109,10 +110,22 @@ const PayData: NextPage = () => {
         }
     }, [watch("radio"), watch("input")])
 
+    const balance = useMemo(() => {
+        return Number(data?.profile?.balance?.current_balance) || 0
+    }, [data?.profile])
+
     if (isLoading) return null
 
     return (
         <div className="content-archive">
+            <section className="list-archive form">
+                <div className="item-money">
+                    <p className="title">Ваш текущий баланс</p>
+                    <p>
+                        Баланс: <span>{balance}₸</span>
+                    </p>
+                </div>
+            </section>
             {isSpeaker ? (
                 <Form
                     onFinish={onOutMoney}
