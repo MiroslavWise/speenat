@@ -52,6 +52,11 @@
                 font-style: normal;
                 font-weight: 500;
                 letter-spacing: -0.3px;
+
+                & > span {
+                    color: var(--gray-800);
+                    font-weight: 600;
+                }
             }
         }
     }

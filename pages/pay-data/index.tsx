@@ -51,7 +51,7 @@ const PayData: NextPage = () => {
     const { register, handleSubmit, setValue, watch } = useForm<IValues>({
         defaultValues: {
             radio: "1000",
-            input: 10_000,
+            input: 10_001,
         },
     })
     const [loading, setLoading] = useState(false)
@@ -74,7 +74,7 @@ const PayData: NextPage = () => {
 
                 if (values?.radio === "10000+") {
                     if (Number(values.input) <= 10_000) {
-                        amount = 10_000
+                        amount = 10_0010
                     } else {
                         amount = Number(values.input) || 10_000
                     }

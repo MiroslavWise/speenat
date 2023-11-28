@@ -13,6 +13,8 @@ import { useUser } from "store/use-user"
 import { ProviderWebSocket } from "context/WebSocketContext"
 import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom"
 import { ModalCall } from "components/modal-call"
+import { ModalReferral } from "template"
+import { useVisibleModalReferral } from "store/use-visible-modal-referral"
 
 const inter = Inter({
     preload: true,
@@ -23,40 +25,44 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     const router = useRouter()
     const getUser = useUser(({ getUserData }) => getUserData)
     const loading = useUser(({ loading }) => loading)
+    const visible = useVisibleModalReferral(({ visible }) => visible)
 
     useEffect(() => getUser(true), [])
 
     if (loading) return <Loader />
 
     return (
-        <main
-            className={`${inter.className} show-animate`}
-            style={{ width: "100%", minHeight: "100vh", position: "relative" }}
-        >
-            <Header />
-            <motion.div
-                key={router.route}
-                initial="pageInitial"
-                animate="pageAnimate"
-                exit="pageExit"
-                variants={{
-                    pageInitial: {
-                        opacity: 0,
-                    },
-                    pageAnimate: {
-                        opacity: 1,
-                    },
-                    pageExit: {
-                        opacity: 0,
-                    },
-                }}
+        <>
+            <main
+                className={`${inter.className} show-animate`}
+                style={{ width: "100%", minHeight: "100vh", position: "relative" }}
             >
-                {children}
-            </motion.div>
-            <NavFooter />
-            <ModalMenu />
-            <ModalCall />
-        </main>
+                <Header />
+                <motion.div
+                    key={router.route}
+                    initial="pageInitial"
+                    animate="pageAnimate"
+                    exit="pageExit"
+                    variants={{
+                        pageInitial: {
+                            opacity: 0,
+                        },
+                        pageAnimate: {
+                            opacity: 1,
+                        },
+                        pageExit: {
+                            opacity: 0,
+                        },
+                    }}
+                >
+                    {children}
+                </motion.div>
+                <NavFooter />
+                <ModalMenu />
+                <ModalCall />
+            </main>
+            {visible && <ModalReferral />}
+        </>
     )
 }
 

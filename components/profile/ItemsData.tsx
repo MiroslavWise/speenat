@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react"
+import { FC, useState } from "react"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
@@ -27,20 +27,26 @@ export const ItemsData: FC = () => {
         <>
             <li>
                 <div className="icon">
-                    <Image src="/svg/terms/mail.svg" alt="wallet" width={18} height={18} />
+                    <Image src="/svg/terms/mail.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
                 <p>{user?.profile?.user?.email}</p>
             </li>
+            <li onClick={() => push(`/order`)}>
+                <div className="icon">
+                    <Image src="/svg/order/coins-stacked-01.svg" alt="wallet" width={18} height={18} unoptimized />
+                </div>
+                <p>История пополнения баланса</p>
+            </li>
             <li>
                 <div className="icon">
-                    <Image src="/svg/terms/wallet.svg" alt="wallet" width={18} height={18} />
+                    <Image src="/svg/terms/wallet.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
                 <p>{Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
             </li>
             {isStaff ? (
                 <li onClick={() => push("/analytics")}>
                     <div className="icon">
-                        <Image src="/svg/terms/bar-chart.svg" alt="bar-chart" width={18} height={18} />
+                        <Image src="/svg/terms/bar-chart.svg" alt="bar-chart" width={18} height={18} unoptimized />
                     </div>
                     <p>{t("Accountant_office")}</p>
                 </li>
@@ -51,13 +57,13 @@ export const ItemsData: FC = () => {
                 }}
             >
                 <div className="icon">
-                    <Image src="/svg/terms/attachment.svg" alt="wallet" width={18} height={18} />
+                    <Image src="/svg/terms/attachment.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
                 <p>{t("Invite_a_friend")}</p>
             </li>
             <li onClick={() => setActive(true)}>
                 <div className="icon">
-                    <Image src="/svg/terms/type.svg" alt="wallet" width={18} height={18} />
+                    <Image src="/svg/terms/type.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
                 <p>Сменить язык</p>
             </li>

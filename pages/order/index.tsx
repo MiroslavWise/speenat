@@ -7,6 +7,8 @@ import { useWeb } from "context/WebSocketContext"
 import { TStatusAmount, apiOrder, apiOrderList } from "api/api-order"
 
 import styles from "./style.module.scss"
+import { profileMy } from "api/api-user"
+import { useAuth } from "store/use-auth"
 
 const svg: Record<TStatusAmount, string> = {
     charged: "/svg/order/credit-card-check.svg",
@@ -51,6 +53,7 @@ const TYPES_TRANSACTIONS: { img: string; label: string }[] = [
 
 export default function Oder() {
     const { query, replace } = useRouter()
+    const token = useAuth(({ token }) => token)
     const [page, setPage] = useState(1)
     const [inform, setInform] = useState({
         visible: false,
@@ -84,6 +87,14 @@ export default function Oder() {
         }
     }
 
+    const { data: dataProfile } = useQuery({
+        queryFn: () => profileMy(),
+        queryKey: ["profile-me", token!],
+        enabled: !!token,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
+
     const { data: dataOrder, refetch: refetchOrder } = useQuery({
         queryFn: () => apiOrder(query["order-id"]! as string),
         queryKey: ["order", `order-id=${query["order-id"]!}`],
@@ -116,6 +127,16 @@ export default function Oder() {
         <div className={styles.wrapper}>
             <h3>Статистика движений ваших денежных средств</h3>
             <div data-icons>
+                <section>
+                    <div data-img>
+                        <img src="/svg/order/coins-stacked-01.svg" alt="coins-stacked" width={24} height={24} />
+                    </div>
+                    <p>
+                        Текущий баланс: <span>{Number(dataProfile?.profile?.balance?.current_balance || 0)}₸</span>
+                    </p>
+                </section>
+            </div>
+            <div data-icons>
                 {TYPES_TRANSACTIONS.map((item) => (
                     <section key={`${item.img}:${item.label.replace(" ", "-")}`}>
                         <div data-img>
@@ -125,9 +146,9 @@ export default function Oder() {
                     </section>
                 ))}
             </div>
-            <div data-is-info={inform.visible}>
+            {/* <div data-is-info={inform.visible}>
                 <p>Ожидание поступления средств</p>
-            </div>
+            </div> */}
             <h5>Транзакции</h5>
             <ul>
                 {list.map((item) => (

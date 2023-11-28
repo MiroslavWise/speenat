@@ -15,4 +15,50 @@
             color: var(--secondary-color);
         }
     }
+
+    .link-invited-false {
+        width: calc(100% - 30px);
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--gray-200);
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        & > h3 {
+            color: var(--gray-500);
+            text-align: justify;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+
+        .button-default-primary {
+        }
+    }
+}
+
+.button-default-primary {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: var(--premium-color);
+    border: none;
+    cursor: pointer;
+
+    & > span {
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: -0.3px;
+    }
 }

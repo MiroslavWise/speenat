@@ -18,12 +18,11 @@ const terms: Record<any, string> = {
     "safe-pay": "Online_payments",
 }
 
-export const nameRoute = (
-    route: string,
-    t: (value: string) => string,
-    name?: string | undefined,
-): string => {
+export const nameRoute = (route: string, t: (value: string) => string, name?: string | undefined): string => {
     const split = route.split("/").filter((_) => _)
+    if (split[0]) {
+        return "Транзакции"
+    }
     if (split[0] === "chat") {
         if (name) {
             return name?.replaceAll("_", " ")
@@ -44,5 +43,4 @@ export const nameRoute = (
     return split[0] ? t(split[0]) : ""
 }
 
-export const activePath = (route: string, value: string): boolean =>
-    route.split("/").filter((_) => _)[0] === value
+export const activePath = (route: string, value: string): boolean => route.split("/").filter((_) => _)[0] === value
