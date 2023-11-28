@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useQuery } from "react-query"
-import { Button, Divider, Drawer, InputNumber, Row, Space, Select } from "antd"
+import { Button, Divider, Drawer, Row, Space, Select } from "antd/lib"
 
 import type { TStatus } from "types/store/user"
 
@@ -21,29 +21,26 @@ interface IProps {
 const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
     const { t } = useTranslation()
     const handleClose = () => setOpen(false)
-    const { filters, getFilters } = useProfiles(state => ({
-        filters: state.filters,
-        getFilters: state.getFilter,
-    }), shallow)
-    const [pageTopic, setPageTopic] = useState(1)
-    const { data: topicHandbooksAll } = useQuery(
-        ["topicHandbooksAll", pageTopic],
-        () => topicHandbooks(),
-        { refetchOnWindowFocus: false },
+    const { filters, getFilters } = useProfiles(
+        (state) => ({
+            filters: state.filters,
+            getFilters: state.getFilter,
+        }),
+        shallow,
     )
+    const [pageTopic, setPageTopic] = useState(1)
+    const { data: topicHandbooksAll } = useQuery(["topicHandbooksAll", pageTopic], () => topicHandbooks(), {
+        refetchOnWindowFocus: false,
+    })
 
     const use = useSearch((state) => state.use)
     const [price_, setPrice_] = useState<{ min: number; max: number }>({
         min: filters.price_gte,
         max: filters.price_lte,
     })
-    const [statusOnline_, setStatusOnline_] = useState<TStatus | "">(
-        filters.speaker__status,
-    )
+    const [statusOnline_, setStatusOnline_] = useState<TStatus | "">(filters.speaker__status)
     const [verified_, setVerified_] = useState<boolean | "">(filters.verified)
-    const [topicConversation, setTopicConversation] = useState<number[]>(
-        filters.topic_conversation,
-    )
+    const [topicConversation, setTopicConversation] = useState<number[]>(filters.topic_conversation)
 
     const onSearch = () => {
         getFilters({
@@ -58,14 +55,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
     }
 
     return (
-        <Drawer
-            title={null}
-            closable={false}
-            placement="bottom"
-            onClose={handleClose}
-            open={open}
-            height={"auto"}
-        >
+        <Drawer title={null} closable={false} placement="bottom" onClose={handleClose} open={open} height={"auto"}>
             <div className="wrapper-search">
                 {/* <div className="block-search">
                     <p>{t("Session price")}</p>
@@ -108,9 +98,9 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                         options={
                             Array.isArray(topicHandbooksAll?.results)
                                 ? topicHandbooksAll?.results?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                }))
+                                      value: item.id,
+                                      label: item.name,
+                                  }))
                                 : []
                         }
                         onChange={setTopicConversation}
@@ -126,8 +116,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                         {STATUS_ONLINE.map((item) => (
                             <Button
                                 key={`${item.value}_status`}
-                                className={`button-duration ${item.value === statusOnline_ && "active"
-                                    }`}
+                                className={`button-duration ${item.value === statusOnline_ && "active"}`}
                                 onClick={() => {
                                     setStatusOnline_(item.value)
                                 }}
@@ -144,8 +133,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                         {VERIFIED.map((item) => (
                             <Button
                                 key={`${item.value}_status`}
-                                className={`button-duration ${item.value === verified_ && "active"
-                                    }`}
+                                className={`button-duration ${item.value === verified_ && "active"}`}
                                 onClick={() => {
                                     setVerified_(item.value)
                                 }}

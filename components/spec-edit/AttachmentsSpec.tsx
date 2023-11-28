@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { useQuery } from "react-query"
 import { useTranslation } from "react-i18next"
 
-import { Button } from "antd"
+import { Button } from "antd/lib"
 
 import { speakerSpecAttachment } from "api/api-spec"
 import { specializations } from "api/api-user"
@@ -48,10 +48,7 @@ const AttachmentsSpec: FC = () => {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmitAddNewDiploma)}
-            className="form w-100"
-        >
+        <form onSubmit={handleSubmit(onSubmitAddNewDiploma)} className="form w-100">
             <div className="item-form">
                 <p>{t("Enter the name of the document")}</p>
                 <input
@@ -71,10 +68,7 @@ const AttachmentsSpec: FC = () => {
             {/* {errors.name && <span style={{color: 'red', fontSize: 13}}>Это поле обязательно</span>} */}
             <div className="item-form">
                 <p>{t("Add a document")} ( jpeg, jpg, pdf ):</p>
-                <div
-                    className="form-input"
-                    style={{ position: "relative", width: "calc(100% - 20px)" }}
-                >
+                <div className="form-input" style={{ position: "relative", width: "calc(100% - 20px)" }}>
                     <input
                         className="form-control"
                         style={{
@@ -108,11 +102,7 @@ const AttachmentsSpec: FC = () => {
             </div>
             <br />
             <div className="item-form">
-                <Button
-                    className="login-submit"
-                    htmlType="submit"
-                    loading={isFileLoading}
-                >
+                <Button className="login-submit" htmlType="submit" loading={isFileLoading}>
                     <p>{t("Download")}</p>
                 </Button>
             </div>

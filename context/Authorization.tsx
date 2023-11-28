@@ -1,5 +1,4 @@
 import { type FC, type ReactNode, createContext } from "react"
-import { shallow } from "zustand/shallow"
 
 import type { IAuthContext } from "types/auth"
 
@@ -13,16 +12,11 @@ import { useCallJanus, usePropsCallingJanus } from "store/use-call-janus"
 const AuthorizationContext = createContext<IAuthContext | undefined>(undefined)
 
 export const Authorization: FC<{ children: ReactNode }> = ({ children }) => {
-    const getReset = useUser((state) => state.getReset)
-    const deleteAllPropsJanus = usePropsCallingJanus((state) => state.deleteAll)
-    const deleteTime = useCallJanus((state) => state.deleteTime)
-    const { state, out } = useAuth(
-        (state) => ({
-            state: state.state,
-            out: state.out,
-        }),
-        shallow,
-    )
+    const getReset = useUser(({ getReset }) => getReset)
+    const deleteAllPropsJanus = usePropsCallingJanus(({ deleteAll }) => deleteAll)
+    const deleteTime = useCallJanus(({ deleteTime }) => deleteTime)
+    const out = useAuth(({ out }) => out)
+    const state = useAuth(({ state }) => state)
 
     const Routers: Record<TAuthContext, ReactNode> = {
         Gates: <GatesComponent />,

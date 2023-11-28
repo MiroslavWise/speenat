@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import { Button } from "antd"
+import { Button } from "antd/lib"
 
 import Loader from "@loader-spin"
 import { useUser } from "store/use-user"
@@ -20,8 +20,8 @@ const Teachers: NextPage = () => {
     const handleOpen = () => setOpen(true)
     useDocumentTitle("Teachers")
 
-    const isSpeaker = useUser((state) => state.is_speaker)
-    const loadingUser = useUser((state) => state.loading)
+    const isSpeaker = useUser(({ is_speaker }) => is_speaker)
+    const loadingUser = useUser(({ loading }) => loading)
 
     useEffect(() => {
         if (isSpeaker) {

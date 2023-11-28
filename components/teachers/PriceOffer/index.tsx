@@ -1,10 +1,11 @@
+import { useTranslation } from "react-i18next"
+
 import type { TPriceOffer } from "types/store/search"
 
-import styles from "./style.module.scss"
 import { cx } from "functions/cx"
 import { useProfiles } from "store/use-profiles"
-import { shallow } from "zustand/shallow"
-import { useTranslation } from "react-i18next"
+
+import styles from "./style.module.scss"
 
 const BUTTONS: { value: TPriceOffer }[] = [
     {
@@ -23,7 +24,8 @@ const BUTTONS: { value: TPriceOffer }[] = [
 
 export function PriceOffer() {
     const { t } = useTranslation()
-    const { usePriceOffer, priceOffer } = useProfiles((state) => state, shallow)
+    const priceOffer = useProfiles(({ priceOffer }) => priceOffer)
+    const usePriceOffer = useProfiles(({ usePriceOffer }) => usePriceOffer)
 
     return (
         <ul className={styles.wrapper}>

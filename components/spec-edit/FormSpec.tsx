@@ -3,17 +3,13 @@ import { FC, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 
-import { Form, Select, Input, Switch, Row, Button } from "antd"
+import { Form, Select, Input, Switch, Button } from "antd/lib"
 
 import type { ISpecItems } from "types/store/user"
 
 import Loader from "@loader-spin"
 
-import {
-    speakerSpecAdd,
-    speakerSpecEdit,
-    specializationsAllList,
-} from "api/api-spec"
+import { speakerSpecAdd, speakerSpecEdit, specializationsAllList } from "api/api-spec"
 import { specializations } from "api/api-user"
 import { topicHandbooks } from "api/api-handbooks"
 
@@ -70,15 +66,12 @@ const FormSpec: FC = () => {
         () => specializationsAllList(),
         { refetchOnWindowFocus: false },
     )
-    const { data: topicHandbooksAll } = useQuery(
-        ["topicHandbooksAll", pageTopic],
-        () => topicHandbooks(),
-        { refetchOnWindowFocus: false },
-    )
+    const { data: topicHandbooksAll } = useQuery(["topicHandbooksAll", pageTopic], () => topicHandbooks(), {
+        refetchOnWindowFocus: false,
+    })
 
     const currentSpec: ISpecItems | undefined = useMemo(() => {
-        if (spec && id)
-            return spec?.find((item) => Number(item?.id) === Number(id))
+        if (spec && id) return spec?.find((item) => Number(item?.id) === Number(id))
         return undefined
     }, [spec, id])
 
@@ -101,9 +94,7 @@ const FormSpec: FC = () => {
                 consultation_time: consultation_time,
                 region_living: values.region_living,
                 additional_info: values.additional_info,
-                topic_conversation: values.topic_conversation.map((item) =>
-                    Number(item),
-                ),
+                topic_conversation: values.topic_conversation.map((item) => Number(item)),
             }
 
             //@ts-ignore
@@ -131,9 +122,7 @@ const FormSpec: FC = () => {
                 consultation_time: consultation_time,
                 region_living: values.region_living || "",
                 additional_info: values.additional_info,
-                topic_conversation: values.topic_conversation.map((item) =>
-                    Number(item),
-                ),
+                topic_conversation: values.topic_conversation.map((item) => Number(item)),
             }
             //@ts-ignore
             speakerSpecAdd(data)
@@ -162,14 +151,11 @@ const FormSpec: FC = () => {
                 university: currentSpec?.university,
                 work_experience: currentSpec?.work_experience,
                 category: currentSpec?.category,
-                consultation_time: currentSpec?.consultation_time?.find(
-                    (item) => item?.sessions_time === "20min",
-                )?.original_price,
+                consultation_time: currentSpec?.consultation_time?.find((item) => item?.sessions_time === "20min")
+                    ?.original_price,
                 region_living: currentSpec?.region_living,
                 additional_info: currentSpec?.additional_info,
-                topic_conversation: currentSpec?.topic_conversation?.map(
-                    (item) => item?.id,
-                ),
+                topic_conversation: currentSpec?.topic_conversation?.map((item) => item?.id),
             }}
         >
             <div className="item-form">
@@ -187,10 +173,7 @@ const FormSpec: FC = () => {
                         {specializationsAll &&
                             specializationsAll?.length > 0 &&
                             specializationsAll?.map((item) => (
-                                <Option
-                                    key={`${item?.id}_specs`}
-                                    value={item?.id}
-                                >
+                                <Option key={`${item?.id}_specs`} value={item?.id}>
                                     {item?.name}
                                 </Option>
                             ))}
@@ -208,11 +191,7 @@ const FormSpec: FC = () => {
                         },
                     ]}
                 >
-                    <Select
-                        className="form-input-select"
-                        size="large"
-                        mode="multiple"
-                    >
+                    <Select className="form-input-select" size="large" mode="multiple">
                         {topicHandbooksAll?.results?.map((item) => (
                             <Option key={item.id + "topic"} value={item.id}>
                                 {item.name}
@@ -232,14 +211,8 @@ const FormSpec: FC = () => {
             </div>
             <div className="item-form">
                 <p>{t("Scientific degree")}</p>
-                <Form.Item
-                    name="scientific_degree"
-                    rules={[{ required: false, message: "Введите!" }]}
-                >
-                    <Switch
-                        defaultChecked={currentSpec?.scientific_degree}
-                        style={{ marginLeft: 10 }}
-                    />
+                <Form.Item name="scientific_degree" rules={[{ required: false, message: "Введите!" }]}>
+                    <Switch defaultChecked={currentSpec?.scientific_degree} style={{ marginLeft: 10 }} />
                 </Form.Item>
             </div>
             <div className="item-form">
@@ -248,12 +221,7 @@ const FormSpec: FC = () => {
                     name="work_experience"
                     // rules={[{ required: true, message: 'Опыт работы(в годах)!', },]}
                 >
-                    <Input
-                        type="number"
-                        min={0}
-                        max={90}
-                        className="form-input"
-                    />
+                    <Input type="number" min={0} max={90} className="form-input" />
                 </Form.Item>
             </div>
             <div className="item-form">
@@ -263,12 +231,7 @@ const FormSpec: FC = () => {
                     style={{ margin: 0, padding: 0 }}
                     rules={[{ required: true, message: "Обязательное поле!" }]}
                 >
-                    <Input
-                        type="number"
-                        max={1000000}
-                        min={0}
-                        className="form-input"
-                    />
+                    <Input type="number" max={1000000} min={0} className="form-input" />
                 </Form.Item>
             </div>
             <div className="item-form">
@@ -285,11 +248,7 @@ const FormSpec: FC = () => {
             </div>
             <br />
             <div className="item-form">
-                <Button
-                    className="login-submit"
-                    htmlType="submit"
-                    loading={loading}
-                >
+                <Button className="login-submit" htmlType="submit" loading={loading}>
                     <p>{t("Save")}</p>
                 </Button>
             </div>

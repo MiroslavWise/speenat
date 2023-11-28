@@ -1,7 +1,7 @@
 import { TGender, TStatus } from "types/store/user"
 import { axiosInstance } from "./api-general"
 
-export type TStatusAmount = "declined" | "fraud" | "rejected" | "error" | "validation" | "new"
+export type TStatusAmount = "declined" | "fraud" | "rejected" | "error" | "validation" | "new" | "charged"
 
 export const apiCreateOrder = async (data: IValue): Promise<{ data: IResponseCreateOrder }> =>
     axiosInstance.post(`/order/create`, data)
@@ -9,6 +9,14 @@ export const apiCreateOrder = async (data: IValue): Promise<{ data: IResponseCre
 export const apiOrder = async (value: string): Promise<{ data: IResponseCreateOrder }> =>
     axiosInstance.get(`/order/${value}`)
 
+export const apiOrderList = async (
+    page: number,
+): Promise<{
+    data: {
+        count: number
+        results: IResponseCreateOrder[]
+    }
+}> => axiosInstance.get(`/order/order-list?page=${page}`)
 interface IValue {
     amount: string | number
 }

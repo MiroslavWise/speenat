@@ -1,15 +1,15 @@
-import { NextPage } from "next";
+import { NextPage } from "next"
 
-import { Divider } from "antd";
+import { Divider } from "antd/lib"
 
-import FormName from "components/profile/change/FormName";
-import FormDataUser from "components/profile/change/FormDataUser";
-import UpdatePhoto from "components/profile/change/UpdatePhoto";
+import FormName from "components/profile/change/FormName"
+import FormDataUser from "components/profile/change/FormDataUser"
+import UpdatePhoto from "components/profile/change/UpdatePhoto"
 
-import { useDocumentTitle } from "hooks/useDocumentTitle";
+import { useDocumentTitle } from "hooks/useDocumentTitle"
 
 const Change: NextPage = () => {
-    useDocumentTitle("Editing a profile");
+    useDocumentTitle("Editing a profile")
 
     return (
         <div className="wrapper-profile show-animate">
@@ -21,7 +21,7 @@ const Change: NextPage = () => {
                 <UpdatePhoto />
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Change;
+export default Change

@@ -1,6 +1,6 @@
 import { NextPage } from "next"
 
-import { Divider } from "antd"
+import { Divider } from "antd/lib"
 
 import FormSpec from "components/spec-edit/FormSpec"
 import ListAttachments from "components/spec-edit/ListAttachments"

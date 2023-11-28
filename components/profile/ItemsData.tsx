@@ -2,7 +2,7 @@ import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
-import { Modal } from "antd"
+import { Modal } from "antd/lib"
 
 import { FLAGS_LANGUAGE } from "components/auth/components/constants"
 import { useUser } from "store/use-user"
@@ -27,85 +27,47 @@ export const ItemsData: FC = () => {
         <>
             <li>
                 <div className="icon">
-                    <Image
-                        src="/svg/terms/mail.svg"
-                        alt="wallet"
-                        width={18}
-                        height={18}
-                    />
+                    <Image src="/svg/terms/mail.svg" alt="wallet" width={18} height={18} />
                 </div>
                 <p>{user?.profile?.user?.email}</p>
             </li>
             <li>
                 <div className="icon">
-                    <Image
-                        src="/svg/terms/wallet.svg"
-                        alt="wallet"
-                        width={18}
-                        height={18}
-                    />
+                    <Image src="/svg/terms/wallet.svg" alt="wallet" width={18} height={18} />
                 </div>
-                <p>
-                    {Number(user?.profile?.balance?.current_balance)?.toFixed(
-                        2,
-                    )}
-                </p>
+                <p>{Number(user?.profile?.balance?.current_balance)?.toFixed(2)}</p>
             </li>
-            {
-                isStaff ? (
-                    <li onClick={() => push("/analytics")}>
-                        <div className="icon">
-                            <Image
-                                src="/svg/terms/bar-chart.svg"
-                                alt="bar-chart"
-                                width={18}
-                                height={18}
-                            />
-                        </div>
-                        <p>{t("Accountant_office")}</p>
-                    </li>
-                ) : null
-            }
-            <li onClick={() => { push("/invited", undefined, { shallow: true }) }}>
+            {isStaff ? (
+                <li onClick={() => push("/analytics")}>
+                    <div className="icon">
+                        <Image src="/svg/terms/bar-chart.svg" alt="bar-chart" width={18} height={18} />
+                    </div>
+                    <p>{t("Accountant_office")}</p>
+                </li>
+            ) : null}
+            <li
+                onClick={() => {
+                    push("/invited", undefined, { shallow: true })
+                }}
+            >
                 <div className="icon">
-                    <Image
-                        src="/svg/terms/attachment.svg"
-                        alt="wallet"
-                        width={18}
-                        height={18}
-                    />
+                    <Image src="/svg/terms/attachment.svg" alt="wallet" width={18} height={18} />
                 </div>
                 <p>{t("Invite_a_friend")}</p>
             </li>
             <li onClick={() => setActive(true)}>
                 <div className="icon">
-                    <Image
-                        src="/svg/terms/type.svg"
-                        alt="wallet"
-                        width={18}
-                        height={18}
-                    />
+                    <Image src="/svg/terms/type.svg" alt="wallet" width={18} height={18} />
                 </div>
                 <p>Сменить язык</p>
             </li>
-            <Modal
-                open={active}
-                footer={null}
-                onCancel={() => setActive(false)}
-                centered
-                closable={false}
-            >
+            <Modal open={active} footer={null} onCancel={() => setActive(false)} centered closable={false}>
                 <ul className={styles.modalUl}>
-                    {
-                        FLAGS_LANGUAGE.map(item => (
-                            <li
-                                key={`${item.value}`}
-                                onClick={() => handleLanguage(item.value)}
-                            >
-                                <p>{item.label}</p>
-                            </li>
-                        ))
-                    }
+                    {FLAGS_LANGUAGE.map((item) => (
+                        <li key={`${item.value}`} onClick={() => handleLanguage(item.value)}>
+                            <p>{item.label}</p>
+                        </li>
+                    ))}
                 </ul>
             </Modal>
         </>

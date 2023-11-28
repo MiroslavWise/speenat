@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { useQuery } from "react-query"
 import { useTranslation } from "react-i18next"
 
-import { Divider, Button } from "antd"
+import { Divider, Button } from "antd/lib"
 
 import type { ISpecItems } from "types/store/user"
 

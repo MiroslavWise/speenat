@@ -156,7 +156,98 @@
     .item-form {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 12px;
+
+        & > [data-grid] {
+            width: calc(100%);
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            & > [data-item-grid] {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                cursor: pointer;
+
+                & > [data-radio] {
+                    width: 14px;
+                    height: 14px;
+                    border: 2px solid var(--gray-300);
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: border var(--transition);
+                    & > div {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: transparent;
+                        transition: background var(--transition);
+                    }
+                }
+
+                & > span {
+                    color: var(--gray-300);
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    letter-spacing: -0.3px;
+                    transition: color, font-weight var(--transition);
+                }
+
+                &[data-is="true"] {
+                    & > [data-radio] {
+                        border: 2px solid var(--gray-900);
+                        & > div {
+                            background: var(--gray-900);
+                        }
+                    }
+
+                    & > span {
+                        color: var(--gray-900);
+                    }
+                }
+            }
+        }
+
+        & > [data-input] {
+            width: 100%;
+            height: 0px;
+            display: flex;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: height var(--transition);
+
+            & > b {
+                padding-left: 0;
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--error-600);
+            }
+
+            & > input {
+                border-radius: 100px;
+                border: 1px solid var(--gray-300);
+                background: var(--gray-100);
+                padding: 6px 12px;
+                color: var(--gray-800);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 20px;
+                letter-spacing: -0.3px;
+            }
+
+            &[data-input="true"] {
+                height: fit-content;
+            }
+        }
 
         & > input {
             min-width: 120px !important;
@@ -170,6 +261,12 @@
             font-weight: 500;
             padding-left: 10px;
             color: var(--premium-color);
+        }
+
+        b {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--error-600);
         }
 
         i {

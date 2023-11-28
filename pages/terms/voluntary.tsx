@@ -1,4 +1,4 @@
-import { Divider } from "antd"
+import { Divider } from "antd/lib"
 import { NextPage } from "next"
 
 const Voluntary: NextPage = () => {

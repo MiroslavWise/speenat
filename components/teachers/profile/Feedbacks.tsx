@@ -5,7 +5,7 @@ import moment from "moment"
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
 
-import { Rate } from "antd"
+import { Rate } from "antd/lib"
 
 import Loader from "@loader-spin"
 

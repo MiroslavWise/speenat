@@ -3,7 +3,7 @@ import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
-import { Button, Row } from "antd"
+import { Button, Row } from "antd/lib"
 
 import Loader from "@loader-spin"
 
@@ -18,15 +18,11 @@ const ListAttachments: FC<{ edit: boolean }> = ({ edit }) => {
         query: { id },
     } = useRouter()
     const [loading, setLoading] = useState(false)
-    const { data, isLoading, refetch } = useQuery(["specializations"], () =>
-        specializations(),
-    )
+    const { data, isLoading, refetch } = useQuery(["specializations"], () => specializations())
 
     const currentAttachments = useMemo(() => {
         if (data) {
-            return data
-                ?.find((item) => Number(item?.id) === Number(id))
-                ?.attachments?.filter((item) => item?.file)
+            return data?.find((item) => Number(item?.id) === Number(id))?.attachments?.filter((item) => item?.file)
         }
         return []
     }, [data]) as { file: string | null; id: number; name: string }[] | []
@@ -60,13 +56,7 @@ const ListAttachments: FC<{ edit: boolean }> = ({ edit }) => {
                             style={{ objectFit: "cover" }}
                             className="img-item"
                         />
-                        <p>
-                            {item?.name === "undefined"
-                                ? ""
-                                : item?.name
-                                ? item?.name
-                                : ""}
-                        </p>
+                        <p>{item?.name === "undefined" ? "" : item?.name ? item?.name : ""}</p>
                         {edit && (
                             <Button
                                 className="button-delete"

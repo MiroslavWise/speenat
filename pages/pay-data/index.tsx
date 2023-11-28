@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { NextPage } from "next"
 import { useTranslation } from "react-i18next"
-import { Button, Form, InputNumber } from "antd"
+import { Button, Form, InputNumber } from "antd/lib"
 import { useForm } from "react-hook-form"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
@@ -13,17 +13,44 @@ import { profileMy } from "api/api-user"
 
 interface IValues {
     incom: number
+    radio: TRadio
+    input?: number | string
 }
+
+type TRadio = "1000" | "5000" | "10000" | "10000+"
+interface IRadios {
+    label: string
+    value: TRadio
+}
+
+const RADIOS: IRadios[] = [
+    {
+        label: "1 000",
+        value: "1000",
+    },
+    {
+        label: "5 000",
+        value: "5000",
+    },
+    {
+        label: "10 000",
+        value: "10000",
+    },
+    {
+        label: "свыше 10 000",
+        value: "10000+",
+    },
+]
 
 const PayData: NextPage = () => {
     useDocumentTitle("Online_payments")
     const { t } = useTranslation()
     const isSpeaker = useUser(({ is_speaker }) => is_speaker)
     const user = useUser(({ user }) => user)
-    const [form] = Form.useForm<IValues>()
-    const { register, handleSubmit } = useForm<IValues>({
+    const { register, handleSubmit, setValue, setError, watch } = useForm<IValues>({
         defaultValues: {
-            incom: 51,
+            radio: "1000",
+            input: 10_000,
         },
     })
     const [loading, setLoading] = useState(false)
@@ -41,8 +68,18 @@ const PayData: NextPage = () => {
     const onInMoney = (values: IValues) => {
         if (!loading) {
             setLoading(true)
-            if (values?.["incom"]) {
-                apiCreateOrder({ amount: values["incom"] })
+            if (values?.radio) {
+                let amount = +values?.radio
+
+                if (values?.radio === "10000+") {
+                    if (Number(values.input) <= 10_000) {
+                        amount = 10_000
+                    } else {
+                        amount = Number(values.input) || 10_000
+                    }
+                }
+
+                apiCreateOrder({ amount: amount })
                     .then((response) => {
                         if (response) {
                             console.log("values: ", response)
@@ -101,19 +138,29 @@ const PayData: NextPage = () => {
                     <div className="item-money">
                         <p className="title">{t("Top up your balance")}</p>
                         <div className="item-form">
-                            <p>
-                                {t("Specify the deposit amount (the minimum deposit amount is 50₸)")} / Баланс сейчас:{" "}
-                                {Number(data?.profile?.balance?.current_balance)?.toFixed(0)}₸
-                            </p>
-                            <input
-                                type="number"
-                                prefix="₸"
-                                {...register("incom", { required: true, min: 50 })}
-                                style={{
-                                    margin: 0,
-                                    borderColor: "var( --gray-color)",
-                                }}
-                            />
+                            <b>Выберите сумму для пополнения баланса: </b>
+                            <div data-grid>
+                                {RADIOS.map((item) => (
+                                    <div
+                                        key={`${item.value}-v-----`}
+                                        data-item-grid
+                                        {...register("radio", { required: true })}
+                                        onClick={() => {
+                                            setValue("radio", item.value)
+                                        }}
+                                        data-is={item.value === watch("radio")}
+                                    >
+                                        <div data-radio>
+                                            <div />
+                                        </div>
+                                        <span>{item.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div data-input={watch("radio") === "10000+"}>
+                                <b>Введите сумму:</b>
+                                <input type="number" {...register("input", { required: false, min: 10_000 })} />
+                            </div>
                         </div>
                         <div className="item-form">
                             <Button className="login-submit" htmlType="submit">
@@ -128,3 +175,15 @@ const PayData: NextPage = () => {
 }
 
 export default PayData
+
+{
+    /* <input
+type="number"
+prefix="₸"
+{...register("incom", { required: true, min: 50 })}
+style={{
+    margin: 0,
+    borderColor: "var( --gray-color)",
+}}
+/> */
+}

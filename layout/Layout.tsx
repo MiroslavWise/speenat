@@ -21,15 +21,8 @@ const inter = Inter({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     const router = useRouter()
-    const { getUser, loading, isSpeaker } =
-        useUser(
-            (state) => ({
-                getUser: state.getUserData,
-                loading: state.loading,
-                isSpeaker: state.is_speaker,
-            }),
-            shallow,
-        ) ?? {}
+    const getUser = useUser(({ getUserData }) => getUserData)
+    const loading = useUser(({ loading }) => loading)
 
     useEffect(() => getUser(true), [])
 

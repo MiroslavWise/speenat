@@ -80,24 +80,24 @@ export const ContextJanusVideoRoom: TProps = ({ children }) => {
     const { wsChannel } = useWeb() ?? {}
     const [visible, setVisible] = useState<boolean>(false)
     const [isJanus, setIsJanus] = useState(false)
-    const { user, is_speaker } = useUser() ?? {}
     const refVideoLeft = useRef<HTMLDivElement>()
     const refVideoRight = useRef<HTMLDivElement>()
     const [doSvc, setDoSvc] = useState("")
-    const { deleteTime, setTime } = useCallJanus()
-    const {
-        call_info,
-        speaker_info,
-        user_info,
-        setCallInfo,
-        setSpeakerInfo,
-        setUserInfo,
-        idRoom: idRoomState,
-        setIdRoom,
-        setUuidRoom,
-        deleteAll,
-        uuidRoom,
-    } = usePropsCallingJanus()
+    const user = useUser(({ user }) => user)
+    const setTime = useCallJanus(({ setTime }) => setTime)
+    const is_speaker = useUser(({ is_speaker }) => is_speaker)
+    const deleteTime = useCallJanus(({ deleteTime }) => deleteTime)
+    const call_info = usePropsCallingJanus(({ call_info }) => call_info)
+    const speaker_info = usePropsCallingJanus(({ speaker_info }) => speaker_info)
+    const user_info = usePropsCallingJanus(({ user_info }) => user_info)
+    const setCallInfo = usePropsCallingJanus(({ setCallInfo }) => setCallInfo)
+    const setSpeakerInfo = usePropsCallingJanus(({ setSpeakerInfo }) => setSpeakerInfo)
+    const setUserInfo = usePropsCallingJanus(({ setUserInfo }) => setUserInfo)
+    const idRoomState = usePropsCallingJanus(({ idRoom }) => idRoom)
+    const setIdRoom = usePropsCallingJanus(({ setIdRoom }) => setIdRoom)
+    const setUuidRoom = usePropsCallingJanus(({ setUuidRoom }) => setUuidRoom)
+    const deleteAll = usePropsCallingJanus(({ deleteAll }) => deleteAll)
+    const uuidRoom = usePropsCallingJanus(({ uuidRoom }) => uuidRoom)
 
     useEffect(() => {
         setDoSvc(getQueryStringValue("svc"))

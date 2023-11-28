@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { useQuery } from "react-query"
 import { useTranslation } from "react-i18next"
 
-import { Divider, Table } from "antd"
+import { Table } from "antd/lib"
 
 import Loader from "@loader-spin"
 import CompanyIncoming from "components/accountant/CompanyIncoming"

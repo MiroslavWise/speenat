@@ -1,7 +1,7 @@
 import { NextPage } from "next"
 import { useTranslation } from "react-i18next"
 
-import { Typography } from "antd"
+import { Typography } from "antd/lib"
 
 import { ButtonsSocial } from "components/invited/ButtonsSocial"
 
@@ -11,7 +11,7 @@ import { useUser } from "store/use-user"
 const Invited: NextPage = () => {
     const { t } = useTranslation()
     useDocumentTitle("Invitation")
-    const user = useUser((state) => state.user)
+    const user = useUser(({ user }) => user)
 
     return (
         <div className="wrapper invited">

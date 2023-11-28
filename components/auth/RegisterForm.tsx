@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { Form, Input, Radio, Select, Space } from "antd"
+import { Form, Input, Radio, Select, Space } from "antd/lib"
 
 import { languages } from "api/api-user"
 import { useQuery } from "react-query"

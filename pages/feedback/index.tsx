@@ -1,14 +1,13 @@
 import { useTranslation } from "react-i18next"
-import { useContext, useState, useEffect } from "react"
-import { shallow } from "zustand/shallow"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Button, Input, Rate, Row, Space } from "antd/lib"
 
 import { useUser } from "store/use-user"
 import { apiSpeakerReview, apiToSpeakerFeedback } from "api/api-review"
 import { updateStatus } from "api/api-status"
 import { useRouter } from "next/router"
-import { Button, Input, Rate, Row, Space } from "antd"
 import { usePropsCallingJanus } from "store/use-call-janus"
 
 import styles from "./style.module.scss"
@@ -19,23 +18,13 @@ const Feedback = () => {
     const { push } = useRouter()
     const [text, setText] = useState("")
     const [rate, setRate] = useState(0)
-    const { deleteAll, call_info, speaker_info, user_info } = usePropsCallingJanus(
-        (state) => ({
-            call_info: state.call_info,
-            speaker_info: state.speaker_info,
-            user_info: state.user_info,
-            deleteAll: state.deleteAll,
-        }),
-        shallow,
-    )
+    const deleteAll = usePropsCallingJanus(({ deleteAll }) => deleteAll)
+    const call_info = usePropsCallingJanus(({ call_info }) => call_info)
+    const speaker_info = usePropsCallingJanus(({ speaker_info }) => speaker_info)
+    const user_info = usePropsCallingJanus(({ user_info }) => user_info)
 
-    const { user, isSpeaker } = useUser(
-        (state) => ({
-            isSpeaker: state.is_speaker,
-            user: state.user,
-        }),
-        shallow,
-    )
+    const user = useUser(({ user }) => user)
+    const isSpeaker = useUser(({ is_speaker }) => is_speaker)
 
     useEffect(() => {
         if (!!deleteAll && !call_info) {

@@ -5,7 +5,7 @@ import NameCategory from "./components/header/NameCategory"
 import MenuDots from "./components/header/RightMenuDots"
 import { shallow } from "zustand/shallow"
 import { useUser } from "store/use-user"
-import { Switch } from "antd"
+import { Switch } from "antd/lib"
 import { useTranslation } from "react-i18next"
 import { TStatus } from "types/store/user"
 import { updateStatus } from "api/api-status"
@@ -20,17 +20,11 @@ const objectStatus = (t: (value: string) => string): Record<TStatus, [string, st
 
 const Header: FC = () => {
     const { t } = useTranslation()
-    const { getUser, loading, isSpeaker, isStatus, reloadUser } =
-        useUser(
-            (state) => ({
-                getUser: state.getUserData,
-                loading: state.loading,
-                isSpeaker: state.is_speaker,
-                isStatus: state?.user?.profile?.status,
-                reloadUser: state.getUserData,
-            }),
-            shallow,
-        ) ?? {}
+    const isSpeaker = useUser(({ is_speaker }) => is_speaker)
+    const user = useUser(({ user }) => user)
+    const reloadUser = useUser(({ getUserData }) => getUserData)
+    const { profile } = user ?? {}
+    const { status: isStatus } = profile ?? {}
 
     const { playSoundSwitchStatus } = usePlaySound()
 

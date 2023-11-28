@@ -1,4 +1,5 @@
-import { FC, useState } from "react"
+import { FC } from "react"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { isMobile } from "react-device-detect"
@@ -28,7 +29,7 @@ const NavFooter: FC = () => {
         <div className={styles.container}>
             <ul>
                 {FIRST_ITEM(isSpeaker).map((item) => (
-                    <li key={`${item?.value}_${item?.title}`} onClick={() => handleTo(`/${item.value}`)}>
+                    <Link key={`${item?.value}_${item?.title}`} href={`/${item.value}`}>
                         <div className={styles.contentItem}>
                             <Image
                                 src={activePash(asPath, item.value) ? item.icon.fill : item.icon.regular}
@@ -44,9 +45,9 @@ const NavFooter: FC = () => {
                                 {t(item.title)}
                             </p>
                         </div>
-                    </li>
+                    </Link>
                 ))}
-                <li key={"central"} onClick={() => handleTo(`/${CENTRAL_ITEM(isSpeaker).value}`)}>
+                <Link key={"central"} href={`/${CENTRAL_ITEM(isSpeaker).value}`}>
                     <div className={`${styles.contentItem} ${styles.central}`}>
                         <div className={styles.imageCentral}>
                             <Image src="/svg/nav-bar/Polygon.svg" alt="poligon" width={92} height={92} />
@@ -63,9 +64,9 @@ const NavFooter: FC = () => {
                             />
                         </div>
                     </div>
-                </li>
+                </Link>
                 {LAST_ITEMS(isSpeaker).map((item) => (
-                    <li key={`${item?.value}_${item?.title}`} onClick={() => handleTo(`/${item.value}`)}>
+                    <Link key={`${item?.value}_${item?.title}`} href={`/${item.value}`}>
                         <div className={styles.contentItem}>
                             <Image
                                 src={activePash(asPath, item.value) ? item.icon.fill : item.icon.regular}
@@ -81,7 +82,7 @@ const NavFooter: FC = () => {
                                 {t(item.title)}
                             </p>
                         </div>
-                    </li>
+                    </Link>
                 ))}
             </ul>
         </div>

@@ -1,9 +1,7 @@
-import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { shallow } from "zustand/shallow"
-import useSound from "use-sound"
 
-import { Modal, Button, Row, Divider } from "antd"
+import { Modal, Button, Row, Divider } from "antd/lib"
 
 import PhoneOff from "components/icons/phone-off"
 import PhoneIncoming from "components/icons/phone-incoming"

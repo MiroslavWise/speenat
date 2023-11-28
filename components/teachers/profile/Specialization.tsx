@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
-import { Button, Divider, Modal, Row, Space } from "antd"
-import { FC, useContext, Dispatch, useState, useEffect } from "react"
+import { Button, Divider, Modal, Row, Space } from "antd/lib"
+import { FC, useContext, Dispatch, useEffect } from "react"
 
 import type { ISpeakerData, ISpec } from "types/store/user"
 
