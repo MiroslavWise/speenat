@@ -22,13 +22,22 @@
     }
 
     &[data-status="charged"] {
-        box-shadow: rgba(11, 151, 11, 0.35) 0px 5px 15px;
+        & > p {
+            color: var(--success-600);
+        }
+        box-shadow: var(--success-400) 0px 5px 15px;
     }
     &[data-status="validation"] {
-        box-shadow: #fdb022 0px 5px 15px;
+        & > p {
+            color: var(--warning-600);
+        }
+        box-shadow: var(--warning-400) 0px 5px 15px;
     }
     &[data-status="error"],
     &[data-status="declined"] {
-        box-shadow: #f04438 0px 5px 15px;
+        & > p {
+            color: var(--error-600);
+        }
+        box-shadow: var(var(--error-400)) 0px 5px 15px;
     }
 }
