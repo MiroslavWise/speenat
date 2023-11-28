@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { NextPage } from "next"
 import { useTranslation } from "react-i18next"
 import { Button, Form, InputNumber } from "antd/lib"
@@ -98,6 +98,16 @@ const PayData: NextPage = () => {
 
     const onSubmit = handleSubmit(onInMoney)
 
+    const amount = useMemo(() => {
+        if (watch("radio") === "10000+") {
+            return Number(watch("input")) || 10_000
+        } else if (watch("radio")) {
+            return Number(watch("radio"))
+        } else {
+            return 0
+        }
+    }, [watch("radio"), watch("input")])
+
     if (isLoading) return null
 
     return (
@@ -163,8 +173,10 @@ const PayData: NextPage = () => {
                             </div>
                         </div>
                         <div className="item-form">
-                            <Button className="login-submit" htmlType="submit">
-                                <p>{t("Top up your balance")}</p>
+                            <Button className="login-submit pay-button" htmlType="submit">
+                                <p>
+                                    {t("Top up your balance")} на {amount}₸
+                                </p>
                             </Button>
                         </div>
                     </div>
