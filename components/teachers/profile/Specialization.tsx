@@ -9,13 +9,13 @@ import Time from "@icons-time"
 import Wallet from "@icons-wallet"
 import PhoneOff from "components/icons/phone-off"
 
-import { useUser } from "store/use-user"
 import { platform } from "functions/platform"
 import { useWeb } from "context/WebSocketContext"
 import { work_experience } from "functions/work-exp"
 import { CreateJanusContext } from "context/ContextJanusVideoRoom"
 import { useQuery } from "react-query"
 import { profileMy } from "api/api-user"
+import { useAuth } from "store/use-auth"
 
 const Specialization: FC<{
     data: ISpec[] | undefined
@@ -23,15 +23,15 @@ const Specialization: FC<{
     speaker: ISpeakerData
 }> = ({ data, online, speaker }) => {
     const { t } = useTranslation()
-    const user = useUser(({ user }) => user)
+    const token = useAuth(({ token }) => token)
     const contextJanus = useContext(CreateJanusContext)
     const { visible: janusVisible } = contextJanus ?? {}
     const { wsChannel } = useWeb()
 
     const { data: dataMe } = useQuery({
         queryFn: () => profileMy(),
-        queryKey: ["profile-me", user?.profile?.user?.id!],
-        enabled: !!user,
+        queryKey: ["profile-me", token!],
+        enabled: !!token,
         refetchOnMount: true,
         refetchOnWindowFocus: true,
     })
@@ -58,7 +58,7 @@ const Specialization: FC<{
                     data: {
                         type: "call_cancel_user",
                         speaker_profile_id: speaker?.profile?.profile_id,
-                        student_id: user?.profile?.profile_id,
+                        student_id: dataMe?.profile?.profile_id,
                         status: false,
                     },
                 }),
@@ -83,7 +83,7 @@ const Specialization: FC<{
             spec_id: specialization_id,
             device_type: platform,
             speaker_profile_id: speaker?.profile?.profile_id,
-            profile_id: user?.profile?.profile_id,
+            profile_id: dataMe?.profile?.profile_id,
             note_id: false,
         }
         wsChannel?.send(JSON.stringify({ data: data }))

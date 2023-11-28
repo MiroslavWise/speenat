@@ -6,12 +6,22 @@ import { Typography } from "antd/lib"
 import { ButtonsSocial } from "components/invited/ButtonsSocial"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
-import { useUser } from "store/use-user"
+import { useQuery } from "react-query"
+import { profileMy } from "api/api-user"
+import { useAuth } from "store/use-auth"
 
 const Invited: NextPage = () => {
     const { t } = useTranslation()
     useDocumentTitle("Invitation")
-    const user = useUser(({ user }) => user)
+    const token = useAuth(({ token }) => token)
+    const { data } = useQuery({
+        queryFn: () => profileMy(),
+        queryKey: ["profile-me", token!],
+        enabled: !!token,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    })
 
     return (
         <div className="wrapper invited">
@@ -19,19 +29,18 @@ const Invited: NextPage = () => {
                 <p>{t("Your invitation link")}: </p>
                 <Typography.Paragraph
                     copyable={{
-                        text: `${user?.profile?.user?.full_name} ${
-                            user?.profile?.gender === "female"
+                        text: `${data?.profile?.user?.full_name} ${
+                            data?.profile?.gender === "female"
                                 ? t("invited you to the Spenat service -female")
                                 : t("invited you to the Spenat service -male")
-                        } https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code=${user?.profile?.referral_code}`,
+                        } https://${process.env.NEXT_PUBLIC_FRONTEND}/?referral_code=${data?.profile?.referral_code}`,
                     }}
                     className="link"
                 >
-                    {user?.profile?.referral_code}
+                    {data?.profile?.referral_code}
                 </Typography.Paragraph>
                 <ButtonsSocial />
             </div>
-            {/* <ListInvited /> */}
         </div>
     )
 }

@@ -10,6 +10,7 @@ import { useUser } from "store/use-user"
 import { apiCreateOrder } from "api/api-order"
 import { useQuery } from "react-query"
 import { profileMy } from "api/api-user"
+import { useAuth } from "store/use-auth"
 
 interface IValues {
     incom: number
@@ -46,8 +47,8 @@ const PayData: NextPage = () => {
     useDocumentTitle("Online_payments")
     const { t } = useTranslation()
     const isSpeaker = useUser(({ is_speaker }) => is_speaker)
-    const user = useUser(({ user }) => user)
-    const { register, handleSubmit, setValue, setError, watch } = useForm<IValues>({
+    const token = useAuth(({ token }) => token)
+    const { register, handleSubmit, setValue, watch } = useForm<IValues>({
         defaultValues: {
             radio: "1000",
             input: 10_000,
@@ -55,10 +56,10 @@ const PayData: NextPage = () => {
     })
     const [loading, setLoading] = useState(false)
 
-    const { data, isLoading } = useQuery({
+    const { isLoading } = useQuery({
         queryFn: () => profileMy(),
-        queryKey: ["profile-me", user?.profile?.user?.id!],
-        enabled: !!user?.profile?.user?.id,
+        queryKey: ["profile-me", token!],
+        enabled: false,
         refetchOnMount: false,
         refetchOnReconnect: true,
     })
@@ -187,15 +188,3 @@ const PayData: NextPage = () => {
 }
 
 export default PayData
-
-{
-    /* <input
-type="number"
-prefix="₸"
-{...register("incom", { required: true, min: 50 })}
-style={{
-    margin: 0,
-    borderColor: "var( --gray-color)",
-}}
-/> */
-}

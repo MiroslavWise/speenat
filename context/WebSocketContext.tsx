@@ -18,7 +18,6 @@ export const ContextWebSocket = createContext<
 export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => {
     const [webSocket, setWebSocket] = useState<WebSocket | undefined>(undefined)
     const token = useAuth(({ token }) => token)
-    const user = useUser(({ user }) => user)
     const notify = (text: string) =>
         toast(text, {
             position: "top-center",
@@ -33,7 +32,7 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
 
     const { refetch } = useQuery({
         queryFn: () => profileMy(),
-        queryKey: ["profile-me", user?.profile?.user?.id!],
+        queryKey: ["profile-me", token!],
         enabled: false,
     })
 
