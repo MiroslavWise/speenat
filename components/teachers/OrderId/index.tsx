@@ -45,6 +45,9 @@ export const OrderId = () => {
         if (data?.type === "billing_deposit_up") {
             refetch()
         }
+        if (data?.type === "billing_declined") {
+            refetch()
+        }
     }
 
     const status = useMemo(() => {

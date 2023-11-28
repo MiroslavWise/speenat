@@ -83,7 +83,7 @@ export const ProviderWebSocket: FC<{ children: ReactNode }> = ({ children }) => 
 
     function eventMessage(event: any) {
         const data = JSON.parse(event.data).data
-        if (data?.type === "billing_deposit_up") {
+        if (data?.type === "billing_deposit_up" || data?.type === "billing_declined") {
             console.log("message: ", data?.message)
             const message = data?.message?.verb
 
