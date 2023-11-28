@@ -7,8 +7,6 @@
     gap: 4px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border: 1px solid var(--gray-300);
-    transition: box-shadow var(--transition);
-    animation: shadow 8s infinite;
 
     & > p {
         color: var(--gray-500);
@@ -18,18 +16,19 @@
         font-weight: 500;
         letter-spacing: -0.2px;
     }
-}
 
-@keyframes shadow {
-    0% {
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    &[data-status="new"] {
+        box-shadow: rgba(11, 11, 151, 0.35) 0px 5px 15px;
     }
 
-    50% {
-        box-shadow: rgba(145, 155, 155, 0.85) 0px 1px 5px;
+    &[data-status="charged"] {
+        box-shadow: rgba(11, 151, 11, 0.35) 0px 5px 15px;
     }
-
-    100% {
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    &[data-status="validation"] {
+        box-shadow: #fdb022 0px 5px 15px;
+    }
+    &[data-status="error"],
+    &[data-status="declined"] {
+        box-shadow: #f04438 0px 5px 15px;
     }
 }

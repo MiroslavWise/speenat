@@ -75,7 +75,7 @@ export const OrderId = () => {
     if (isLoading) return null
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} data-status={status}>
             <p>
                 {status === "charged"
                     ? "Платёж поступил, и вы можете воспользоваться услугами консультации!"
