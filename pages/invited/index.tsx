@@ -63,7 +63,7 @@ const Invited: NextPage = () => {
             if (data?.profile?.is_can_use_ref_code === false && amountReferral) {
                 if (amountReferral > Number(data?.profile?.balance?.current_balance)) {
                     setLoading(true)
-                    push(`/pay-data`)
+                    push(`/pay-data?amount-min=${amountReferral - Number(data?.profile?.balance?.current_balance)}`)
                 } else if (amountReferral < Number(data?.profile?.balance?.current_balance)) {
                     dispatchVisibleReferral({
                         visible: true,
