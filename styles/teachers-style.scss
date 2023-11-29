@@ -343,6 +343,10 @@
         line-height: 15px;
         color: var(--premium-color);
     }
+
+    &[data-amount] {
+        
+    }
 }
 
 .container-feedback {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { NextPage } from "next"
 import { useTranslation } from "react-i18next"
 import { Button, Form, InputNumber } from "antd/lib"
@@ -11,6 +11,7 @@ import { apiCreateOrder } from "api/api-order"
 import { useQuery } from "react-query"
 import { profileMy } from "api/api-user"
 import { useAuth } from "store/use-auth"
+import { useRouter } from "next/router"
 
 interface IValues {
     incom: number
@@ -46,6 +47,7 @@ const RADIOS: IRadios[] = [
 const PayData: NextPage = () => {
     useDocumentTitle("Online_payments")
     const { t } = useTranslation()
+    const { query } = useRouter()
     const isSpeaker = useUser(({ is_speaker }) => is_speaker)
     const token = useAuth(({ token }) => token)
     const { register, handleSubmit, setValue, watch } = useForm<IValues>({
@@ -64,6 +66,29 @@ const PayData: NextPage = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
     })
+
+    const amountMin = useMemo(() => {
+        if (!query["amount-min"]) {
+            return null
+        }
+        return Number(query["amount-min"])
+    }, [query])
+
+    useEffect(() => {
+        console.log("amountMin:", amountMin)
+        if (!!amountMin) {
+            if (amount > 0 && amountMin <= 1000) {
+                setValue("radio", "1000")
+            } else if (amountMin > 1000 && amountMin <= 5000) {
+                setValue("radio", "5000")
+            } else if (amountMin > 5000 && amountMin <= 10000) {
+                setValue("radio", "10000")
+            } else if (amountMin > 10000) {
+                setValue("radio", "10000+")
+                setValue("input", amountMin)
+            }
+        }
+    }, [amountMin])
 
     const onOutMoney = (values: { incom: number }) => {}
 

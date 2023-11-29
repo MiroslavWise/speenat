@@ -16,6 +16,7 @@ import { CreateJanusContext } from "context/ContextJanusVideoRoom"
 import { useQuery } from "react-query"
 import { profileMy } from "api/api-user"
 import { useAuth } from "store/use-auth"
+import { useRouter } from "next/router"
 
 const Specialization: FC<{
     data: ISpec[] | undefined
@@ -23,6 +24,7 @@ const Specialization: FC<{
     speaker: ISpeakerData
 }> = ({ data, online, speaker }) => {
     const { t } = useTranslation()
+    const { push } = useRouter()
     const token = useAuth(({ token }) => token)
     const contextJanus = useContext(CreateJanusContext)
     const { visible: janusVisible } = contextJanus ?? {}
@@ -32,17 +34,14 @@ const Specialization: FC<{
         queryFn: () => profileMy(),
         queryKey: ["profile-me", token!],
         enabled: !!token,
-        refetchOnMount: true,
-        refetchOnWindowFocus: true,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     })
-
-    console.log("dataMe: ", dataMe)
 
     const startEndTimer = (value: boolean) => {
         const onTimer = setTimeout(() => {
             if (!janusVisible) {
                 handleCancelCall()
-                // timeDetected()
             }
         }, 60_000)
 
@@ -168,6 +167,22 @@ const Specialization: FC<{
                                             onClick={() => handleBell(time?.id, item?.specialization_id, item, time)}
                                         >
                                             <p>{t("To call")}</p>
+                                        </Button>
+                                    ) : Number(dataMe?.profile?.balance?.current_balance!) <= Number(time?.price) ? (
+                                        <Button
+                                            type="text"
+                                            className="but-bell"
+                                            data-amount
+                                            onClick={() => {
+                                                push(
+                                                    `/pay-data?amount-min=${
+                                                        +Number(time?.price)?.toFixed(0) -
+                                                        +Number(dataMe?.profile?.balance?.current_balance!)?.toFixed(0)
+                                                    }`,
+                                                )
+                                            }}
+                                        >
+                                            <p>Пополнить</p>
                                         </Button>
                                     ) : null}
                                     <div className="times">
