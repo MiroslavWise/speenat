@@ -77,7 +77,7 @@ const PayData: NextPage = () => {
     useEffect(() => {
         console.log("amountMin:", amountMin)
         if (!!amountMin) {
-            if (amount > 0 && amountMin <= 1000) {
+            if (amountMin > 0 && amountMin <= 1000) {
                 setValue("radio", "1000")
             } else if (amountMin > 1000 && amountMin <= 5000) {
                 setValue("radio", "5000")

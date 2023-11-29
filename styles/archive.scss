@@ -13,7 +13,7 @@
         .item-archive {
             background-color: white;
             border: 1px solid var(--gray-color);
-            border-radius: 25px;
+            border-radius: 24px;
             overflow: hidden;
             width: calc(100% - 2rem);
             min-height: 100px;
@@ -145,14 +145,14 @@
     }
 
     .item-money {
-        border-radius: 25px;
+        border-radius: 24px;
         overflow: hidden;
         background-color: white;
         border: 1px solid var(--gray-color);
         display: flex;
         flex-direction: column;
         padding: 1rem;
-        gap: 15px;
+        gap: 16px;
 
         .title {
             font-weight: 600;
