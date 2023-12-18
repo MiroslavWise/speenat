@@ -1,20 +1,18 @@
-import { type FC, type ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { motion } from "framer-motion"
 import { Inter } from "@next/font/google"
-import { shallow } from "zustand/shallow"
+import { type FC, type ReactNode, useEffect } from "react"
 
-import NavFooter from "./NavFooter"
 import Header from "./Header"
 import Loader from "@loader-spin"
+import NavFooter from "./NavFooter"
 import ModalMenu from "components/modal-menu"
 
 import { useUser } from "store/use-user"
-import { ProviderWebSocket } from "context/WebSocketContext"
-import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom"
-import { ModalCall } from "components/modal-call"
 import { ModalReferral } from "template"
+import { ModalCall } from "components/modal-call"
+import { ProviderWebSocket } from "context/WebSocketContext"
 import { useVisibleModalReferral } from "store/use-visible-modal-referral"
+import { ContextJanusVideoRoom } from "context/ContextJanusVideoRoom"
 
 const inter = Inter({
     preload: true,
@@ -38,25 +36,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                 style={{ width: "100%", minHeight: "100vh", position: "relative" }}
             >
                 <Header />
-                <motion.div
-                    key={router.route}
-                    initial="pageInitial"
-                    animate="pageAnimate"
-                    exit="pageExit"
-                    variants={{
-                        pageInitial: {
-                            opacity: 0,
-                        },
-                        pageAnimate: {
-                            opacity: 1,
-                        },
-                        pageExit: {
-                            opacity: 0,
-                        },
-                    }}
-                >
-                    {children}
-                </motion.div>
+                <div key={router.route}>{children}</div>
                 <NavFooter />
                 <ModalMenu />
                 <ModalCall />

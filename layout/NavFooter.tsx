@@ -1,9 +1,9 @@
 import { FC } from "react"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import Image from "next/image"
-import { isMobile } from "react-device-detect"
+import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
+import { isMobile } from "react-device-detect"
 
 import { useUser } from "store/use-user"
 

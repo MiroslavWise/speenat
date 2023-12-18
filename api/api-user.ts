@@ -1,14 +1,5 @@
 import { axiosInstance } from "./api-general"
-import type {
-    IArchive,
-    IFeedback,
-    ISpeakerData,
-    ISpec,
-    ISpecItems,
-    IUser,
-    IUserCurrent,
-    IDataSpecEdit,
-} from "types/store/user"
+import type { IArchive, IFeedback, ISpeakerData, ISpecItems, IUser, IUserCurrent } from "types/store/user"
 import type { IDataProfile, IFilterProfiles } from "types/store/profiles"
 
 export const profileMy = async (): Promise<IUser> => {
@@ -17,6 +8,16 @@ export const profileMy = async (): Promise<IUser> => {
         .then((response) => response.data)
         .catch((e) => {
             console.error("USER DATA: ", e)
+        })
+}
+
+export const deleteProfile = async (): Promise<any> => {
+    return axiosInstance
+        .post(`/profile-delete/`, {})
+        .then((response) => response.data)
+        .catch((e) => {
+            console.log("delete acc: ", e)
+            return e
         })
 }
 

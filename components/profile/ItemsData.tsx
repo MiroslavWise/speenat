@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { FC, useState } from "react"
 import { useRouter } from "next/router"
 import Image from "next/image"
@@ -10,7 +11,6 @@ import { useAntdLang } from "context/LanguageContext"
 import changeLanguage from "helpers/changeLanguage"
 
 import styles from "./style.module.scss"
-import Link from "next/link"
 
 export const ItemsData: FC = () => {
     const { t, i18n } = useTranslation()

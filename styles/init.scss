@@ -112,6 +112,7 @@ h5,
 h6,
 a,
 p {
+    text-decoration: none;
     font-family: "Inter", sans-serif;
     margin: 0;
     padding: 0;
@@ -186,6 +187,74 @@ ul {
         .left {
             padding-left: 10px;
             border-left: 2px solid var(--cyan);
+        }
+    }
+}
+
+.wrapper-delete-account {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    background: #fff;
+    transition: none;
+
+    & > section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1rem 0.75rem;
+        width: calc(100% - 1.5rem);
+
+        & > h3 {
+            color: var(--gray-900);
+            text-align: center;
+            font-size: 1.25rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 1.875rem; /* 150% */
+            letter-spacing: -0.03125rem;
+        }
+
+        & > button {
+            width: calc(100% - 1.5rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--error-500);
+            height: 2.5rem;
+            color: var(--gray-900);
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 1.75rem;
+            letter-spacing: -0.03125rem;
+            border: none !important;
+            outline: none !important;
+        }
+
+        & > a {
+            width: calc(100% - 1.5rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f2f4f7;
+            height: 2.3rem;
+            color: var(--gray-900);
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 1.75rem;
+            letter-spacing: -0.03125rem;
         }
     }
 }

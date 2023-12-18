@@ -39,7 +39,8 @@
             flex-direction: column;
 
             & > a,
-            & > li {
+            & > li,
+            & > button {
                 font-weight: 400 !important;
                 margin: 0 !important;
                 text-decoration: none;
@@ -72,6 +73,17 @@
                     font-weight: 400 !important;
                     line-height: 24px;
                     letter-spacing: -0.5px;
+                }
+            }
+
+            & > [data-delete] {
+                align-items: center;
+                justify-content: center;
+                margin-top: 1rem !important;
+                border: none;
+
+                & > span {
+                    color: red;
                 }
             }
         }

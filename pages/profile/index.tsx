@@ -1,30 +1,25 @@
+import Link from "next/link"
 import { type FC } from "react"
-import { useRouter } from "next/router"
 import Image from "next/image"
 import { useTranslation } from "react-i18next"
 
-import { ItemsData } from "components/profile/ItemsData"
 import Loader from "@loader-spin"
 import { TERMS } from "components/terms/list-terms"
+import { ItemsData } from "components/profile/ItemsData"
 
 import { cx } from "functions/cx"
 import { useUser } from "store/use-user"
-import { useDocumentTitle } from "hooks/useDocumentTitle"
-import { replaceHttps } from "functions/replace-https"
 import loadImage from "functions/load-image"
+import { replaceHttps } from "functions/replace-https"
+import { useDocumentTitle } from "hooks/useDocumentTitle"
 
 import styles from "./styles.module.scss"
 
 const Profile: FC = () => {
     const { t } = useTranslation()
-    const { push } = useRouter()
     const loading = useUser((state) => state.loading)
     const user = useUser((state) => state.user)
     useDocumentTitle("Profile")
-
-    function handleChange() {
-        push("/profile/change", undefined, { shallow: true })
-    }
 
     if (loading) return <Loader />
 
@@ -43,32 +38,30 @@ const Profile: FC = () => {
                     </div>
                     <div className={styles.nameInfo}>
                         <h3>{user?.profile?.user?.full_name}</h3>
-                        <div className={styles.buttonEdit} onClick={handleChange}>
+                        <Link className={styles.buttonEdit} href={{ pathname: "/profile/change" }}>
                             <Image src="/svg/user-edit.svg" alt="user-edit" height={16} width={16} />
                             <p>{t("Edit")}</p>
-                        </div>
+                        </Link>
                     </div>
                 </div>
                 <div className="profile-content">
                     <ul className="profile-info-other">
                         <ItemsData />
+                        <Link data-delete href={{ pathname: `/delete-account` }}>
+                            <span>Удалить аккаунт</span>
+                        </Link>
                     </ul>
                 </div>
                 <h2>{t("Условия и соглашения")}</h2>
                 <div className="profile-content">
                     <ul className="profile-info-other">
                         {TERMS.map((item) => (
-                            <li
-                                key={item.path}
-                                onClick={() => {
-                                    push(item.path, undefined, { shallow: true })
-                                }}
-                            >
+                            <Link key={item.path} href={item.path ? item.path : {}}>
                                 <div className="icon">
                                     <Image src={item.icon} alt={item.icon} width={18} height={18} />
                                 </div>
                                 <p>{t(item.label)}</p>
-                            </li>
+                            </Link>
                         ))}
                     </ul>
                 </div>
