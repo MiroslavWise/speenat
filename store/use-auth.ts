@@ -24,6 +24,7 @@ interface ILogin {
 }
 
 interface IReturnDataAuthToken {
+    res: any
     ok: boolean
 }
 
@@ -51,15 +52,18 @@ export const useAuth = create(
                             state: "Main",
                         })
                         return {
+                            res: data,
                             ok: true,
                         }
                     }
                     return {
+                        res: data,
                         ok: false,
                     }
                 } catch (e) {
                     console.info("---ERROR LOGIN--- ", e)
                     return {
+                        res: e,
                         ok: false,
                     }
                 }
@@ -71,6 +75,7 @@ export const useAuth = create(
                             state: "Main",
                         })
                         return {
+                            res: true,
                             ok: true,
                         }
                     }
@@ -82,6 +87,7 @@ export const useAuth = create(
                             state: "SignIn",
                         })
                         return {
+                            res: false,
                             ok: false,
                         }
                     }
@@ -100,6 +106,7 @@ export const useAuth = create(
                                 expiration: expiration,
                             })
                             return {
+                                res: data,
                                 ok: true,
                             }
                         }
@@ -110,6 +117,7 @@ export const useAuth = create(
                             state: "SignIn",
                         })
                         return {
+                            res: data,
                             ok: false,
                         }
                     }
@@ -120,6 +128,7 @@ export const useAuth = create(
                         state: "SignIn",
                     })
                     return {
+                        res: false,
                         ok: false,
                     }
                 } catch (e) {
@@ -131,6 +140,7 @@ export const useAuth = create(
                         state: "SignIn",
                     })
                     return {
+                        res: e,
                         ok: false,
                     }
                 }

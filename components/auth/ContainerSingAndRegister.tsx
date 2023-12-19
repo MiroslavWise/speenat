@@ -5,10 +5,9 @@ import { useRouter } from "next/router"
 
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
-import { LanguagesOpenButton } from "./components/LanguagesOpenButton"
 
-import { registerUser, IRegister } from "api/api-auth"
 import { useAuth } from "store/use-auth"
+import { registerUser, IRegister } from "api/api-auth"
 import { useLoginEnter } from "store/use-login-enter"
 
 interface IValues {
@@ -25,6 +24,7 @@ const ContainerSingAndRegister: FC = () => {
     const { query } = useRouter()
     const setActiveLoginEnter = useLoginEnter((state) => state.setActive)
     const { referral_code } = query ?? {}
+    const [details, setDetails] = useState("")
 
     useEffect(() => {
         if (referral_code) {
@@ -35,10 +35,19 @@ const ContainerSingAndRegister: FC = () => {
 
     const onSubmit = (values: IValues) => {
         if (login) {
-            login({ email: values.email.toLowerCase(), password: values.password }).finally(() => {
-                push("/", undefined, { shallow: true })
-                setActiveLoginEnter(true)
-            })
+            login({ email: values.email.toLowerCase(), password: values.password })
+                .then((response) => {
+                    if (!response.ok && response?.res?.detail) {
+                        setDetails(response?.res?.detail)
+                    } else {
+                        setDetails("")
+                    }
+                    console.log("response: ", response)
+                })
+                .finally(() => {
+                    push("/", undefined, { shallow: true })
+                    setActiveLoginEnter(true)
+                })
         }
     }
 
@@ -71,6 +80,7 @@ const ContainerSingAndRegister: FC = () => {
             <div className={`content `}>
                 <h2 style={{ textAlign: "center" }}>{isState ? t("Registration") : t("Log in to your account")}</h2>
                 <h4>{t("The fastest way to consult with a teacher")}</h4>
+                {details && <p data-error>{details || ""}</p>}
                 <Form
                     form={form}
                     className="fields"
