@@ -1,16 +1,16 @@
-.containerButtons{
-  display: inline-flex;
-  margin: 10px 0;
-  gap: 10px;
+.containerButtons {
+    display: inline-flex;
+    margin: 10px 0;
+    gap: 10px;
 
-  li{
-    width: 44px;
-    height: 44px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100px;
-    border: 1px solid #EAECF0;
-    box-shadow: 0px 11px 20px 0px rgba(100, 104, 115, 0.10);
-  }
+    li {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+        border: 1px solid #eaecf0;
+        box-shadow: 0px 11px 20px 0px rgba(100, 104, 115, 0.1);
+    }
 }

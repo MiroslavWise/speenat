@@ -1,58 +1,50 @@
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
+import { FC } from "react"
+import { useTranslation } from "react-i18next"
+import Image from "next/image"
 
 import { useAntdLang } from "context/LanguageContext"
-import changeLanguage from "helpers/changeLanguage";
+import changeLanguage from "helpers/changeLanguage"
 
-interface ILangFlags{
-        value: "ru" | "kz" | "en"
-        icon: string
+interface ILangFlags {
+    value: "ru" | "kz" | "en"
+    icon: string
 }
 
 const FLAGS_LANGUAGE: ILangFlags[] = [
-        {
-                value: "ru",
-                icon: "/svg/flags/ru.svg",
-        },
-        {
-                value: "kz",
-                icon: "/svg/flags/kz.svg",
-        },
-        {
-                value: "en",
-                icon: "/svg/flags/us.svg",
-        }
+    {
+        value: "ru",
+        icon: "/svg/flags/ru.svg",
+    },
+    {
+        value: "kz",
+        icon: "/svg/flags/kz.svg",
+    },
+    {
+        value: "en",
+        icon: "/svg/flags/us.svg",
+    },
 ]
 
 export const LanguageButtons: FC = () => {
-        const { i18n } = useTranslation()
+    const { i18n } = useTranslation()
 
-        const { changeLanguage: setLang } = useAntdLang()
+    const { changeLanguage: setLang } = useAntdLang()
 
-        const handleLanguage = (value: "ru" | "en" | "kz") => {
-                changeLanguage(value, i18n, setLang)
-        }
+    const handleLanguage = (value: "ru" | "en" | "kz") => {
+        changeLanguage(value, i18n, setLang)
+    }
 
-        return (
-                <div className="flags-container">
-                        {
-                                FLAGS_LANGUAGE.map(item => (
-                                        <div
-                                                className={`item-flag ${i18n.language === item.value && "active"}`} 
-                                                key={`${item?.value}_flag`}
-                                                onClick={() => handleLanguage(item.value)}
-                                        >
-                                                <Image
-                                                        src={item?.icon}
-                                                        alt="fl"
-                                                        height={50}
-                                                        width={50}
-                                                        className="img-flag"
-                                                />
-                                        </div>
-                                ))
-                        }
+    return (
+        <div className="flags-container">
+            {FLAGS_LANGUAGE.map((item) => (
+                <div
+                    className={`item-flag ${i18n.language === item.value && "active"}`}
+                    key={`${item?.value}_flag`}
+                    onClick={() => handleLanguage(item.value)}
+                >
+                    <Image src={item?.icon} alt="fl" height={50} width={50} className="img-flag" />
                 </div>
-        )
+            ))}
+        </div>
+    )
 }

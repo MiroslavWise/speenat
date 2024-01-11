@@ -50,8 +50,8 @@ const Feedbacks: FC<{}> = ({}) => {
                                               !item || item?.author?.avatar_url?.includes("default")
                                                   ? "/images/default.png"
                                                   : item?.author?.avatar_url
-                                                  ? replaceHttps(item?.author?.avatar_url)
-                                                  : "/images/default.png"
+                                                    ? replaceHttps(item?.author?.avatar_url)
+                                                    : "/images/default.png"
                                           }
                                           alt="av"
                                           height={40}

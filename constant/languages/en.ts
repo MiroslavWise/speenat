@@ -51,7 +51,7 @@ export default {
         UNIVERSITY: "UNIVERSITY",
         "The university is not filled": "The university is not filled",
         "Work experience": "Work experience",
-        "Duration of the consultation": "Duration of the consultation",
+        "Duration of the consultation": "Price per consultation",
         "Region of residence": "Region of residence",
         "The region of residence is not filled in": "The region of residence is not filled in",
         "Additional information": "Additional information",
