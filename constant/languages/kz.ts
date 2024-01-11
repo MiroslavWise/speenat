@@ -172,4 +172,11 @@ export default {
     business: "бизнес",
     premium: "жоғары",
     vip: "vip",
+
+    Terms_and_Agreements: "Шарттар мен келісімдер",
+    Delete_Account: "Аккаунты өшіру",
+    Balance_Top_up_History: "Баланс толтыру тарихы",
+    Change_Language: "Тілді өзгерту",
+    Your_Current_Balance: "Сіздің ағымдағы балансыңыз",
+    Choose_Amount_To_Top_Up_Balance: "Балансыңызды толтыру үшін соманы таңдаңыз",
 } as Record<string, string>

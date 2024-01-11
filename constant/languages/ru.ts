@@ -171,4 +171,10 @@ export default {
     business: "бизнес",
     premium: "премиум",
     vip: "vip",
+    Terms_and_Agreements: "Условия и соглашения",
+    Delete_Account: "Удалить аккаунт",
+    Balance_Top_up_History: "История пополнения баланса",
+    Change_Language: "Сменить язык",
+    Your_Current_Balance: "Your current balance",
+    Choose_Amount_To_Top_Up_Balance: "Выберите сумму для пополнения баланса",
 } as Record<string, string>
