@@ -16,7 +16,6 @@ import loadImage from "functions/load-image"
 import { archives } from "api/api-user"
 import { statusCallConf } from "functions/status-conf"
 import { replaceHttps } from "functions/replace-https"
-import DrawerSearch from "components/teachers/DrawerSearch"
 
 const ListArchive: FC = () => {
     const { t } = useTranslation()

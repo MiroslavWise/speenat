@@ -13,6 +13,9 @@ import { replaceHttps } from "functions/replace-https"
 import { srcImage } from "functions/src-image"
 import { chatsAll } from "api/api-chat"
 import loadImage from "functions/load-image"
+import { useState } from "react"
+import { Button } from "antd"
+import DrawerSearch from "components/teachers/DrawerSearch"
 
 const Chats: NextPage = () => {
     const { t } = useTranslation()
@@ -22,10 +25,16 @@ const Chats: NextPage = () => {
     const isSpeaker = useUser((state) => state.is_speaker)
     useDocumentTitle(t("Chat"))
 
+    const [open, setOpen] = useState(false)
+    const handleOpen = () => setOpen(true)
+
     if (isLoading || loadingUser) return <Loader />
 
     return (
         <div className="content-archive">
+            <Button className="button-search" onClick={handleOpen} style={{ marginTop: "10px" }}>
+                <p>{t("Search Parameters")}</p>
+            </Button>
             <div className="list-archive">
                 {data && data?.length > 0
                     ? data?.map((item) => (
@@ -61,6 +70,7 @@ const Chats: NextPage = () => {
                       ))
                     : null}
             </div>
+            <DrawerSearch open={open} setOpen={setOpen} />
         </div>
     )
 }

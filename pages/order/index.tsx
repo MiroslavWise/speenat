@@ -2,13 +2,12 @@ import dayjs from "dayjs"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
-
 import { useWeb } from "context/WebSocketContext"
 import { TStatusAmount, apiOrder, apiOrderList } from "api/api-order"
-
 import styles from "./style.module.scss"
 import { profileMy } from "api/api-user"
 import { useAuth } from "store/use-auth"
+import { useTranslation } from "react-i18next"
 
 const svg: Record<TStatusAmount, string> = {
     charged: "/svg/order/credit-card-check.svg",
@@ -20,42 +19,12 @@ const svg: Record<TStatusAmount, string> = {
     error: "/svg/order/brackets-x.svg",
 }
 
-const TYPES_TRANSACTIONS: { img: string; label: string }[] = [
-    {
-        img: svg.charged,
-        label: "Успешное зачисление средст",
-    },
-    {
-        img: svg.new,
-        label: "Идёт исполнение транзакции (транзация не закончилась)",
-    },
-    {
-        img: svg.rejected,
-        label: "Транзакция отклонена шлюзом",
-    },
-    {
-        img: svg.validation,
-        label: "Запрос не обработан, т.к. не прошел валидацию",
-    },
-    {
-        img: svg.fraud,
-        label: "Транзакция отклонена системой защиты от мошеннических транзакций в шлюзе",
-    },
-    {
-        img: svg.declined,
-        label: "Эквайер отклонил транзакцию",
-    },
-    {
-        img: svg.error,
-        label: "Отказ из-за ошибки на стороне эквайера или шлюза",
-    },
-]
-
-export default function Oder() {
+export default function Order() {
     const { query, push } = useRouter()
     const token = useAuth(({ token }) => token)
     const [page, setPage] = useState(1)
 
+    const { t } = useTranslation()
     const orderId = useMemo(() => {
         if (!query["order-id"]) {
             return null
@@ -66,6 +35,41 @@ export default function Oder() {
             return id
         }
     }, [query["order-id"]])
+
+    const getTransactionTypes = () => {
+        return [
+            {
+                img: svg.charged,
+                label: t("Successful funds transfer"),
+            },
+            {
+                img: svg.new,
+                label: t("Transaction in progress (transaction not completed)"),
+            },
+            {
+                img: svg.rejected,
+                label: t("Transaction rejected by the gateway"),
+            },
+            {
+                img: svg.validation,
+                label: t("Request not processed due to validation failure"),
+            },
+            {
+                img: svg.fraud,
+                label: t("Transaction declined by the fraud protection system in the gateway"),
+            },
+            {
+                img: svg.declined,
+                label: t("Acquirer declined the transaction"),
+            },
+            {
+                img: svg.error,
+                label: t("Rejection due to error on the acquirer or gateway side"),
+            },
+        ]
+    }
+
+    const TYPES_TRANSACTIONS = getTransactionTypes()
 
     const { data: dataProfile } = useQuery({
         queryFn: () => profileMy(),
@@ -95,17 +99,17 @@ export default function Oder() {
     const list = useMemo(() => {
         return data?.data?.results || []
     }, [data?.data])
-
     return (
         <div className={styles.wrapper}>
-            <h3>Статистика движений ваших денежных средств</h3>
+            <h3>{t("Statistics on your cash flows")}</h3>
             <div data-icons>
                 <section>
                     <div data-img>
                         <img src="/svg/order/coins-stacked-01.svg" alt="coins-stacked" width={24} height={24} />
                     </div>
                     <p>
-                        Текущий баланс: <span>{Number(dataProfile?.profile?.balance?.current_balance || 0)}₸</span>
+                        {t("Current balance")}:{" "}
+                        <span>{Number(dataProfile?.profile?.balance?.current_balance || 0)}₸</span>
                     </p>
                 </section>
             </div>
@@ -119,7 +123,7 @@ export default function Oder() {
                     </section>
                 ))}
             </div>
-            <h5>Транзакции</h5>
+            <h5>{t("Transactions")}</h5>
             <ul>
                 {list.map((item) => (
                     <li key={`${item.id}-amount`}>
@@ -128,11 +132,12 @@ export default function Oder() {
                         </div>
                         <div data-info>
                             <h4>
-                                Сумма: <span>{Number(item.amount).toFixed(0)}₸</span>
+                                {t("Sum")}: <span>{Number(item.amount).toFixed(0)}₸</span>
                             </h4>
                             {item.updated_at ? (
                                 <h4>
-                                    Дата и время: <span>{dayjs(item.updated_at).format("HH:mm DD.MM.YYYY")}</span>
+                                    {t("Date and time")}:{" "}
+                                    <span>{dayjs(item.updated_at).format("HH:mm DD.MM.YYYY")}</span>
                                 </h4>
                             ) : null}
                         </div>

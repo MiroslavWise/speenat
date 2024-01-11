@@ -16,6 +16,9 @@ export default {
     Terms_of_agreements: "Келісімдердің шарттары",
     Status: "Мәртебесі",
 
+    Language: "Тіл",
+    "Choose language": "Тілді таңдаңыз",
+
     Chat: "Чат",
     Student: "Студент",
     Speaker: "Спикер",
@@ -167,6 +170,31 @@ export default {
 
     "Go to Home": "Басты бетке өтіңіз",
     "Topics for communication": "Темы для общения",
+    "Financial statistics": "Қаржы статистикасы",
+
+    "Company turnover": "Кәсіпорын айналымы",
+    "Total company income": "Кәсіпорынның жалпы табысы",
+    "Total Teacher Income": "Мұғалімдердің жалпы табысы",
+    "Total income from the referral system": "Жолдама жүйесінен түсетін жалпы табыс",
+    "Quantitative Statistics": "Сандық статистика",
+    "Statistics on your cash flows": "Сіздің ақша ағындары туралы статистика",
+
+    "Current balance": "Ағымдағы теңгерім",
+    "Successful funds transfer": "Сәтті қосымша",
+    "Transaction in progress (transaction not completed)": "Транзакцияны орындау жатады (транзакция аяқталмады)",
+    "Transaction rejected by the gateway": "Шлюз тарапынан транзакция қабылданбады",
+    "Request not processed due to validation failure":
+        "Валидациялық қателікке себеп болмас тауарды сүрау жасауды толтыру",
+    "Transaction declined by the fraud protection system in the gateway":
+        "Шлюзда қауіпті транзакциялардан қорғау жүйесімен транзакция қабылданбады",
+    "Acquirer declined the transaction": "Эквайер транзакцияны қабылдамады",
+    "Rejection due to error on the acquirer or gateway side": "Эквайер немесе шлюз қатесі салданып қалды",
+    "date and time": "Күні мен уақыты",
+    "Profile setup": "Профильді орнату",
+    "Average price per conference": 'Бір конференцияның орташа бағасы',
+
+    Transactions: "Мәмілелер",
+    Sum: "Cомасы",
 
     economy: "үнемді",
     business: "бизнес",

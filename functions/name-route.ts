@@ -21,7 +21,7 @@ const terms: Record<any, string> = {
 export const nameRoute = (route: string, t: (value: string) => string, name?: string | undefined): string => {
     const split = route.split("/").filter((_) => _)
     if (split[0] === "order") {
-        return "Транзакции"
+        return t("Transactions")
     }
     if (split[0] === "chat") {
         if (name) {
@@ -31,7 +31,7 @@ export const nameRoute = (route: string, t: (value: string) => string, name?: st
     }
     if (split[0] === "profile") {
         if (split?.[1] === "change") {
-            return t("Настройка профиля")
+            return t("Profile setup")
         }
         return t("Profile")
     }

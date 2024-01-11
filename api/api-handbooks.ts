@@ -8,13 +8,19 @@ interface IReturnDataHandbooks {
     }[]
 }
 
-export const topicHandbooks = async (
-    page?: number,
-): Promise<IReturnDataHandbooks> => {
+export const topicHandbooks = async (page?: number): Promise<IReturnDataHandbooks> => {
     return axiosInstance
         .get(`/topic-list/`)
         .then((response) => response.data)
-        .catch((e) => {
-            throw new Error(e)
+        .catch((error) => {
+            throw new Error(error)
         })
 }
+
+topicHandbooks()
+    .then((data) => {
+        console.log("Результат запроса:", data)
+    })
+    .catch((error) => {
+        console.error("Ошибка запроса:", error)
+    })

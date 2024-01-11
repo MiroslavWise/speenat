@@ -71,9 +71,9 @@ const Analytics: NextPage = () => {
 
     return (
         <div className={cx("wrapper")}>
-            <h2 className={styles.h2}>Количественная статистика</h2>
+            <h2 className={styles.h2}>{t("Quantitative Statistics")}</h2>
             <Table columns={columns(t)} dataSource={dataSource} showHeader={false} size={"small"} pagination={false} />
-            <h2 className={styles.h2}>Финансовая статистика</h2>
+            <h2 className={styles.h2}>{t("Financial statistics")}</h2>
             <CompanyIncoming />
         </div>
     )

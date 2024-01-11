@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useQuery } from "react-query"
-import { Button, Divider, Drawer, Row, Space, Select } from "antd/lib"
+import { Button, Divider, Drawer, Row, Space, Select, Input } from "antd/lib"
 
 import type { TStatus } from "types/store/user"
 
@@ -25,6 +25,8 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
         (state) => ({
             filters: state.filters,
             getFilters: state.getFilter,
+            language: state.filters.language,
+            // setLanguage: state.setLanguage,
         }),
         shallow,
     )
@@ -41,10 +43,12 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
     const [statusOnline_, setStatusOnline_] = useState<TStatus | "">(filters.speaker__status)
     const [verified_, setVerified_] = useState<boolean | "">(filters.verified)
     const [topicConversation, setTopicConversation] = useState<number[]>(filters.topic_conversation)
-    const [language, setLanguage] = useState<string | "">("")
+    const [language, setLanguage] = useState<string | "">(filters.language)
+    const [searchQuery, setSearchQuery] = useState<string>("")
 
     const applyFilters = () => {
         getFilters({
+            search: searchQuery,
             price_gte: price_.min,
             price_lte: price_.max,
             speaker__status: statusOnline_,
@@ -52,7 +56,6 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
             page: 1,
             topic_conversation: topicConversation,
             language: language,
-            topic: topicConversation,
         })
     }
 
@@ -60,6 +63,15 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
         <Drawer title={null} closable={false} placement="bottom" onClose={handleClose} open={open} height={"auto"}>
             <div className="wrapper-search">
                 <Divider />
+                <div className="block-search">
+                    <p>{t("Search")}</p>
+                    <Input
+                        className={styles.searchInput}
+                        placeholder={t("Enter speaker name")}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
                 <div className="block-search">
                     <p>{t("Topics for communication")}</p>
                     <Select
@@ -85,13 +97,14 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                 </div>
                 <Divider />
                 <div className="block-search">
-                    <p>Язык</p>
+                    <p>{t("Language")}</p>
                     <Select
                         className={styles.selectFilter}
-                        placeholder={t("Выберите язык")}
+                        placeholder={t("Choose language")}
                         options={[
                             { value: "english", label: t("English") },
                             { value: "spanish", label: t("Spanish") },
+                            { value: "kazakhstan", label: t("kazakhstan") },
                         ]}
                         onChange={(value) => {
                             setLanguage(value)

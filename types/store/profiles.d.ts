@@ -35,7 +35,8 @@ export interface IFilterProfiles {
     verified: boolean | ""
     page: number
     language: string | ""
-    topic: number[]
+    // topic: number[]
+    search?: string
 }
 
 export interface IDataProfile {

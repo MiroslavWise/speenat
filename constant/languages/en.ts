@@ -16,6 +16,9 @@ export default {
     Terms_of_agreements: "Terms of agreements",
     Status: "Status",
 
+    Language: "Language",
+    "Choose language": "Choose_language",
+
     Chat: "Chat",
     Student: "Student",
     Speaker: "Speaker",
@@ -166,6 +169,30 @@ export default {
 
     "Go to Home": "Go to Home",
     "Topics for communication": "Topics for communication",
+    "Financial statistics": "Financial statistics",
+    "Company turnover": "Company turnover",
+    "Total company income": "Total company income",
+    "Total Teacher Income": "Total Teacher Income",
+    "Total income from the referral system": "Total income from the referral system",
+    "Quantitative Statistics": "Quantitative Statistics",
+
+    "Statistics on your cash flows": "Statistics on your cash flows",
+    "Current balance": "Current balance",
+    "Transaction in progress (transaction not completed)": "Transaction in progress (transaction not completed)",
+
+    "Successful funds transfer": "Successful funds transfer",
+    "Transaction rejected by the gateway": "Transaction rejected by the gateway",
+    "Request not processed due to validation failure": "Request not processed due to validation failure",
+    "Transaction declined by the fraud protection system in the gateway":
+        "Transaction declined by the fraud protection system in the gateway",
+    "Acquirer declined the transaction": "Acquirer declined the transaction",
+    "Rejection due to error on the acquirer or gateway side": "Rejection due to error on the acquirer or gateway side",
+    "Date and time": "Date and time",
+    "Profile setup": "Profile setup",
+    "Average price per conference": "Average price per conference",
+
+    Transactions: "Transactions",
+    Sum: "Sum",
 
     economy: "economy",
     business: "business",
@@ -176,6 +203,6 @@ export default {
     Delete_Account: "Delete Account",
     Balance_Top_up_History: "Balance Top-up History",
     Change_Language: "Change Language",
-    Your_Current_Balance: "Сіздің ағымдағы балансыңыз",
+    Your_Current_Balance: "Your Current Balance",
     Choose_Amount_To_Top_Up_Balance: "Select the amount to top up your balance",
 } as Record<string, string>

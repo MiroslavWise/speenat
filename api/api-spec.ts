@@ -32,3 +32,11 @@ export const specializationsAllList = async (): Promise<ISpecializationsAll[]> =
         .catch((e) => {
             console.error("USER DATA: ", e)
         })
+
+specializationsAllList()
+    .then((data) => {
+        console.log("Результат запроса spec:", data)
+    })
+    .catch((error) => {
+        console.error("Ошибка запроса:", error)
+    })

@@ -167,6 +167,32 @@ export default {
     "Go to Home": "Перейти на Главную",
     "Topics for communication": "Темы для общения",
 
+    "Financial statistics": "Финансовая статистика",
+
+    "Company turnover": "Оборот компании",
+    "Total company income": "Общий доход компании",
+    "Total Teacher Income": "Общий доход преподавателей",
+    "Total income from the referral system": "Общий доход с реферальной системы",
+    "Quantitative Statistics": "Количественная статистика",
+    "Statistics on your cash flows": "Статистика движений ваших денежных средств",
+
+    "Current balance": "Текущий баланс",
+
+    "Successful funds transfer": "Успешное зачисление средств",
+    "Transaction in progress (transaction not completed)": "Идёт исполнение транзакции (транзакция не закончилась)",
+
+    "Transaction rejected by the gateway": "Транзакция отклонена шлюзом",
+    "Request not processed due to validation failure": "Запрос не обработан, т.к. не прошел валидацию",
+    "Transaction declined by the fraud protection system in the gateway":
+        "Транзакция отклонена системой защиты от мошеннических транзакций в шлюзе",
+    "Acquirer declined the transaction": "Эквайер отклонил транзакцию",
+    "Rejection due to error on the acquirer or gateway side": "Отказ из-за ошибки на стороне эквайера или шлюза",
+    "date and time": "Дата и время",
+    "Profile setup": "Настройка профиля",
+    "Average price per conference": "Средняя цена за конференцию",
+    Transactions: "Транзакции",
+
+    Sum: "Сумма",
     economy: "эконом",
     business: "бизнес",
     premium: "премиум",
@@ -177,4 +203,6 @@ export default {
     Change_Language: "Сменить язык",
     Your_Current_Balance: "Your current balance",
     Choose_Amount_To_Top_Up_Balance: "Выберите сумму для пополнения баланса",
+    Language: "Язык",
+    "Choose language": "Выберите язык",
 } as Record<string, string>

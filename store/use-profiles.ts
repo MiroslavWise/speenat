@@ -14,6 +14,8 @@ export const useProfiles = create<IUseProfiles>((set, get) => ({
         price_lte: 100000,
         speaker__status: "online",
         topic_conversation: [],
+        search: "",
+        language: "",
     },
     usePriceOffer(value) {
         let price: [number, number] = [0, 100_000]
@@ -46,7 +48,7 @@ export const useProfiles = create<IUseProfiles>((set, get) => ({
             loading: false,
         })
     },
-    getFilter({ verified, price_gte, price_lte, speaker__status, topic_conversation, page }) {
+    getFilter({ verified, price_gte, price_lte, speaker__status, topic_conversation, page, language, search }) {
         set({
             filters: {
                 verified: verified,
@@ -55,6 +57,9 @@ export const useProfiles = create<IUseProfiles>((set, get) => ({
                 price_lte: price_lte,
                 speaker__status: speaker__status,
                 topic_conversation: topic_conversation,
+                language: language,
+                // topic: topic,
+                search: search,
             },
         })
     },
