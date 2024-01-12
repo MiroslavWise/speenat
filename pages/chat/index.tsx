@@ -14,7 +14,7 @@ import { srcImage } from "functions/src-image"
 import { chatsAll } from "api/api-chat"
 import loadImage from "functions/load-image"
 import { useState } from "react"
-import { Button } from "antd"
+import { Button } from "antd/lib"
 import DrawerSearch from "components/teachers/DrawerSearch"
 
 const Chats: NextPage = () => {
