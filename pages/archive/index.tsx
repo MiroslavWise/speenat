@@ -3,7 +3,7 @@ import { NextPage } from "next"
 import ListArchive from "components/archive/ListArchive"
 
 import { useDocumentTitle } from "hooks/useDocumentTitle"
-import { Button } from "antd"
+import { Button } from "antd/lib"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import DrawerSearch from "components/teachers/DrawerSearch"
