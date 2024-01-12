@@ -13,6 +13,9 @@ import { replaceHttps } from "functions/replace-https"
 import { srcImage } from "functions/src-image"
 import { chatsAll } from "api/api-chat"
 import loadImage from "functions/load-image"
+import { useState } from "react"
+import { Button } from "antd"
+import DrawerSearch from "components/teachers/DrawerSearch"
 
 const Chats: NextPage = () => {
     const { t } = useTranslation()
@@ -22,45 +25,52 @@ const Chats: NextPage = () => {
     const isSpeaker = useUser((state) => state.is_speaker)
     useDocumentTitle(t("Chat"))
 
+    const [open, setOpen] = useState(false)
+    const handleOpen = () => setOpen(true)
+
     if (isLoading || loadingUser) return <Loader />
 
     return (
         <div className="content-archive">
+            <Button className="button-search" onClick={handleOpen} style={{ marginTop: "10px" }}>
+                <p>{t("Search Parameters")}</p>
+            </Button>
             <div className="list-archive">
                 {data && data?.length > 0
                     ? data?.map((item) => (
-                        <div
-                            className="item-chat"
-                            key={item?.uuid}
-                            onClick={() => {
-                                push(`/chat/${item?.uuid}`, undefined, { shallow: true })
-                            }}
-                        >
-                            <Image
-                                loader={loadImage}
-                                src={replaceHttps(
-                                    srcImage(isSpeaker ? item?.student?.photo_url : item?.speaker?.photo_url),
-                                )}
-                                alt="photo"
-                                height={80}
-                                width={80}
-                                className="avatar"
-                            />
-                            <div className="description-chat">
-                                <p className="full-name-class">
-                                    {isSpeaker ? item?.student?.full_name : item?.speaker?.full_name}
-                                </p>
-                                <div className="last-messages">
-                                    <p>{item?.messages[0]?.text}</p>
-                                </div>
-                                <div className="time-message">
-                                    <i>{moment.utc(item?.messages?.[0]?.created_at).format("HH:mm DD.MM.YY")}</i>
-                                </div>
-                            </div>
-                        </div>
-                    ))
+                          <div
+                              className="item-chat"
+                              key={item?.uuid}
+                              onClick={() => {
+                                  push(`/chat/${item?.uuid}`, undefined, { shallow: true })
+                              }}
+                          >
+                              <Image
+                                  loader={loadImage}
+                                  src={replaceHttps(
+                                      srcImage(isSpeaker ? item?.student?.photo_url : item?.speaker?.photo_url),
+                                  )}
+                                  alt="photo"
+                                  height={80}
+                                  width={80}
+                                  className="avatar"
+                              />
+                              <div className="description-chat">
+                                  <p className="full-name-class">
+                                      {isSpeaker ? item?.student?.full_name : item?.speaker?.full_name}
+                                  </p>
+                                  <div className="last-messages">
+                                      <p>{item?.messages[0]?.text}</p>
+                                  </div>
+                                  <div className="time-message">
+                                      <i>{moment.utc(item?.messages?.[0]?.created_at).format("HH:mm DD.MM.YY")}</i>
+                                  </div>
+                              </div>
+                          </div>
+                      ))
                     : null}
             </div>
+            <DrawerSearch open={open} setOpen={setOpen} />
         </div>
     )
 }

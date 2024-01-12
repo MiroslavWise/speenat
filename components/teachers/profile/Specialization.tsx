@@ -122,7 +122,7 @@ const Specialization: FC<{
                                 }}
                             >
                                 <p className="name">{item?.specialization?.name}</p>
-                                <p className="sub-name"> {item?.specialization?.description}</p>
+                                <p className="sub-name">{item?.specialization?.description}</p>
                             </div>
                         </div>
                         <div className="content">
@@ -164,9 +164,14 @@ const Specialization: FC<{
                                         <Button
                                             type="text"
                                             className="but-bell"
+                                            style={{
+                                                backgroundColor: "#52c41a",
+                                                borderColor: "#52c41a",
+                                                color: "#fff",
+                                            }}
                                             onClick={() => handleBell(time?.id, item?.specialization_id, item, time)}
                                         >
-                                            <p>{t("To call")}</p>
+                                            <p>{online ? t("To call") : "Написать Сообщение"}</p>
                                         </Button>
                                     ) : Number(dataMe?.profile?.balance?.current_balance!) <= Number(time?.price) ? (
                                         <Button
@@ -195,6 +200,17 @@ const Specialization: FC<{
                                     </div>
                                 </div>
                             ))}
+                            {/* <div className="write-message-button">
+                                <Button
+                                    type="primary"
+                                    className="button-search"
+                                    onClick={() => {
+                                        console.log("Write a message clicked")
+                                    }}
+                                >
+                                    <p>{t("Write a message")}</p>
+                                </Button>
+                            </div> */}
                         </div>
                     </div>
                 ))}

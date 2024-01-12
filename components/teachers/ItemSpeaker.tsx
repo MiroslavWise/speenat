@@ -20,10 +20,7 @@ const ItemSpeaker: FC<IProfile> = ({
     const { push } = useRouter()
 
     return (
-        <MotionLI
-            classNames={["teacher-card"]}
-            onClick={() => push(`/teachers/${speaker_id}`)}
-        >
+        <MotionLI classNames={["teacher-card"]} onClick={() => push(`/teachers/${speaker_id}`)}>
             <div className="teacher-image">
                 <Image
                     loader={loadImage}
@@ -35,11 +32,7 @@ const ItemSpeaker: FC<IProfile> = ({
                 />
                 <div
                     className={`teacher-status ${
-                        status === "online"
-                            ? "status-online"
-                            : status === "busy"
-                            ? "status-busy"
-                            : "status-offline"
+                        status === "online" ? "status-online" : status === "busy" ? "status-busy" : "status-offline"
                     }`}
                 />
             </div>
@@ -49,11 +42,7 @@ const ItemSpeaker: FC<IProfile> = ({
                 <ul className="teacher-prices">
                     {consultation_time.map((price) => (
                         <li key={`${price.sessions_time}_${price.price}`}>
-                            {price.sessions_time?.replace(
-                                "min",
-                                ` ${t("mines")}`,
-                            )}
-                            : {price.price}₸
+                            {price.sessions_time?.replace("min", ` ${t("mines")}`)}: {price.price}₸
                         </li>
                     ))}
                 </ul>

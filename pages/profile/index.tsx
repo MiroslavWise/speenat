@@ -48,11 +48,11 @@ const Profile: FC = () => {
                     <ul className="profile-info-other">
                         <ItemsData />
                         <Link data-delete href={{ pathname: `/delete-account` }}>
-                            <span>Удалить аккаунт</span>
+                            <span>{t("Delete_Account")}</span>
                         </Link>
                     </ul>
                 </div>
-                <h2>{t("Условия и соглашения")}</h2>
+                <h2>{t("Terms_and_Agreements")}</h2>
                 <div className="profile-content">
                     <ul className="profile-info-other">
                         {TERMS.map((item) => (

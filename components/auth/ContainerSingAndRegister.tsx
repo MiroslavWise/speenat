@@ -2,7 +2,8 @@ import { useTranslation } from "react-i18next"
 import { FC, useEffect, useState } from "react"
 import { Form, Button } from "antd/lib"
 import { useRouter } from "next/router"
-
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import RegisterForm from "./RegisterForm"
 import SignForm from "./SignForm"
 
@@ -33,21 +34,29 @@ const ContainerSingAndRegister: FC = () => {
         }
     }, [referral_code])
 
-    const onSubmit = (values: IValues) => {
-        if (login) {
-            login({ email: values.email.toLowerCase(), password: values.password })
-                .then((response) => {
-                    if (!response.ok && response?.res?.detail) {
-                        setDetails(response?.res?.detail)
-                    } else {
-                        setDetails("")
-                    }
-                    console.log("response: ", response)
+    const onSubmit = async (values: IValues) => {
+        try {
+            if (login) {
+                const response = await login({
+                    email: values.email.toLowerCase(),
+                    password: values.password,
                 })
-                .finally(() => {
-                    push("/", undefined, { shallow: true })
-                    setActiveLoginEnter(true)
-                })
+
+                if (!response.ok && response?.res?.detail) {
+                    setDetails(response?.res?.detail)
+                    // toast.error(response?.res?.detail)
+                } else {
+                    setDetails("")
+                    toast.success("Вы успешно вошли!")
+                }
+                console.log("response: ", response)
+            }
+        } catch (error) {
+            console.error("Authentication error:", error)
+            toast.error("An error occurred during authentication")
+        } finally {
+            push("/", undefined, { shallow: true })
+            setActiveLoginEnter(true)
         }
     }
 
@@ -77,7 +86,7 @@ const ContainerSingAndRegister: FC = () => {
 
     return (
         <div className={`__container-sign__ `}>
-            <div className={`content `}>
+            <div className={`content`}>
                 <h2 style={{ textAlign: "center" }}>{isState ? t("Registration") : t("Log in to your account")}</h2>
                 <h4>{t("The fastest way to consult with a teacher")}</h4>
                 {details && <p data-error>{details || ""}</p>}

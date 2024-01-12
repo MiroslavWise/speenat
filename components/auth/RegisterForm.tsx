@@ -18,10 +18,10 @@ const RegisterForm: FC = () => {
                 <Radio.Group defaultValue={false}>
                     <Space direction="horizontal">
                         <Radio value={false}>
-                            <p>{t("Student")}</p>
+                            <p>Student</p>
                         </Radio>
                         <Radio value={true}>
-                            <p>{t("Speaker")}</p>
+                            <p>Speaker</p>
                         </Radio>
                     </Space>
                 </Radio.Group>

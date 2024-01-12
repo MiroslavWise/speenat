@@ -1,9 +1,14 @@
-interface IProps {
+interface LoadImageProps {
     src: string
-    width: any
-    quality?: any
+    width: number | string
+    quality?: number
 }
 
-export default function loadImage({ src, width, quality }: IProps) {
-    return `${src}`
+/**
+ *
+ * @param {LoadImageProps} props
+ * @returns {string}
+ */
+export default function loadImage({ src, width, quality }: LoadImageProps): string {
+    return src
 }

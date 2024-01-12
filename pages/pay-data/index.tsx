@@ -145,9 +145,9 @@ const PayData: NextPage = () => {
         <div className="content-archive">
             <section className="list-archive form">
                 <div className="item-money">
-                    <p className="title">Ваш текущий баланс</p>
+                    <p className="title">{t("Your_Current_Balance")}</p>
                     <p>
-                        Баланс: <span>{balance}₸</span>
+                        {t("Balance")}: <span>{balance}₸</span>
                     </p>
                 </div>
             </section>
@@ -187,7 +187,7 @@ const PayData: NextPage = () => {
                     <div className="item-money">
                         <p className="title">{t("Top up your balance")}</p>
                         <div className="item-form">
-                            <b>Выберите сумму для пополнения баланса: </b>
+                            <b>{t("Choose_Amount_To_Top_Up_Balance")}: </b>
                             <div data-grid>
                                 {RADIOS.map((item) => (
                                     <div
