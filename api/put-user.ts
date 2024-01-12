@@ -25,9 +25,7 @@ export const updateDataUser = async (value: IValueDataUser): Promise<any> => {
         .put(`/profile/update-info/`, {
             phone: value.phone,
             address: value.address,
-            birthday: value.birthday
-                ? moment(value?.birthday?.$d).format("YYYY-MM-DD")
-                : null,
+            birthday: value.birthday ? moment(value?.birthday?.$d).format("YYYY-MM-DD") : null,
             gender: value.gender,
         })
         .then((response) => response?.data)

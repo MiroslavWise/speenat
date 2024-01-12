@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useQuery } from "react-query"
-import { Button, Divider, Drawer, Row, Space, Select } from "antd/lib"
+import { Button, Divider, Drawer, Row, Space, Select, Input } from "antd/lib"
 
 import type { TStatus } from "types/store/user"
 
@@ -12,9 +12,9 @@ import { STATUS_ONLINE, VERIFIED } from "./constants"
 
 import styles from "./style.module.scss"
 import { shallow } from "zustand/shallow"
+
 interface IProps {
     open: boolean
-
     setOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -25,6 +25,8 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
         (state) => ({
             filters: state.filters,
             getFilters: state.getFilter,
+            language: state.filters.language,
+            // setLanguage: state.setLanguage,
         }),
         shallow,
     )
@@ -41,54 +43,35 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
     const [statusOnline_, setStatusOnline_] = useState<TStatus | "">(filters.speaker__status)
     const [verified_, setVerified_] = useState<boolean | "">(filters.verified)
     const [topicConversation, setTopicConversation] = useState<number[]>(filters.topic_conversation)
+    const [language, setLanguage] = useState<string | "">(filters.language)
+    const [searchQuery, setSearchQuery] = useState<string>("")
 
-    const onSearch = () => {
+    const applyFilters = () => {
         getFilters({
+            search: searchQuery,
             price_gte: price_.min,
             price_lte: price_.max,
             speaker__status: statusOnline_,
             verified: verified_,
             page: 1,
             topic_conversation: topicConversation,
+            language: language,
         })
-        handleClose()
     }
 
     return (
         <Drawer title={null} closable={false} placement="bottom" onClose={handleClose} open={open} height={"auto"}>
             <div className="wrapper-search">
-                {/* <div className="block-search">
-                    <p>{t("Session price")}</p>
-                    <div className="inputs">
-                        <InputNumber
-                            className="input"
-                            type="number"
-                            min={0}
-                            defaultValue={price_.min}
-                            max={price_.max}
-                            onChange={(value) =>
-                                setPrice_({
-                                    ...price_,
-                                    min: Number(value),
-                                })
-                            }
-                        />
-                        <InputNumber
-                            className="input"
-                            type="number"
-                            min={0}
-                            defaultValue={price_.max}
-                            max={100000}
-                            onChange={(value) =>
-                                setPrice_({
-                                    ...price_,
-                                    max: Number(value),
-                                })
-                            }
-                        />
-                    </div>
-                </div> */}
                 <Divider />
+                <div className="block-search">
+                    <p>{t("Search")}</p>
+                    <Input
+                        className={styles.searchInput}
+                        placeholder={t("Enter speaker name")}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
                 <div className="block-search">
                     <p>{t("Topics for communication")}</p>
                     <Select
@@ -103,9 +86,32 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                   }))
                                 : []
                         }
-                        onChange={setTopicConversation}
+                        onChange={(value) => {
+                            setTopicConversation(value)
+                            applyFilters()
+                        }}
                         clearIcon
                         onClear={() => setTopicConversation([])}
+                        allowClear
+                    />
+                </div>
+                <Divider />
+                <div className="block-search">
+                    <p>{t("Language")}</p>
+                    <Select
+                        className={styles.selectFilter}
+                        placeholder={t("Choose language")}
+                        options={[
+                            { value: "english", label: t("English") },
+                            { value: "spanish", label: t("Spanish") },
+                            { value: "kazakhstan", label: t("kazakhstan") },
+                        ]}
+                        onChange={(value) => {
+                            setLanguage(value)
+                            applyFilters()
+                        }}
+                        clearIcon
+                        onClear={() => setLanguage("")}
                         allowClear
                     />
                 </div>
@@ -119,6 +125,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 className={`button-duration ${item.value === statusOnline_ && "active"}`}
                                 onClick={() => {
                                     setStatusOnline_(item.value)
+                                    applyFilters()
                                 }}
                             >
                                 <p>{t(item.label)}</p>
@@ -136,6 +143,7 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                                 className={`button-duration ${item.value === verified_ && "active"}`}
                                 onClick={() => {
                                     setVerified_(item.value)
+                                    applyFilters()
                                 }}
                             >
                                 <p>{t(item.label)}</p>
@@ -144,16 +152,6 @@ const DrawerSearch: FC<IProps> = ({ open, setOpen }) => {
                     </div>
                 </div>
                 <Divider />
-                <Row justify="end">
-                    <Space>
-                        <Button className="cancel-button" onClick={handleClose}>
-                            <p>{t("Cancel")}</p>
-                        </Button>
-                        <Button className="search-button" onClick={onSearch}>
-                            <p>{t("To find")}</p>
-                        </Button>
-                    </Space>
-                </Row>
             </div>
         </Drawer>
     )

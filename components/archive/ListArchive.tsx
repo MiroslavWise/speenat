@@ -24,6 +24,7 @@ const ListArchive: FC = () => {
     const userId = useUser((state) => state.user?.profile?.profile_id)
     const loading = useUser((state) => state.loading)
     const isSpeaker = useUser((state) => state.is_speaker)
+    const [open, setOpen] = useState(false)
     const { data, isLoading } = useQuery(["archive", userId, page], () => archives(page))
 
     const srcImage = (item: string) => {
@@ -55,8 +56,8 @@ const ListArchive: FC = () => {
                                     isSpeaker && item?.student_profile?.photo_url
                                         ? replaceHttps(item?.student_profile?.photo_url)
                                         : item?.speaker?.profile?.photo_url
-                                        ? replaceHttps(item?.speaker?.profile?.photo_url)
-                                        : "default",
+                                          ? replaceHttps(item?.speaker?.profile?.photo_url)
+                                          : "default",
                                 )}
                                 alt="photo"
                                 height={100}

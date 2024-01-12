@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import type { TMenu } from "types/menu"
 
 interface IItemMenuFooter {
@@ -28,24 +29,28 @@ export const FIRST_ITEM = (isSpeaker: boolean): IItemMenuFooter[] => [
     },
 ]
 
-export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => [
-    {
-        title: "Chat",
-        value: "chat",
-        icon: {
-            fill: "/svg/nav-bar/message-chat-fill.svg",
-            regular: "/svg/nav-bar/message-chat-gray.svg",
+export const LAST_ITEMS = (isSpeaker: boolean): IItemMenuFooter[] => {
+    const { t } = useTranslation()
+
+    return [
+        {
+            title: t("Chat"),
+            value: "chat",
+            icon: {
+                fill: "/svg/nav-bar/message-chat-fill.svg",
+                regular: "/svg/nav-bar/message-chat-gray.svg",
+            },
         },
-    },
-    {
-        title: "Profile",
-        value: "profile",
-        icon: {
-            fill: "/svg/nav-bar/user-star-fill.svg",
-            regular: "/svg/nav-bar/user-star-gray.svg",
+        {
+            title: t("Profile"),
+            value: "profile",
+            icon: {
+                fill: "/svg/nav-bar/user-star-fill.svg",
+                regular: "/svg/nav-bar/user-star-gray.svg",
+            },
         },
-    },
-]
+    ]
+}
 
 export const CENTRAL_ITEM = (isSpeaker: boolean): IItemMenuFooter =>
     isSpeaker

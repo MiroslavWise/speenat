@@ -40,7 +40,7 @@ export const ItemsData: FC = () => {
                 <div className="icon">
                     <Image src="/svg/order/coins-stacked-01.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
-                <span>История пополнения баланса</span>
+                <span>{t("Balance_Top_up_History")}</span>
             </Link>
             <li
                 onClick={(event) => {
@@ -74,7 +74,7 @@ export const ItemsData: FC = () => {
                 <div className="icon">
                     <Image src="/svg/terms/type.svg" alt="wallet" width={18} height={18} unoptimized />
                 </div>
-                <p>Сменить язык</p>
+                <p>{t("Change_Language")}</p>
             </li>
             <Modal open={active} footer={null} onCancel={() => setActive(false)} centered closable={false}>
                 <ul className={styles.modalUl}>

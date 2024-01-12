@@ -34,6 +34,9 @@ export interface IFilterProfiles {
     topic_conversation: number[]
     verified: boolean | ""
     page: number
+    language: string | ""
+    // topic: number[]
+    search?: string
 }
 
 export interface IDataProfile {

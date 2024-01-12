@@ -48,8 +48,8 @@ export default function ArchiveCurrent() {
                             isSpeaker && data?.student_profile?.photo_url
                                 ? replaceHttps(data?.student_profile?.photo_url)
                                 : data?.speaker?.profile?.photo_url
-                                    ? replaceHttps(data?.speaker?.profile?.photo_url)
-                                    : "default",
+                                  ? replaceHttps(data?.speaker?.profile?.photo_url)
+                                  : "default",
                         )}
                         alt="photo"
                         height={200}

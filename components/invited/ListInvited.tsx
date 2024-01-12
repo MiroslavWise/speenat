@@ -1,20 +1,9 @@
-import { FC, useEffect } from "react";
-
-
-
-
+import { FC, useEffect } from "react"
 
 const ListInvited: FC = () => {
+    useEffect(() => {}, [])
 
-        useEffect(() => {
-
-        }, [])
-
-        return (
-                <div className="list-archive">
-                        
-                </div>
-        )
+    return <div className="list-archive"></div>
 }
 
 export default ListInvited
