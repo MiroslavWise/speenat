@@ -25,6 +25,9 @@ const nextConfig = {
                     },
                 },
             ],
+            experimental: {
+                esmExternals: true,
+            },
         })
         return config
     },
